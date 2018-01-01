@@ -5,7 +5,9 @@ defmodule PhxdemoWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", PhxdemoWeb do
+  scope "/", PhxdemoWeb do
     pipe_through :api
+
+    resources "/greetings", GreetingController, except: [:new, :edit]
   end
 end
