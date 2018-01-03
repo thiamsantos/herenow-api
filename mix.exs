@@ -8,6 +8,8 @@ defmodule Phxdemo.Mixfile do
       elixir: "~> 1.4",
       elixirc_paths: elixirc_paths(Mix.env),
       compilers: [:phoenix] ++ Mix.compilers,
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: ["coveralls": :test],
       start_permanent: Mix.env == :prod,
       aliases: aliases(),
       deps: deps()
@@ -39,7 +41,8 @@ defmodule Phxdemo.Mixfile do
       {:cowboy, "~> 1.0"},
       {:plug_secex, "~> 0.1.2"},
       {:cors_plug, "~> 1.5"},
-      {:credo, "~> 0.8", only: [:dev, :test], runtime: false}
+      {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
+      {:excoveralls, "~> 0.8", only: :test}
     ]
   end
 
