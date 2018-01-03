@@ -18,6 +18,7 @@ defmodule PhxdemoWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
 
+  plug CORSPlug
   plug PhxdemoWeb.Router
 
   @doc """

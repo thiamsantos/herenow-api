@@ -3,7 +3,7 @@ defmodule PhxdemoWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
-    plug PlugSecex
+    plug PlugSecex, except: ["content-security-policy"]
   end
 
   scope "/", PhxdemoWeb do
