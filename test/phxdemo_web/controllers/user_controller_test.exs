@@ -20,17 +20,17 @@ defmodule PhxdemoWeb.UserControllerTest do
   describe "index" do
     test "lists all users", %{conn: conn} do
       conn = get conn, user_path(conn, :index)
-      assert json_response(conn, 200)["data"] == []
+      assert json_response(conn, 200) == []
     end
   end
 
   describe "create user" do
     test "renders user when data is valid", %{conn: conn} do
       conn = post conn, user_path(conn, :create), user: @create_attrs
-      assert %{"id" => id} = json_response(conn, 201)["data"]
+      assert %{"id" => id} = json_response(conn, 201)
 
       conn = get conn, user_path(conn, :show, id)
-      assert json_response(conn, 200)["data"] == %{
+      assert json_response(conn, 200) == %{
         "id" => id,
         "age" => 42,
         "name" => "some name"}
@@ -47,10 +47,10 @@ defmodule PhxdemoWeb.UserControllerTest do
 
     test "renders user when data is valid", %{conn: conn, user: %User{id: id} = user} do
       conn = put conn, user_path(conn, :update, user), user: @update_attrs
-      assert %{"id" => ^id} = json_response(conn, 200)["data"]
+      assert %{"id" => ^id} = json_response(conn, 200)
 
       conn = get conn, user_path(conn, :show, id)
-      assert json_response(conn, 200)["data"] == %{
+      assert json_response(conn, 200) == %{
         "id" => id,
         "age" => 43,
         "name" => "some updated name"}
