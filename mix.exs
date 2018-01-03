@@ -40,7 +40,8 @@ defmodule Phxdemo.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:plug_secex, "~> 0.1.2"},
-      {:cors_plug, "~> 1.5"}
+      {:cors_plug, "~> 1.5"},
+      {:credo, "~> 0.8", only: [:dev, :test], runtime: false}
     ]
   end
 

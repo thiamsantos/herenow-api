@@ -1,6 +1,8 @@
 defmodule PhxdemoWeb.ChangesetView do
   use PhxdemoWeb, :view
 
+  alias Ecto.Changeset
+
   @doc """
   Traverses and translates changeset errors.
 
@@ -12,8 +14,9 @@ defmodule PhxdemoWeb.ChangesetView do
   end
 
   defp translate_errors(changeset) do
-    Ecto.Changeset.traverse_errors(changeset, &translate_error/1)
-      |> Enum.flat_map(&translate_field_messages/1)
+    changeset
+    |> Changeset.traverse_errors(&translate_error/1)
+    |> Enum.flat_map(&translate_field_messages/1)
   end
 
   defp translate_field_messages({key, values}) do

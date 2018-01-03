@@ -1,5 +1,10 @@
 defmodule Phxdemo.Application do
+  @moduledoc """
+  Application supervisors definition
+  """
   use Application
+
+  alias PhxdemoWeb.Endpoint
 
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
@@ -12,7 +17,8 @@ defmodule Phxdemo.Application do
       supervisor(Phxdemo.Repo, []),
       # Start the endpoint when the application starts
       supervisor(PhxdemoWeb.Endpoint, []),
-      # Start your own worker by calling: Phxdemo.Worker.start_link(arg1, arg2, arg3)
+      # Start your own worker by calling:
+      #   Phxdemo.Worker.start_link(arg1, arg2, arg3)
       # worker(Phxdemo.Worker, [arg1, arg2, arg3]),
     ]
 
@@ -25,7 +31,7 @@ defmodule Phxdemo.Application do
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    PhxdemoWeb.Endpoint.config_change(changed, removed)
+    Endpoint.config_change(changed, removed)
     :ok
   end
 end
