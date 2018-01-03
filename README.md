@@ -22,7 +22,7 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
 
 - [x] Custom error handling
 - [x] Migrations
-- [] Use dotenv or something similar for configuration
+- [ ] Use dotenv or something similar for configuration
 - [x] ORM or something similar
 - [x] Logger
 - [x] Security headers
