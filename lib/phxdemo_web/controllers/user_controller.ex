@@ -11,7 +11,7 @@ defmodule PhxdemoWeb.UserController do
     render(conn, "index.json", users: users)
   end
 
-  def create(conn, %{"user" => user_params}) do
+  def create(conn, user_params) do
     with {:ok, %User{} = user} <- Users.create_user(user_params) do
       conn
       |> put_status(:created)
@@ -25,8 +25,8 @@ defmodule PhxdemoWeb.UserController do
     render(conn, "show.json", user: user)
   end
 
-  def update(conn, %{"id" => id, "user" => user_params}) do
-    user = Users.get_user!(id)
+  def update(conn, user_params) do
+    user = Users.get_user!(user_params["id"])
 
     with {:ok, %User{} = user} <- Users.update_user(user, user_params) do
       render(conn, "show.json", user: user)
