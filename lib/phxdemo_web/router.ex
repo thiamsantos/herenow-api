@@ -3,6 +3,7 @@ defmodule PhxdemoWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug PlugSecex
   end
 
   scope "/", PhxdemoWeb do
