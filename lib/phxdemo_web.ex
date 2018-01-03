@@ -31,7 +31,6 @@ defmodule PhxdemoWeb do
       use Phoenix.View, root: "lib/phxdemo_web/templates",
                         namespace: PhxdemoWeb
 
-      # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
 
       import PhxdemoWeb.Router.Helpers

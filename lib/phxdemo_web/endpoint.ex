@@ -1,8 +1,6 @@
 defmodule PhxdemoWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :phxdemo
 
-  # Code reloading can be explicitly enabled under the
-  # :code_reloader configuration of your endpoint.
   if code_reloading? do
     plug Phoenix.CodeReloader
   end
