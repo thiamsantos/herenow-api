@@ -1,16 +1,14 @@
 defmodule PhxdemoWeb.ErrorHelpers do
   @moduledoc """
-  Conveniences for translating and building error messages.
+  Conveniences for building error messages.
   """
 
   @doc """
-  Translates an error message using gettext.
+  Translates an error message.
   """
   def translate_error({msg, opts}) do
-    if count = opts[:count] do
-      Gettext.dngettext(PhxdemoWeb.Gettext, "errors", msg, msg, count, opts)
-    else
-      Gettext.dgettext(PhxdemoWeb.Gettext, "errors", msg, opts)
-    end
+    Enum.reduce(opts, msg, fn {key, value}, acc ->
+      String.replace(acc, "%{#{key}}", to_string(value))
+    end)
   end
 end

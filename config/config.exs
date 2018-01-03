@@ -13,9 +13,7 @@ config :phxdemo,
 config :phxdemo, PhxdemoWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "WRJ+DvomxZocnX9tkvbu0q0dWY6QDeUveu211VtSH3xWOUWkCTmHMOJRJOoiFxaF",
-  render_errors: [view: PhxdemoWeb.ErrorView, accepts: ~w(json)],
-  pubsub: [name: Phxdemo.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+  render_errors: [view: PhxdemoWeb.ErrorView, accepts: ~w(json)]
 
 # Configures Elixir's Logger
 config :logger, :console,

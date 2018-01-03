@@ -22,7 +22,6 @@ defmodule PhxdemoWeb do
       use Phoenix.Controller, namespace: PhxdemoWeb
       import Plug.Conn
       import PhxdemoWeb.Router.Helpers
-      import PhxdemoWeb.Gettext
     end
   end
 
@@ -35,7 +34,6 @@ defmodule PhxdemoWeb do
 
       import PhxdemoWeb.Router.Helpers
       import PhxdemoWeb.ErrorHelpers
-      import PhxdemoWeb.Gettext
     end
   end
 
@@ -50,7 +48,6 @@ defmodule PhxdemoWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import PhxdemoWeb.Gettext
     end
   end
 

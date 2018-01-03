@@ -6,8 +6,7 @@ defmodule PhxdemoWeb.ChangesetView do
   @doc """
   Traverses and translates changeset errors.
 
-  See `Ecto.Changeset.traverse_errors/2` and
-  `PhxdemoWeb.ErrorHelpers.translate_error/1` for more details.
+  See `Ecto.Changeset.traverse_errors/2` for more details.
   """
   def render("error.json", %{changeset: changeset}) do
     %{message: "Validation failed", errors: translate_errors(changeset)}
