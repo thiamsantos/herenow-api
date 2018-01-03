@@ -2,11 +2,11 @@ defmodule PhxdemoWeb.ErrorView do
   use PhxdemoWeb, :view
 
   def render("404.json", _assigns) do
-    %{errors: %{detail: "Page not found"}}
+    %{message: "Page not found"}
   end
 
   def render("500.json", _assigns) do
-    %{errors: %{detail: "Internal server error"}}
+    %{message: "Internal server error"}
   end
 
   def template_not_found(_template, assigns) do
