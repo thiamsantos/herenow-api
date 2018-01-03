@@ -8,6 +8,6 @@ defmodule PhxdemoWeb.Router do
   scope "/", PhxdemoWeb do
     pipe_through :api
 
-    resources "/greetings", GreetingController, except: [:new, :edit]
+    resources "/users", UserController, except: [:new, :edit]
   end
 end
