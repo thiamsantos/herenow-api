@@ -7,13 +7,16 @@ defmodule PhxdemoWeb.ChangesetView do
   See `Ecto.Changeset.traverse_errors/2` and
   `PhxdemoWeb.ErrorHelpers.translate_error/1` for more details.
   """
-  def translate_errors(changeset) do
-    Ecto.Changeset.traverse_errors(changeset, &translate_error/1)
+  def render("error.json", %{changeset: changeset}) do
+    %{message: "Validation failed", errors: translate_errors(changeset)}
   end
 
-  def render("error.json", %{changeset: changeset}) do
-    # When encoded, the changeset returns its errors
-    # as a JSON object. So we just pass it forward.
-    %{errors: translate_errors(changeset)}
+  defp translate_errors(changeset) do
+    Ecto.Changeset.traverse_errors(changeset, &translate_error/1)
+      |> Enum.flat_map(&translate_field_messages/1)
+  end
+
+  defp translate_field_messages({key, values}) do
+    Enum.map(values, fn value -> %{field: key, message: value} end)
   end
 end

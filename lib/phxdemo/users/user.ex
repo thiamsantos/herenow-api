@@ -3,6 +3,7 @@ defmodule Phxdemo.Users.User do
   import Ecto.Changeset
   alias Phxdemo.Users.User
 
+  @required_fields [:name, :age]
 
   schema "users" do
     field :age, :integer
@@ -15,6 +16,6 @@ defmodule Phxdemo.Users.User do
   def changeset(%User{} = user, attrs) do
     user
     |> cast(attrs, [:name, :age])
-    |> validate_required([:name, :age])
+    |> validate_required(@required_fields)
   end
 end
