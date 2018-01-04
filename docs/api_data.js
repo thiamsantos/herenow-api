@@ -23,23 +23,30 @@ define({ "api": [
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "Number",
             "optional": false,
-            "field": "firstname",
-            "description": "<p>Firstname of the User.</p>"
+            "field": "id",
+            "description": "<p>User unique ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "age",
+            "description": "<p>Age of the User.</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "lastname",
-            "description": "<p>Lastname of the User.</p>"
+            "field": "name",
+            "description": "<p>Name of the User.</p>"
           }
         ]
       }
     },
     "version": "0.0.0",
-    "filename": "lib/phxdemo_web/router.ex",
+    "filename": "lib/phxdemo_web/controllers/user_controller.ex",
     "groupTitle": "User"
   }
 ] });
