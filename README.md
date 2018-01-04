@@ -31,3 +31,4 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
 - [x] Linter
 - [x] Dialyzer
 - [x] Precommit hook
+- [x] API documentation

@@ -20,6 +20,17 @@ defmodule PhxdemoWeb.UserController do
     end
   end
 
+  @apidoc """
+  @api {get} /user/:id Request User information
+  @apiName GetUser
+  @apiGroup User
+
+  @apiParam {Number} id Users unique ID.
+
+  @apiSuccess {Number} id   User unique ID.
+  @apiSuccess {Number} age  Age of the User.
+  @apiSuccess {String} name Name of the User.
+  """
   def show(conn, %{"id" => id}) do
     user = Users.get_user!(id)
     render(conn, "show.json", user: user)

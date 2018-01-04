@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Phoenix demo",
   "scripts": {
-    "precommit": "mix credo --strict && mix dialyzer && mix test"
+    "precommit": "mix credo --strict && mix dialyzer && mix test && npm run apidoc",
+    "apidoc": "apidoc -i lib/phxdemo_web -o docs/",
+    "serve:apidoc": "http-server docs/"
   },
   "repository": {
     "type": "git",
@@ -16,6 +18,12 @@
   },
   "homepage": "https://github.com/thiamsantos/phxdemo#readme",
   "devDependencies": {
+    "apidoc": "^0.17.6",
+    "http-server": "^0.10.0",
     "husky": "^0.14.3"
+  },
+  "apidoc": {
+    "title": "Phoenix demo",
+    "url": "https://phxdemo.github.io"
   }
 }
