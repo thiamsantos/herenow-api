@@ -1,0 +1,21 @@
+{
+  "name": "phxdemo",
+  "version": "1.0.0",
+  "description": "Phoenix demo",
+  "scripts": {
+    "precommit": "mix credo --strict && mix dialyzer && mix test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thiamsantos/phxdemo.git"
+  },
+  "author": "Thiago Santos",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thiamsantos/phxdemo/issues"
+  },
+  "homepage": "https://github.com/thiamsantos/phxdemo#readme",
+  "devDependencies": {
+    "husky": "^0.14.3"
+  }
+}

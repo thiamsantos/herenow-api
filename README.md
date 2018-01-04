@@ -29,5 +29,5 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
 - [x] CORS
 - [x] Coverage report tool
 - [x] Linter
-- [ ] Dialyzer
-- [ ] Precommit hook
+- [x] Dialyzer
+- [x] Precommit hook
