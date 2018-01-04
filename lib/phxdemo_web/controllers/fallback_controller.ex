@@ -15,6 +15,6 @@ defmodule PhxdemoWeb.FallbackController do
   def call(conn, {:error, :not_found}) do
     conn
     |> put_status(:not_found)
-    |> render(PhxdemoWeb.ErrorView, :"404")
+    |> render(PhxdemoWeb.ErrorView, "404.json", [])
   end
 end

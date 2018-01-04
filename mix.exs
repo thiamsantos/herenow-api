@@ -11,6 +11,7 @@ defmodule Phxdemo.Mixfile do
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: ["coveralls": :test],
       start_permanent: Mix.env == :prod,
+      dialyzer: [plt_add_deps: :transitive],
       aliases: aliases(),
       deps: deps()
     ]
@@ -42,7 +43,8 @@ defmodule Phxdemo.Mixfile do
       {:plug_secex, "~> 0.1.2"},
       {:cors_plug, "~> 1.5"},
       {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
-      {:excoveralls, "~> 0.8", only: :test}
+      {:excoveralls, "~> 0.8", only: :test},
+      {:dialyxir, "~> 0.5.0", only: [:dev], runtime: false}
     ]
   end
 
