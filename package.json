@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Phoenix demo",
   "scripts": {
-    "precommit": "mix credo --strict && mix dialyzer && mix test && npm run apidoc && git add docs",
-    "apidoc": "apidoc -i lib/phxdemo_web -o docs/",
-    "serve:apidoc": "http-server docs/"
+    "precommit": "mix credo --strict && mix dialyzer && mix test",
+    "apidoc": "apidoc -i lib/phxdemo_web -o apidocs/",
+    "serve:apidoc": "http-server apidocs/"
   },
   "repository": {
     "type": "git",
