@@ -32,3 +32,7 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
 - [x] Dialyzer
 - [x] Precommit hook
 - [x] API documentation
+
+```sh
+openssl rand -base64 512 | tr -d '\n'
+```
