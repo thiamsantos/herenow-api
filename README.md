@@ -1,5 +1,60 @@
 # Phxdemo
 
+This is a straightforward boilerplate for building REST APIs with Elixir and Phoenix.
+
+- Custom error handling
+- Migrations
+- Use dotenv or something similar for configuration
+- ORM or something similar
+- Logger
+- Security headers
+- CORS
+- Coverage report tool
+- Linter
+- Dialyzer
+- Precommit hook
+- API documentation
+
+## Configuration
+
+Create the files `config/dev.secret.exs` and `test.secret.exs` with the following contents, filling it with your credentials.
+
+```elixir
+# config/dev.secret.exs
+
+use Mix.Config
+
+config :phxdemo,
+  secret: "SECRET" # run `mix phx.gen.secret 512` to generate a secret
+
+config :phxdemo, Phxdemo.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  username: "USERNAME", # database username. Ex: postgres
+  password: "PASSWORD", # database password. Ex: postgres
+  database: "DATABASE", # database username. Ex: phxdemo_dev
+  hostname: "HOSTNAME"  # database host.     Ex: localhost
+
+```
+```elixir
+# test.secret.exs
+
+use Mix.Config
+
+config :phxdemo,
+  secret: "SECRET" # run `mix phx.gen.secret 512` to generate a secret
+
+config :phxdemo, Phxdemo.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  username: "USERNAME", # database username. Ex: postgres
+  password: "PASSWORD", # database password. Ex: postgres
+  database: "DATABASE", # database username. Ex: phxdemo_test
+  hostname: "HOSTNAME", # database host.     Ex: localhost
+  pool: Ecto.Adapters.SQL.Sandbox
+
+```
+
+## Running
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
@@ -7,8 +62,6 @@ To start your Phoenix server:
   * Start Phoenix endpoint with `mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
-
-Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
 
 ## Learn more
 
@@ -18,21 +71,14 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
   * Mailing list: http://groups.google.com/group/phoenix-talk
   * Source: https://github.com/phoenixframework/phoenix
 
-## TODO
+## Production configuration
 
-- [x] Custom error handling
-- [x] Migrations
-- [x] Use dotenv or something similar for configuration
-- [x] ORM or something similar
-- [x] Logger
-- [x] Security headers
-- [x] CORS
-- [x] Coverage report tool
-- [x] Linter
-- [x] Dialyzer
-- [x] Precommit hook
-- [x] API documentation
+The following environment variables must be defined:
 
-```sh
-openssl rand -base64 512 | tr -d '\n'
-```
+- `HOST_NAME` - Host of the application. Ex: `api.phxdemo.example.com`.
+- `DATABASE_HOSTNAME` - Host of the database.
+- `DATABASE_USERNAME` - Username of the database.
+- `DATABASE_PASSWORD` - Password of the database.
+- `DATABASE_NAME` - Name of the database.
+- `POOL_SIZE` - Size of the database connections pool.
+- `SECRET` - Application secret key. Run the following command to generate a new one: `mix phx.gen.secret 512`.

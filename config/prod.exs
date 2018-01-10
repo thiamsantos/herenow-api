@@ -7,11 +7,14 @@ config :phxdemo, PhxdemoWeb.Endpoint,
 
 config :logger, level: :info
 
-config :hello, Hello.Repo,
+config :phxdemo, Hello.Repo,
   adapter: Ecto.Adapters.Postgres,
-  url: System.get_env("DATABASE_URL"),
+  hostname: System.get_env("DATABASE_HOSTNAME"),
   username: System.get_env("DATABASE_USERNAME"),
   password: System.get_env("DATABASE_PASSWORD"),
   database: System.get_env("DATABASE_NAME"),
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
   ssl: true
+
+config :phxdemo,
+  secret: System.get_env("SECRET")
