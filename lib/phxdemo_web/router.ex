@@ -6,10 +6,19 @@ defmodule PhxdemoWeb.Router do
     plug PlugSecex, except: ["content-security-policy"]
   end
 
+  pipeline :authentication do
+    plug PhxdemoWeb.AuthPlug
+  end
+
+  scope "/", PhxdemoWeb do
+    pipe_through [:api, :authentication]
+
+    resources "/users", UserController, except: [:new, :edit]
+  end
+
   scope "/", PhxdemoWeb do
     pipe_through :api
 
-    resources "/users", UserController, except: [:new, :edit]
     resources "/auth", AuthController, only: [:create]
   end
 end

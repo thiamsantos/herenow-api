@@ -6,7 +6,7 @@ defmodule PhxdemoWeb.ErrorViewTest do
 
   test "renders 404.json" do
     assert render(PhxdemoWeb.ErrorView, "404.json", []) ==
-           %{message: "Page not found"}
+           %{message: "Not found"}
   end
 
   test "render 500.json" do
