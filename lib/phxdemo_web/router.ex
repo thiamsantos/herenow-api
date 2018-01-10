@@ -10,5 +10,6 @@ defmodule PhxdemoWeb.Router do
     pipe_through :api
 
     resources "/users", UserController, except: [:new, :edit]
+    resources "/auth", AuthController, only: [:create]
   end
 end
