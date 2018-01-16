@@ -19,17 +19,26 @@ defmodule PhxdemoWeb.UserControllerTest do
 
   describe "index" do
     test "lists all users", %{conn: conn} do
-      conn = get conn, user_path(conn, :index)
+      conn = conn
+      |> authenticate_conn()
+      |> get(user_path(conn, :index))
+
       assert json_response(conn, 200) == []
     end
   end
 
   describe "create user" do
     test "renders user when data is valid", %{conn: conn} do
-      conn = post conn, user_path(conn, :create), @create_attrs
+      conn = conn
+      |> authenticate_conn()
+      |> post(user_path(conn, :create), @create_attrs)
+
       assert %{"id" => id} = json_response(conn, 201)
 
-      conn = get conn, user_path(conn, :show, id)
+      conn = conn
+      |> authenticate_conn()
+      |> get(user_path(conn, :show, id))
+
       assert json_response(conn, 200) == %{
         "id" => id,
         "age" => 42,
@@ -37,7 +46,10 @@ defmodule PhxdemoWeb.UserControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post conn, user_path(conn, :create), @invalid_attrs
+      conn = conn
+      |> authenticate_conn()
+      |> post(user_path(conn, :create), @invalid_attrs)
+
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -46,10 +58,16 @@ defmodule PhxdemoWeb.UserControllerTest do
     setup [:create_user]
 
     test "renders user when data is valid", %{conn: conn, user: %User{id: id} = user} do
-      conn = put conn, user_path(conn, :update, user), @update_attrs
+      conn = conn
+      |> authenticate_conn()
+      |> put(user_path(conn, :update, user), @update_attrs)
+
       assert %{"id" => ^id} = json_response(conn, 200)
 
-      conn = get conn, user_path(conn, :show, id)
+      conn = conn
+      |> authenticate_conn()
+      |> get(user_path(conn, :show, id))
+
       assert json_response(conn, 200) == %{
         "id" => id,
         "age" => 43,
@@ -57,7 +75,10 @@ defmodule PhxdemoWeb.UserControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, user: user} do
-      conn = put conn, user_path(conn, :update, user), @invalid_attrs
+      conn = conn
+      |> authenticate_conn()
+      |> put(user_path(conn, :update, user), @invalid_attrs)
+
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -66,10 +87,15 @@ defmodule PhxdemoWeb.UserControllerTest do
     setup [:create_user]
 
     test "deletes chosen user", %{conn: conn, user: user} do
-      conn = delete conn, user_path(conn, :delete, user)
+      conn = conn
+      |> authenticate_conn()
+      |> delete(user_path(conn, :delete, user))
+
       assert response(conn, 204)
+
+      conn = authenticate_conn(conn)
       assert_error_sent 404, fn ->
-        get conn, user_path(conn, :show, user)
+        get(conn, user_path(conn, :show, user))
       end
     end
   end

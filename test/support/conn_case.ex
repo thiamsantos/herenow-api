@@ -23,6 +23,15 @@ defmodule PhxdemoWeb.ConnCase do
 
       # The default endpoint for testing
       @endpoint PhxdemoWeb.Endpoint
+
+      defp authenticate_conn(conn) do
+        conn = post(conn, auth_path(conn, :create), %{user: "root", password: "toor"})
+        %{"token" => token} = json_response(conn, 200)
+
+        conn
+        |> recycle()
+        |> put_req_header("authorization", "Bearer #{token}")
+      end
     end
   end
 

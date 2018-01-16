@@ -7,7 +7,7 @@ config :phxdemo, PhxdemoWeb.Endpoint,
 
 config :logger, level: :info
 
-config :phxdemo, Hello.Repo,
+config :phxdemo, Phxdemo.Repo,
   adapter: Ecto.Adapters.Postgres,
   hostname: System.get_env("DATABASE_HOSTNAME"),
   username: System.get_env("DATABASE_USERNAME"),
