@@ -14,6 +14,11 @@ defmodule PhxdemoWeb.ErrorViewTest do
            %{message: "Internal server error"}
   end
 
+  test "render 401.json" do
+    assert render(PhxdemoWeb.ErrorView, "401.json", %{reason: "reason"}) ==
+           %{message: "reason"}
+  end
+
   test "render any other" do
     assert render(PhxdemoWeb.ErrorView, "505.json", []) ==
            %{message: "Internal server error"}

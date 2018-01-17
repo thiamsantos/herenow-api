@@ -19,6 +19,7 @@ defmodule PhxdemoWeb.AuthPlug do
         |> assign(:user_id, claims["user_id"])
       {:error, reason} ->
         conn
+        |> put_status(:unauthorized)
         |> render(PhxdemoWeb.ErrorView, "401.json", reason: reason)
         |> halt()
     end

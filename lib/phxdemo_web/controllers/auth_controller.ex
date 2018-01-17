@@ -10,7 +10,7 @@ defmodule PhxdemoWeb.AuthController do
     else
       conn
       |> put_status(:unauthorized)
-      |> render(PhxdemoWeb.ErrorView, "401.json", [])
+      |> render(PhxdemoWeb.ErrorView, "401.json", %{reason: "Invalid credentials"})
     end
   end
 end
