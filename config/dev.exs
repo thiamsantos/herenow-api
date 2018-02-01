@@ -1,6 +1,6 @@
 use Mix.Config
 
-config :phxdemo, PhxdemoWeb.Endpoint,
+config :herenow, HereNowWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,

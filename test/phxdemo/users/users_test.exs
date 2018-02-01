@@ -1,10 +1,10 @@
-defmodule Phxdemo.UsersTest do
-  use Phxdemo.DataCase
+defmodule HereNow.UsersTest do
+  use HereNow.DataCase
 
-  alias Phxdemo.Users
+  alias HereNow.Users
 
   describe "users" do
-    alias Phxdemo.Users.User
+    alias HereNow.Users.User
 
     @valid_attrs %{age: 42, name: "some name"}
     @update_attrs %{age: 43, name: "some updated name"}

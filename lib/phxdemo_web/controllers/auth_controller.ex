@@ -1,8 +1,8 @@
-defmodule PhxdemoWeb.AuthController do
-  use PhxdemoWeb, :controller
-  alias Phxdemo.Auth
+defmodule HereNowWeb.AuthController do
+  use HereNowWeb, :controller
+  alias HereNow.Auth
 
-  action_fallback PhxdemoWeb.FallbackController
+  action_fallback HereNowWeb.FallbackController
 
   def create(conn, user_params) do
     if user_params["password"] == "toor" and user_params["user"] == "root" do
@@ -10,7 +10,7 @@ defmodule PhxdemoWeb.AuthController do
     else
       conn
       |> put_status(:unauthorized)
-      |> render(PhxdemoWeb.ErrorView, "401.json", %{reason: "Invalid credentials"})
+      |> render(HereNowWeb.ErrorView, "401.json", %{reason: "Invalid credentials"})
     end
   end
 end

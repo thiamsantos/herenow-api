@@ -1,22 +1,22 @@
 {
-  "name": "phxdemo",
+  "name": "herenow",
   "version": "1.0.0",
   "description": "Phoenix demo",
   "scripts": {
     "precommit": "mix credo --strict && mix dialyzer && mix test",
-    "apidoc": "apidoc -i lib/phxdemo_web -o apidocs/",
+    "apidoc": "apidoc -i lib/herenow_web -o apidocs/",
     "serve:apidoc": "http-server apidocs/"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thiamsantos/phxdemo.git"
+    "url": "git+https://github.com/herenow-team/core-api.git"
   },
   "author": "Thiago Santos",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/thiamsantos/phxdemo/issues"
+    "url": "https://github.com/herenow-team/core-api/issues"
   },
-  "homepage": "https://github.com/thiamsantos/phxdemo#readme",
+  "homepage": "https://github.com/herenow-team/core-api#readme",
   "devDependencies": {
     "apidoc": "^0.17.6",
     "http-server": "^0.10.0",
@@ -24,6 +24,6 @@
   },
   "apidoc": {
     "title": "Phoenix demo",
-    "url": "https://phxdemo.github.io"
+    "url": "https://api.herenow.com.br"
   }
 }

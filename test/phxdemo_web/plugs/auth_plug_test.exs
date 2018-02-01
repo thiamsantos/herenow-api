@@ -1,7 +1,7 @@
-defmodule PhxdemoWeb.AuthPlugTest do
-  use PhxdemoWeb.ConnCase
+defmodule HereNowWeb.AuthPlugTest do
+  use HereNowWeb.ConnCase
 
-  alias PhxdemoWeb.AuthPlug
+  alias HereNowWeb.AuthPlug
 
   describe "auth plug" do
     test "should return 401 if token not found", %{conn: conn} do

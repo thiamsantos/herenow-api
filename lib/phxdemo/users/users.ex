@@ -1,12 +1,12 @@
-defmodule Phxdemo.Users do
+defmodule HereNow.Users do
   @moduledoc """
   The Users context.
   """
 
   import Ecto.Query, warn: false
-  alias Phxdemo.Repo
+  alias HereNow.Repo
 
-  alias Phxdemo.Users.User
+  alias HereNow.Users.User
 
   @doc """
   Returns the list of users.

@@ -1,5 +1,5 @@
-defmodule PhxdemoWeb.ChangesetView do
-  use PhxdemoWeb, :view
+defmodule HereNowWeb.ChangesetView do
+  use HereNowWeb, :view
 
   alias Ecto.Changeset
 

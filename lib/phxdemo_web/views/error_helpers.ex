@@ -1,4 +1,4 @@
-defmodule PhxdemoWeb.ErrorHelpers do
+defmodule HereNowWeb.ErrorHelpers do
   @moduledoc """
   Conveniences for building error messages.
   """

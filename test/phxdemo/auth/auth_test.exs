@@ -1,6 +1,6 @@
-defmodule Phxdemo.AuthTest do
+defmodule HereNow.AuthTest do
   use ExUnit.Case
-  alias Phxdemo.Auth
+  alias HereNow.Auth
 
   @two_hours_seconds  2 * 60 * 60
 

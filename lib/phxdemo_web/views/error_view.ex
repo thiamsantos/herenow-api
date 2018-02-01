@@ -1,5 +1,5 @@
-defmodule PhxdemoWeb.ErrorView do
-  use PhxdemoWeb, :view
+defmodule HereNowWeb.ErrorView do
+  use HereNowWeb, :view
 
   def render("404.json", _assigns) do
     %{message: "Not found"}

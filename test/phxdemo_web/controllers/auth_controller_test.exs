@@ -1,5 +1,5 @@
-defmodule PhxdemoWeb.AuthControllerTest do
-  use PhxdemoWeb.ConnCase
+defmodule HereNowWeb.AuthControllerTest do
+  use HereNowWeb.ConnCase
 
   @invalid_credentials %{password: "hey", user: "root"}
   @credentials %{password: "toor", user: "root"}

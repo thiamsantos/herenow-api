@@ -1,4 +1,4 @@
-# Phxdemo
+# HereNow
 
 This is a straightforward boilerplate for building REST APIs with Elixir and Phoenix.
 
@@ -24,14 +24,14 @@ Create the files `config/dev.secret.exs` and `test.secret.exs` with the followin
 
 use Mix.Config
 
-config :phxdemo,
+config :herenow,
   secret: "SECRET" # run `mix phx.gen.secret 512` to generate a secret
 
-config :phxdemo, Phxdemo.Repo,
+config :herenow, HereNow.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "USERNAME", # database username. Ex: postgres
   password: "PASSWORD", # database password. Ex: postgres
-  database: "DATABASE", # database username. Ex: phxdemo_dev
+  database: "DATABASE", # database username. Ex: herenow_dev
   hostname: "HOSTNAME"  # database host.     Ex: localhost
 
 ```
@@ -40,14 +40,14 @@ config :phxdemo, Phxdemo.Repo,
 
 use Mix.Config
 
-config :phxdemo,
+config :herenow,
   secret: "SECRET" # run `mix phx.gen.secret 512` to generate a secret
 
-config :phxdemo, Phxdemo.Repo,
+config :herenow, HereNow.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "USERNAME", # database username. Ex: postgres
   password: "PASSWORD", # database password. Ex: postgres
-  database: "DATABASE", # database username. Ex: phxdemo_test
+  database: "DATABASE", # database username. Ex: herenow_test
   hostname: "HOSTNAME", # database host.     Ex: localhost
   pool: Ecto.Adapters.SQL.Sandbox
 
@@ -75,7 +75,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 The following environment variables must be defined:
 
-- `HOST_NAME` - Host of the application. Ex: `api.phxdemo.example.com`.
+- `HOST_NAME` - Host of the application. Ex: `api.herenow.com.br`.
 - `DATABASE_HOSTNAME` - Host of the database.
 - `DATABASE_USERNAME` - Username of the database.
 - `DATABASE_PASSWORD` - Password of the database.

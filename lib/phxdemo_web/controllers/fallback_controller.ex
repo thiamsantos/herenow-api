@@ -1,20 +1,20 @@
-defmodule PhxdemoWeb.FallbackController do
+defmodule HereNowWeb.FallbackController do
   @moduledoc """
   Translates controller action results into valid `Plug.Conn` responses.
 
   See `Phoenix.Controller.action_fallback/1` for more details.
   """
-  use PhxdemoWeb, :controller
+  use HereNowWeb, :controller
 
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     conn
     |> put_status(:unprocessable_entity)
-    |> render(PhxdemoWeb.ChangesetView, "error.json", changeset: changeset)
+    |> render(HereNowWeb.ChangesetView, "error.json", changeset: changeset)
   end
 
   def call(conn, {:error, :not_found}) do
     conn
     |> put_status(:not_found)
-    |> render(PhxdemoWeb.ErrorView, "404.json", [])
+    |> render(HereNowWeb.ErrorView, "404.json", [])
   end
 end

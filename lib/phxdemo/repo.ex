@@ -1,3 +1,3 @@
-defmodule Phxdemo.Repo do
-  use Ecto.Repo, otp_app: :phxdemo
+defmodule HereNow.Repo do
+  use Ecto.Repo, otp_app: :herenow
 end

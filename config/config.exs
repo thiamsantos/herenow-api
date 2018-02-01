@@ -1,11 +1,11 @@
 use Mix.Config
 
-config :phxdemo,
-  ecto_repos: [Phxdemo.Repo]
+config :herenow,
+  ecto_repos: [HereNow.Repo]
 
-config :phxdemo, PhxdemoWeb.Endpoint,
+config :herenow, HereNowWeb.Endpoint,
   url: [host: "localhost"],
-  render_errors: [view: PhxdemoWeb.ErrorView, accepts: ~w(json)]
+  render_errors: [view: HereNowWeb.ErrorView, accepts: ~w(json)]
 
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

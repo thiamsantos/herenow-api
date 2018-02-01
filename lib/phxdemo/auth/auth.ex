@@ -1,10 +1,10 @@
-defmodule Phxdemo.Auth do
+defmodule HereNow.Auth do
   @moduledoc """
   Authentication context
   """
   import Joken
 
-  @secret Application.get_env(:phxdemo, :secret)
+  @secret Application.get_env(:herenow, :secret)
   @expiration_time 2 * 60 * 60
 
   @spec generate_token(map) :: binary

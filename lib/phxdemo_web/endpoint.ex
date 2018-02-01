@@ -1,5 +1,5 @@
-defmodule PhxdemoWeb.Endpoint do
-  use Phoenix.Endpoint, otp_app: :phxdemo
+defmodule HereNowWeb.Endpoint do
+  use Phoenix.Endpoint, otp_app: :herenow
 
   if code_reloading? do
     plug Phoenix.CodeReloader
@@ -17,7 +17,7 @@ defmodule PhxdemoWeb.Endpoint do
   plug Plug.Head
 
   plug CORSPlug
-  plug PhxdemoWeb.Router
+  plug HereNowWeb.Router
 
   @doc """
   Callback invoked for dynamically configuring the endpoint.

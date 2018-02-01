@@ -1,13 +1,13 @@
 use Mix.Config
 
-config :phxdemo, PhxdemoWeb.Endpoint,
+config :herenow, HereNowWeb.Endpoint,
   load_from_system_env: true,
   url: [scheme: "https", host: System.get_env("HOST_NAME"), port: 443],
   force_ssl: [rewrite_on: [:x_forwarded_proto]]
 
 config :logger, level: :info
 
-config :phxdemo, Phxdemo.Repo,
+config :herenow, HereNow.Repo,
   adapter: Ecto.Adapters.Postgres,
   hostname: System.get_env("DATABASE_HOSTNAME"),
   username: System.get_env("DATABASE_USERNAME"),
@@ -16,5 +16,5 @@ config :phxdemo, Phxdemo.Repo,
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
   ssl: true
 
-config :phxdemo,
+config :herenow,
   secret: System.get_env("SECRET")

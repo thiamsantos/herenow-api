@@ -1,10 +1,10 @@
-defmodule Phxdemo.Users.User do
+defmodule HereNow.Users.User do
   @moduledoc """
   User schema
   """
   use Ecto.Schema
   import Ecto.Changeset
-  alias Phxdemo.Users.User
+  alias HereNow.Users.User
 
   @required_fields [:name, :age]
 

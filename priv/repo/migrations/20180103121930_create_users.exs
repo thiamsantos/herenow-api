@@ -1,4 +1,4 @@
-defmodule Phxdemo.Repo.Migrations.CreateUsers do
+defmodule HereNow.Repo.Migrations.CreateUsers do
   use Ecto.Migration
 
   def change do

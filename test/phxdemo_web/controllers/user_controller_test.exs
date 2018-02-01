@@ -1,8 +1,8 @@
-defmodule PhxdemoWeb.UserControllerTest do
-  use PhxdemoWeb.ConnCase
+defmodule HereNowWeb.UserControllerTest do
+  use HereNowWeb.ConnCase
 
-  alias Phxdemo.Users
-  alias Phxdemo.Users.User
+  alias HereNow.Users
+  alias HereNow.Users.User
 
   @create_attrs %{age: 42, name: "some name"}
   @update_attrs %{age: 43, name: "some updated name"}

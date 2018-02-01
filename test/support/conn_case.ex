@@ -1,4 +1,4 @@
-defmodule PhxdemoWeb.ConnCase do
+defmodule HereNowWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -19,10 +19,10 @@ defmodule PhxdemoWeb.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
-      import PhxdemoWeb.Router.Helpers
+      import HereNowWeb.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint PhxdemoWeb.Endpoint
+      @endpoint HereNowWeb.Endpoint
 
       defp authenticate_conn(conn) do
         conn = post(conn, auth_path(conn, :create), %{user: "root", password: "toor"})
@@ -37,9 +37,9 @@ defmodule PhxdemoWeb.ConnCase do
 
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Phxdemo.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(HereNow.Repo)
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Phxdemo.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(HereNow.Repo, {:shared, self()})
     end
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end

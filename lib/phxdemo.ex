@@ -1,6 +1,6 @@
-defmodule Phxdemo do
+defmodule HereNow do
   @moduledoc """
-  Phxdemo keeps the contexts that define your domain
+  HereNow keeps the contexts that define your domain
   and business logic.
 
   Contexts are also responsible for managing your data, regardless

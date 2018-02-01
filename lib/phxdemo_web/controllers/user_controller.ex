@@ -1,10 +1,10 @@
-defmodule PhxdemoWeb.UserController do
-  use PhxdemoWeb, :controller
+defmodule HereNowWeb.UserController do
+  use HereNowWeb, :controller
 
-  alias Phxdemo.Users
-  alias Phxdemo.Users.User
+  alias HereNow.Users
+  alias HereNow.Users.User
 
-  action_fallback PhxdemoWeb.FallbackController
+  action_fallback HereNowWeb.FallbackController
 
   @apidoc """
   @apiDefine UserNotFoundError

@@ -1,10 +1,10 @@
-defmodule PhxdemoWeb.AuthPlug do
+defmodule HereNowWeb.AuthPlug do
   @moduledoc """
   Authentication plug. It verifies the validity of the token.
   The token should be placed in the `Authorization` header using and Bearer strategy.
   """
   import Plug.Conn
-  alias Phxdemo.Auth
+  alias HereNow.Auth
 
   import Phoenix.Controller, only: [render: 4]
 
@@ -20,7 +20,7 @@ defmodule PhxdemoWeb.AuthPlug do
       {:error, reason} ->
         conn
         |> put_status(:unauthorized)
-        |> render(PhxdemoWeb.ErrorView, "401.json", reason: reason)
+        |> render(HereNowWeb.ErrorView, "401.json", reason: reason)
         |> halt()
     end
   end

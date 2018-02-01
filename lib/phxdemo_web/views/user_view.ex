@@ -1,6 +1,6 @@
-defmodule PhxdemoWeb.UserView do
-  use PhxdemoWeb, :view
-  alias PhxdemoWeb.UserView
+defmodule HereNowWeb.UserView do
+  use HereNowWeb, :view
+  alias HereNowWeb.UserView
 
   def render("index.json", %{users: users}) do
     render_many(users, UserView, "user.json")

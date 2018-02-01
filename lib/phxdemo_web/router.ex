@@ -1,5 +1,5 @@
-defmodule PhxdemoWeb.Router do
-  use PhxdemoWeb, :router
+defmodule HereNowWeb.Router do
+  use HereNowWeb, :router
 
   pipeline :api do
     plug :accepts, ["json"]
@@ -7,16 +7,16 @@ defmodule PhxdemoWeb.Router do
   end
 
   pipeline :authentication do
-    plug PhxdemoWeb.AuthPlug
+    plug HereNowWeb.AuthPlug
   end
 
-  scope "/", PhxdemoWeb do
+  scope "/", HereNowWeb do
     pipe_through [:api, :authentication]
 
     resources "/users", UserController, except: [:new, :edit]
   end
 
-  scope "/", PhxdemoWeb do
+  scope "/", HereNowWeb do
     pipe_through :api
 
     resources "/auth", AuthController, only: [:create]
