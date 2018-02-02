@@ -101,4 +101,14 @@ defmodule Herenow.Clients do
   def change_client(%Client{} = client) do
     Client.changeset(client, %{})
   end
+
+  @spec is_email_registered?(String.t) :: boolean()
+  def is_email_registered?(email) do
+    query = from c in Client, where: c.email == ^email, select: c.id
+
+    case Repo.one(query) do
+      nil -> false
+      _client -> true
+    end
+  end
 end

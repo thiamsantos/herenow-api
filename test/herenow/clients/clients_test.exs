@@ -6,8 +6,8 @@ defmodule Herenow.ClientsTest do
   describe "clients" do
     alias Herenow.Clients.Client
 
-    @valid_attrs %{address_number: "some address_number", cep: "some cep", city: "some city", email: "some email", is_company: "some is_company", is_verified: true, legal_name: "some legal_name", name: "some name", password: "some password", segment: "some segment", state: "some state", street: "some street"}
-    @update_attrs %{address_number: "some updated address_number", cep: "some updated cep", city: "some updated city", email: "some updated email", is_company: "some updated is_company", is_verified: false, legal_name: "some updated legal_name", name: "some updated name", password: "some updated password", segment: "some updated segment", state: "some updated state", street: "some updated street"}
+    @valid_attrs %{address_number: "54", cep: "88133050", city: "palhoça", email: "someemail@example.com", is_company: true, is_verified: true, legal_name: "some legal_name", name: "some name", password: "some password", segment: "some segment", state: "some state", street: "some street"}
+    @update_attrs %{address_number: "227", cep: "88135000", city: "florianópolis", email: "someupdatedemail@gmail.com", is_company: false, is_verified: false, legal_name: "some updated legal_name", name: "some updated name", password: "some updated password", segment: "some updated segment", state: "some updated state", street: "some updated street"}
     @invalid_attrs %{address_number: nil, cep: nil, city: nil, email: nil, is_company: nil, is_verified: nil, legal_name: nil, name: nil, password: nil, segment: nil, state: nil, street: nil}
 
     def client_fixture(attrs \\ %{}) do
@@ -31,11 +31,11 @@ defmodule Herenow.ClientsTest do
 
     test "create_client/1 with valid data creates a client" do
       assert {:ok, %Client{} = client} = Clients.create_client(@valid_attrs)
-      assert client.address_number == "some address_number"
-      assert client.cep == "some cep"
-      assert client.city == "some city"
-      assert client.email == "some email"
-      assert client.is_company == "some is_company"
+      assert client.address_number == "54"
+      assert client.cep == "88133050"
+      assert client.city == "palhoça"
+      assert client.email == "someemail@example.com"
+      assert client.is_company == true
       assert client.is_verified == true
       assert client.legal_name == "some legal_name"
       assert client.name == "some name"
@@ -53,11 +53,11 @@ defmodule Herenow.ClientsTest do
       client = client_fixture()
       assert {:ok, client} = Clients.update_client(client, @update_attrs)
       assert %Client{} = client
-      assert client.address_number == "some updated address_number"
-      assert client.cep == "some updated cep"
-      assert client.city == "some updated city"
-      assert client.email == "some updated email"
-      assert client.is_company == "some updated is_company"
+      assert client.address_number == "227"
+      assert client.cep == "88135000"
+      assert client.city == "florianópolis"
+      assert client.email == ""
+      assert client.is_company == false
       assert client.is_verified == false
       assert client.legal_name == "some updated legal_name"
       assert client.name == "some updated name"
@@ -82,6 +82,12 @@ defmodule Herenow.ClientsTest do
     test "change_client/1 returns a client changeset" do
       client = client_fixture()
       assert %Ecto.Changeset{} = Clients.change_client(client)
+    end
+
+    test "is_email_registered?/1 return a boolean" do
+      client = client_fixture()
+      assert true == Clients.is_email_registered?("someemail@example.com")
+      assert false == Clients.is_email_registered?("someotheremail@gmail.com")
     end
   end
 end

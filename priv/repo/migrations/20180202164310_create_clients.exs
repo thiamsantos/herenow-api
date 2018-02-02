@@ -3,14 +3,14 @@ defmodule Herenow.Repo.Migrations.CreateClients do
 
   def change do
     create table(:clients) do
-      add :email, :string
-      add :password, :string
+      add :email, :string, size: 254
+      add :password, :string, size: 60
       add :is_verified, :boolean, default: false, null: false
+      add :is_company, :boolean, default: false, null: false
       add :name, :string
       add :legal_name, :string
-      add :is_company, :string
       add :segment, :string
-      add :cep, :string
+      add :cep, :string, size: 8
       add :street, :string
       add :address_number, :string
       add :city, :string
@@ -19,5 +19,6 @@ defmodule Herenow.Repo.Migrations.CreateClients do
       timestamps()
     end
 
+    create unique_index(:clients, [:email])
   end
 end

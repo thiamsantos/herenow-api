@@ -34,6 +34,10 @@ config :herenow, Herenow.Repo,
   database: "DATABASE", # database username. Ex: herenow_dev
   hostname: "HOSTNAME"  # database host.     Ex: localhost
 
+config :recaptcha,
+  public_key: "YOUR_RECAPTCHA_PUBLIC_KEY",
+  secret: "YOUR_RECAPTCHA_SECRET_KEY"
+
 ```
 ```elixir
 # test.secret.exs
@@ -82,3 +86,5 @@ The following environment variables must be defined:
 - `DATABASE_NAME` - Name of the database.
 - `POOL_SIZE` - Size of the database connections pool.
 - `SECRET` - Application secret key. Run the following command to generate a new one: `mix phx.gen.secret 512`.
+- `RECAPTCHA_PUBLIC_KEY` - Recapctha public key.
+- `RECAPTCHA_PRIVATE_KEY` - Recapctha private key.

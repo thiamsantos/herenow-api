@@ -45,7 +45,8 @@ defmodule Herenow.Mixfile do
       {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.8", only: :test},
       {:dialyxir, "~> 0.5.0", only: [:dev], runtime: false},
-      {:joken, "~> 1.5"}
+      {:joken, "~> 1.5"},
+      {:recaptcha, "~> 2.0"}
     ]
   end
 

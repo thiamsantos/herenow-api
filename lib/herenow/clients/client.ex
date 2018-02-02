@@ -11,7 +11,7 @@ defmodule Herenow.Clients.Client do
     field :cep, :string
     field :city, :string
     field :email, :string
-    field :is_company, :string
+    field :is_company, :boolean, default: false
     field :is_verified, :boolean, default: false
     field :legal_name, :string
     field :name, :string
