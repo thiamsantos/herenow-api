@@ -1,5 +1,5 @@
-defmodule HereNowWeb.ErrorView do
-  use HereNowWeb, :view
+defmodule HerenowWeb.ErrorView do
+  use HerenowWeb, :view
 
   def render("404.json", _assigns) do
     %{message: "Not found"}

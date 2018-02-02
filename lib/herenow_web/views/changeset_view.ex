@@ -1,5 +1,5 @@
-defmodule HereNowWeb.ChangesetView do
-  use HereNowWeb, :view
+defmodule HerenowWeb.ChangesetView do
+  use HerenowWeb, :view
 
   alias Ecto.Changeset
 

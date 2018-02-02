@@ -1,4 +1,4 @@
-defmodule HereNow.Mixfile do
+defmodule Herenow.Mixfile do
   use Mix.Project
 
   def project do
@@ -22,7 +22,7 @@ defmodule HereNow.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {HereNow.Application, []},
+      mod: {Herenow.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

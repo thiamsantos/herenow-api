@@ -1,4 +1,4 @@
-defmodule HereNowWeb.ErrorHelpers do
+defmodule HerenowWeb.ErrorHelpers do
   @moduledoc """
   Conveniences for building error messages.
   """

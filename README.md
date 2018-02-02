@@ -1,4 +1,4 @@
-# HereNow
+# Herenow
 
 This is a straightforward boilerplate for building REST APIs with Elixir and Phoenix.
 
@@ -27,7 +27,7 @@ use Mix.Config
 config :herenow,
   secret: "SECRET" # run `mix phx.gen.secret 512` to generate a secret
 
-config :herenow, HereNow.Repo,
+config :herenow, Herenow.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "USERNAME", # database username. Ex: postgres
   password: "PASSWORD", # database password. Ex: postgres
@@ -43,7 +43,7 @@ use Mix.Config
 config :herenow,
   secret: "SECRET" # run `mix phx.gen.secret 512` to generate a secret
 
-config :herenow, HereNow.Repo,
+config :herenow, Herenow.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "USERNAME", # database username. Ex: postgres
   password: "PASSWORD", # database password. Ex: postgres
