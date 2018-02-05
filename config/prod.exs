@@ -1,13 +1,13 @@
 use Mix.Config
 
-config :herenow, HereNowWeb.Endpoint,
+config :herenow, HerenowWeb.Endpoint,
   load_from_system_env: true,
   url: [scheme: "https", host: System.get_env("HOST_NAME"), port: 443],
   force_ssl: [rewrite_on: [:x_forwarded_proto]]
 
 config :logger, level: :info
 
-config :herenow, HereNow.Repo,
+config :herenow, Herenow.Repo,
   adapter: Ecto.Adapters.Postgres,
   hostname: System.get_env("DATABASE_HOSTNAME"),
   username: System.get_env("DATABASE_USERNAME"),
@@ -18,3 +18,7 @@ config :herenow, HereNow.Repo,
 
 config :herenow,
   secret: System.get_env("SECRET")
+
+config :recaptcha,
+  public_key: System.get_env("RECAPTCHA_PUBLIC_KEY"),
+  secret: System.get_env("RECAPTCHA_PRIVATE_KEY")

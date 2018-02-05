@@ -1,12 +1,12 @@
-defmodule HereNowWeb do
+defmodule HerenowWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, views, channels and so on.
 
   This can be used in your application as:
 
-      use HereNowWeb, :controller
-      use HereNowWeb, :view
+      use HerenowWeb, :controller
+      use HerenowWeb, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -19,21 +19,21 @@ defmodule HereNowWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller, namespace: HereNowWeb
+      use Phoenix.Controller, namespace: HerenowWeb
       import Plug.Conn
-      import HereNowWeb.Router.Helpers
+      import HerenowWeb.Router.Helpers
     end
   end
 
   def view do
     quote do
       use Phoenix.View, root: "lib/herenow_web/templates",
-                        namespace: HereNowWeb
+                        namespace: HerenowWeb
 
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
 
-      import HereNowWeb.Router.Helpers
-      import HereNowWeb.ErrorHelpers
+      import HerenowWeb.Router.Helpers
+      import HerenowWeb.ErrorHelpers
     end
   end
 

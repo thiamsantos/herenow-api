@@ -1,6 +1,6 @@
-defmodule HereNow do
+defmodule Herenow do
   @moduledoc """
-  HereNow keeps the contexts that define your domain
+  Herenow keeps the contexts that define your domain
   and business logic.
 
   Contexts are also responsible for managing your data, regardless
