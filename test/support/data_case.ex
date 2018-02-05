@@ -1,4 +1,4 @@
-defmodule HereNow.DataCase do
+defmodule Herenow.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -16,20 +16,20 @@ defmodule HereNow.DataCase do
 
   using do
     quote do
-      alias HereNow.Repo
+      alias Herenow.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import HereNow.DataCase
+      import Herenow.DataCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(HereNow.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Herenow.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(HereNow.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Herenow.Repo, {:shared, self()})
     end
 
     :ok

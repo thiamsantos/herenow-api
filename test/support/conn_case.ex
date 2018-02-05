@@ -1,4 +1,4 @@
-defmodule HereNowWeb.ConnCase do
+defmodule HerenowWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -19,27 +19,18 @@ defmodule HereNowWeb.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
-      import HereNowWeb.Router.Helpers
+      import HerenowWeb.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint HereNowWeb.Endpoint
-
-      defp authenticate_conn(conn) do
-        conn = post(conn, auth_path(conn, :create), %{user: "root", password: "toor"})
-        %{"token" => token} = json_response(conn, 200)
-
-        conn
-        |> recycle()
-        |> put_req_header("authorization", "Bearer #{token}")
-      end
+      @endpoint HerenowWeb.Endpoint
     end
   end
 
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(HereNow.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Herenow.Repo)
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(HereNow.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Herenow.Repo, {:shared, self()})
     end
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
