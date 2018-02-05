@@ -1,6 +1,6 @@
 use Mix.Config
 
-config :herenow, HereNowWeb.Endpoint,
+config :herenow, HerenowWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
@@ -10,3 +10,5 @@ config :herenow, HereNowWeb.Endpoint,
 config :logger, :console, format: "[$level] $message\n"
 
 config :phoenix, :stacktrace_depth, 20
+
+import_config "dev.secret.exs"

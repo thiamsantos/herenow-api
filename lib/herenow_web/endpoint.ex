@@ -1,4 +1,4 @@
-defmodule HereNowWeb.Endpoint do
+defmodule HerenowWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :herenow
 
   if code_reloading? do
@@ -17,7 +17,7 @@ defmodule HereNowWeb.Endpoint do
   plug Plug.Head
 
   plug CORSPlug
-  plug HereNowWeb.Router
+  plug HerenowWeb.Router
 
   @doc """
   Callback invoked for dynamically configuring the endpoint.
