@@ -1,4 +1,4 @@
-# HereNow
+# Herenow
 
 This is a straightforward boilerplate for building REST APIs with Elixir and Phoenix.
 
@@ -15,6 +15,32 @@ This is a straightforward boilerplate for building REST APIs with Elixir and Pho
 - Precommit hook
 - API documentation
 
+## Table of Contents
+
+- [Contributing](#contributing)
+- [Configuration](#configuration)
+- [Running](#running)
+- [Learn more](#learn-more)
+- [Production configuration](#production-configuration)
+
+## Contributing
+
+- Fork it!
+- Clone your fork: `git clone https://github.com/<your-username>/core-api`
+- Navigate to the newly cloned directory: `cd core-api`
+- Create a new branch for the new feature: `git checkout -b my-new-feature`
+- Make your changes.
+- Commit your changes: `git commit -am 'Add some feature'`
+- Push to the branch: `git push origin my-new-feature`
+- Submit a pull request with full remarks documenting your changes.
+
+After you had make a fork you will want to keep your fork up to date with the changes that may happen in this repository (upstream).
+
+- Configure the remote for your fork: `git remote add upstream https://github.com/herenow-team/core-api.git`
+- Fetch the branches and their respective commits from the upstream repository: `git fetch upstream`
+- Check out your fork's local master branch: `git checkout master`
+- Merge the changes from upstream/master into your local master branch. This brings your fork's master branch into sync with the upstream repository, without losing your local changes: `git merge upstream/master`
+
 ## Configuration
 
 Create the files `config/dev.secret.exs` and `test.secret.exs` with the following contents, filling it with your credentials.
@@ -27,12 +53,16 @@ use Mix.Config
 config :herenow,
   secret: "SECRET" # run `mix phx.gen.secret 512` to generate a secret
 
-config :herenow, HereNow.Repo,
+config :herenow, Herenow.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "USERNAME", # database username. Ex: postgres
   password: "PASSWORD", # database password. Ex: postgres
   database: "DATABASE", # database username. Ex: herenow_dev
   hostname: "HOSTNAME"  # database host.     Ex: localhost
+
+config :recaptcha,
+  public_key: "YOUR_RECAPTCHA_PUBLIC_KEY",
+  secret: "YOUR_RECAPTCHA_SECRET_KEY"
 
 ```
 ```elixir
@@ -43,7 +73,7 @@ use Mix.Config
 config :herenow,
   secret: "SECRET" # run `mix phx.gen.secret 512` to generate a secret
 
-config :herenow, HereNow.Repo,
+config :herenow, Herenow.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "USERNAME", # database username. Ex: postgres
   password: "PASSWORD", # database password. Ex: postgres
@@ -55,9 +85,12 @@ config :herenow, HereNow.Repo,
 
 ## Running
 
-To start your Phoenix server:
+This project uses [elixir](https://elixir-lang.org/), [node](http://nodejs.org), [npm](https://npmjs.com),[docker](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install/#master-builds).
+Go check them out if you don't have them locally installed.
 
-  * Install dependencies with `mix deps.get`
+To start your Phoenix server:
+  * Start database with `docker-compose up`
+  * Install dependencies with `mix deps.get` and `npm install`
   * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
   * Start Phoenix endpoint with `mix phx.server`
 
@@ -82,3 +115,5 @@ The following environment variables must be defined:
 - `DATABASE_NAME` - Name of the database.
 - `POOL_SIZE` - Size of the database connections pool.
 - `SECRET` - Application secret key. Run the following command to generate a new one: `mix phx.gen.secret 512`.
+- `RECAPTCHA_PUBLIC_KEY` - Recapctha public key.
+- `RECAPTCHA_PRIVATE_KEY` - Recapctha private key.
