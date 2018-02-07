@@ -85,11 +85,11 @@ config :herenow, Herenow.Repo,
 
 ## Running
 
-This project uses [elixir](https://elixir-lang.org/), [node](http://nodejs.org) and [npm](https://npmjs.com).
+This project uses [elixir](https://elixir-lang.org/), [node](http://nodejs.org), [npm](https://npmjs.com),[docker](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install/#master-builds).
 Go check them out if you don't have them locally installed.
 
 To start your Phoenix server:
-
+  * Start database with `docker-compose up`
   * Install dependencies with `mix deps.get` and `npm install`
   * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
   * Start Phoenix endpoint with `mix phx.server`
