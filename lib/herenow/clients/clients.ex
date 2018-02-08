@@ -2,113 +2,30 @@ defmodule Herenow.Clients do
   @moduledoc """
   The Clients context.
   """
+  alias Herenow.Clients.{Registration, Client, Storage}
 
-  import Ecto.Query, warn: false
-  alias Herenow.Repo
+  @captcha Application.get_env(:herenow, :captcha)
 
-  alias Herenow.Clients.Client
-
-  @doc """
-  Returns the list of clients.
-
-  ## Examples
-
-      iex> list_clients()
-      [%Client{}, ...]
-
-  """
-  def list_clients do
-    Repo.all(Client)
+  @spec %Registration{} :: {:ok, %{Client}} | {:error, {atom, map}}
+  def register(%Registration{} = registration) do
+    with {:ok} <- @captcha.verify(registration.captcha),
+      {:ok} <- is_email_registered?(registration.email),
+      {:ok, client} <- Client.create_client(registration) do
+        # TODO write ecto validations
+        # TODO generate token
+        # TODO send email
+        client
+    else
+      {:error, reason} -> handle_error(reason)
+    end
   end
 
-  @doc """
-  Gets a single client.
-
-  Raises `Ecto.NoResultsError` if the Client does not exist.
-
-  ## Examples
-
-      iex> get_client!(123)
-      %Client{}
-
-      iex> get_client!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_client!(id), do: Repo.get!(Client, id)
-
-  @doc """
-  Creates a client.
-
-  ## Examples
-
-      iex> create_client(%{field: value})
-      {:ok, %Client{}}
-
-      iex> create_client(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_client(attrs \\ %{}) do
-    %Client{}
-    |> Client.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates a client.
-
-  ## Examples
-
-      iex> update_client(client, %{field: new_value})
-      {:ok, %Client{}}
-
-      iex> update_client(client, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_client(%Client{} = client, attrs) do
-    client
-    |> Client.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a Client.
-
-  ## Examples
-
-      iex> delete_client(client)
-      {:ok, %Client{}}
-
-      iex> delete_client(client)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_client(%Client{} = client) do
-    Repo.delete(client)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking client changes.
-
-  ## Examples
-
-      iex> change_client(client)
-      %Ecto.Changeset{source: %Client{}}
-
-  """
-  def change_client(%Client{} = client) do
-    Client.changeset(client, %{})
-  end
-
-  @spec is_email_registered?(String.t) :: boolean()
-  def is_email_registered?(email) do
-    query = from c in Client, where: c.email == ^email, select: c.id
-
-    case Repo.one(query) do
-      nil -> false
-      _client -> true
+  @spec is_email_registered?(String.t) :: {:ok} | {:error, {atom, map}}
+  defp is_email_registered?(email) do
+    if Storage.is_email_registered?(email) == true do
+      {:ok}
+    else
+      {:error, {:registered_email, %{"message" => "Email already in use"}}}
     end
   end
 end
