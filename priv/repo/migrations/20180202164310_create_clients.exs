@@ -4,9 +4,9 @@ defmodule Herenow.Repo.Migrations.CreateClients do
   def change do
     create table(:clients) do
       add :email, :string, size: 254
-      add :password, :string, size: 60
-      add :is_verified, :boolean, default: false, null: false
-      add :is_company, :boolean, default: false, null: false
+      add :password, :string, size: 131
+      add :is_verified, :boolean, default: false
+      add :is_company, :boolean, default: false
       add :name, :string
       add :legal_name, :string
       add :segment, :string

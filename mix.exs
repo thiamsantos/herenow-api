@@ -46,7 +46,9 @@ defmodule Herenow.Mixfile do
       {:excoveralls, "~> 0.8", only: :test},
       {:dialyxir, "~> 0.5.0", only: [:dev], runtime: false},
       {:joken, "~> 1.5"},
-      {:recaptcha, "~> 2.0"}
+      {:recaptcha, "~> 2.0"},
+      {:comeonin, "~> 4.1"},
+      {:pbkdf2_elixir, "~> 0.12"}
     ]
   end
 
