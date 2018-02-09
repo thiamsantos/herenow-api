@@ -1,6 +1,8 @@
 defmodule Herenow.Clients.PasswordHash do
   alias Comeonin.Pbkdf2
+  alias Herenow.Core.ErrorMessage
 
+  @spec hash(String.t) :: String.t
   def hash(password) do
     Pbkdf2.hashpwsalt(password)
   end
@@ -13,14 +15,12 @@ defmodule Herenow.Clients.PasswordHash do
     Pbkdf2.checkpw(password, hash)
   end
 
+  @spec is_valid(String.t) :: {:ok} | ErrorMessage.t
   def is_valid(password) when is_binary(password) do
     if String.length(password) >= 8 do
       {:ok}
     else
-      {:error, {:unprocessable_entity, %{"message" => "password should be at least 8 characters"}}}
+      ErrorMessage.create(:unprocessable_entity, "password should be at least 8 characters")
     end
-  end
-  def is_valid(_) do
-    {:error}
   end
 end
