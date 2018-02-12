@@ -2,7 +2,8 @@ defmodule Herenow.Clients do
   @moduledoc """
   The Clients context.
   """
-  alias Herenow.Clients.{Registration, Client, Storage, PasswordHash, WelcomeEmail}
+  alias Herenow.Clients.{Registration, PasswordHash, WelcomeEmail}
+  alias Herenow.Clients.Storage.{Client, Loader, Mutator}
   alias Herenow.Core.Token
 
   @captcha Application.get_env(:herenow, :captcha)
@@ -12,7 +13,7 @@ defmodule Herenow.Clients do
   #   with {:ok} <- @captcha.verify(registration["captcha"]),
   #     {:ok} <- is_email_registered?(registration["email"]),
   #     {:ok} <- PasswordHash.verify(registration["password"]),
-  #     {:ok, client} <- Storage.create_client(registration) do
+  #     {:ok, client} <- Mutator.create(registration) do
   #       %{client_id: client.id}
   #       |> Token.generate()
   #       |> WelcomeEmail.create(client)
@@ -26,7 +27,7 @@ defmodule Herenow.Clients do
 
   @spec is_email_registered?(String.t) :: {:ok} | {:error, {atom, map}}
   defp is_email_registered?(email) do
-    if Storage.is_email_registered?(email) == true do
+    if Loader.is_email_registered?(email) == true do
       {:ok}
     else
       {:error, {:unprocessable_entity, %{"message" => "Email already in use"}}}

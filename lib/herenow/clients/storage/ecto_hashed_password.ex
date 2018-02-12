@@ -1,4 +1,4 @@
-defmodule Herenow.Clients.EctoHashedPassword do
+defmodule Herenow.Clients.Storage.EctoHashedPassword do
   @moduledoc """
   Ecto custom type for hashed passwords
   """
