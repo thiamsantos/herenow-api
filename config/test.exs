@@ -6,4 +6,7 @@ config :herenow, HerenowWeb.Endpoint,
 
 config :logger, level: :warn
 
+config :herenow, Herenow.Mailer,
+  adapter: Bamboo.TestAdapter
+
 import_config "test.secret.exs"

@@ -3,17 +3,21 @@ defmodule Herenow.Clients do
   The Clients context.
   """
   alias Herenow.Clients.{Registration, Client, Storage, PasswordHash}
+  alias Herenow.Core.Token
 
   @captcha Application.get_env(:herenow, :captcha)
 
-  # @spec %Registration{} :: {:ok, %Client{}} | {:error, {atom, map}}
+  # @spec register(map) :: {:ok, %Client{}} | {:error, {atom, map}}
   # def register(registration) do
   #   with {:ok} <- @captcha.verify(registration["captcha"]),
   #     {:ok} <- is_email_registered?(registration["email"]),
   #     {:ok} <- PasswordHash.verify(registration["password"]),
   #     {:ok, client} <- Storage.create_client(registration) do
-  #       # TODO generate token
-  #       # TODO send email
+  #       %{client_id: client.id}
+  #       |> Token.generate()
+  #       |> Herenow.Email.welcome_email(client)
+  #       |> Herenow.Mailer.deliver_now
+
   #       client
   #   else
   #     {:error, reason} -> handle_error(reason)

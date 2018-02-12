@@ -117,4 +117,5 @@ The following environment variables must be defined:
 - `SECRET` - Application secret key. Run the following command to generate a new one: `mix phx.gen.secret 512`.
 - `RECAPTCHA_PUBLIC_KEY` - Recapctha public key.
 - `RECAPTCHA_PRIVATE_KEY` - Recapctha private key.
+- `SENDGRID_API_KEY` - SendGrid API key.
 

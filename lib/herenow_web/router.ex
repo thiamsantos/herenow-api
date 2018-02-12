@@ -9,4 +9,9 @@ defmodule HerenowWeb.Router do
   scope "/", HerenowWeb do
     pipe_through :api
   end
+
+  if Mix.env == :dev do
+    # If using Phoenix
+    forward "/sent_emails", Bamboo.EmailPreviewPlug
+  end
 end
