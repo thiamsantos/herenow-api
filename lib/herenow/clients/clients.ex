@@ -2,7 +2,7 @@ defmodule Herenow.Clients do
   @moduledoc """
   The Clients context.
   """
-  alias Herenow.Clients.{Registration, Client, Storage, PasswordHash}
+  alias Herenow.Clients.{Registration, Client, Storage, PasswordHash, WelcomeEmail}
   alias Herenow.Core.Token
 
   @captcha Application.get_env(:herenow, :captcha)
@@ -15,7 +15,7 @@ defmodule Herenow.Clients do
   #     {:ok, client} <- Storage.create_client(registration) do
   #       %{client_id: client.id}
   #       |> Token.generate()
-  #       |> Herenow.Email.welcome_email(client)
+  #       |> WelcomeEmail.create(client)
   #       |> Herenow.Mailer.deliver_now
 
   #       client
