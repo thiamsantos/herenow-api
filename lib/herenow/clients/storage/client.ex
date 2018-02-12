@@ -1,10 +1,10 @@
-defmodule Herenow.Clients.Client do
+defmodule Herenow.Clients.Storage.Client do
   @moduledoc """
   The client schema.
   """
   use Ecto.Schema
   import Ecto.Changeset
-  alias Herenow.Clients.{Client, EctoHashedPassword}
+  alias Herenow.Clients.Storage.{Client, EctoHashedPassword}
 
   @accepted_fields [
     :email,

@@ -22,3 +22,7 @@ config :herenow,
 config :recaptcha,
   public_key: System.get_env("RECAPTCHA_PUBLIC_KEY"),
   secret: System.get_env("RECAPTCHA_PRIVATE_KEY")
+
+config :herenow, Herenow.Mailer,
+  adapter: Bamboo.SendgridAdapter,
+  api_key: System.get_env("SENDGRID_API_KEY")
