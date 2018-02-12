@@ -48,7 +48,8 @@ defmodule Herenow.Mixfile do
       {:joken, "~> 1.5"},
       {:recaptcha, "~> 2.0"},
       {:comeonin, "~> 4.1"},
-      {:pbkdf2_elixir, "~> 0.12"}
+      {:pbkdf2_elixir, "~> 0.12"},
+      {:poison, "~> 3.1", override: true}
     ]
   end
 

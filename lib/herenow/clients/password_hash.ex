@@ -1,4 +1,7 @@
 defmodule Herenow.Clients.PasswordHash do
+  @moduledoc """
+  Secure hash passwords
+  """
   alias Comeonin.Pbkdf2
   alias Herenow.Core.ErrorMessage
 

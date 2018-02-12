@@ -7,10 +7,10 @@ defmodule Herenow.Clients do
   @captcha Application.get_env(:herenow, :captcha)
 
   # @spec %Registration{} :: {:ok, %Client{}} | {:error, {atom, map}}
-  # def register(%Registration{} = registration) do
-  #   with {:ok} <- @captcha.verify(registration.captcha),
-  #     {:ok} <- is_email_registered?(registration.email),
-  #     {:ok} <- PasswordHash.verify(registration.password),
+  # def register(registration) do
+  #   with {:ok} <- @captcha.verify(registration["captcha"]),
+  #     {:ok} <- is_email_registered?(registration["email"]),
+  #     {:ok} <- PasswordHash.verify(registration["password"]),
   #     {:ok, client} <- Storage.create_client(registration) do
   #       # TODO generate token
   #       # TODO send email
