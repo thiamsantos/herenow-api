@@ -1,4 +1,4 @@
-defmodule Herenow.Clients.StorageClient do
+defmodule Herenow.Clients.Storage.Client do
   @moduledoc """
   The client schema.
   """
