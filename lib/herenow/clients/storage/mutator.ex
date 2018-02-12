@@ -46,14 +46,14 @@ defmodule Herenow.Clients.Storage.Mutator do
 
   ## Examples
 
-      iex> delete_client(client)
+      iex> delete(client)
       {:ok, %Client{}}
 
-      iex> delete_client(client)
+      iex> delete(client)
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_client(%Client{} = client) do
+  def delete(%Client{} = client) do
     Repo.delete(client)
   end
 end

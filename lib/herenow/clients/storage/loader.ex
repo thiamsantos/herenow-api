@@ -5,6 +5,15 @@ defmodule Herenow.Clients.Storage.Loader do
   alias Herenow.Repo
   alias Herenow.Clients.Storage.{Client, Queries}
 
+  @doc """
+  Returns the list of clients.
+
+  ## Examples
+
+      iex> all()
+      [%Client{}, ...]
+
+  """
   def all,
     do: Repo.all(Queries.all)
 
