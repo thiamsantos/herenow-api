@@ -4,8 +4,7 @@ defmodule Herenow.Clients do
   """
   alias Herenow.Clients.WelcomeEmail
   alias Herenow.Clients.Storage.{Client, Loader, Mutator}
-  alias Herenow.Core.{Token, ErrorMessage}
-  alias Herenow.Mailer
+  alias Herenow.Core.ErrorMessage
 
   @captcha Application.get_env(:herenow, :captcha)
 
@@ -14,12 +13,8 @@ defmodule Herenow.Clients do
     with :ok <- validate_params(params),
       {:ok} <- @captcha.verify(params["captcha"]),
       {:ok} <- is_email_registered?(params["email"]),
-      {:ok, client} <- Mutator.create(params) do
-        %{client_id: client.id}
-        |> Token.generate()
-        |> WelcomeEmail.create(client)
-        |> Mailer.deliver_now
-
+      {:ok, client} <- Mutator.create(params),
+      _email <- WelcomeEmail.send(client) do
         client
     else
       {:error, reason} -> handle_error(reason)
@@ -27,7 +22,6 @@ defmodule Herenow.Clients do
   end
 
   defp handle_error(_) do
-
   end
 
   @spec is_email_registered?(String.t) :: {:ok} | ErrorMessage.t

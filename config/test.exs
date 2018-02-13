@@ -9,4 +9,7 @@ config :logger, level: :warn
 config :herenow, Herenow.Mailer,
   adapter: Bamboo.TestAdapter
 
+config :herenow,
+  captcha: Herenow.Captcha.TestAdapter
+
 import_config "test.secret.exs"

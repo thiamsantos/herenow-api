@@ -17,7 +17,8 @@ config :herenow, Herenow.Repo,
   ssl: true
 
 config :herenow,
-  secret: System.get_env("SECRET")
+  secret: System.get_env("SECRET"),
+  captcha: Herenow.Captcha.HTTPAdapter
 
 config :recaptcha,
   public_key: System.get_env("RECAPTCHA_PUBLIC_KEY"),
