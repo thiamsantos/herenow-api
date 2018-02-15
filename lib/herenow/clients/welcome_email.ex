@@ -9,20 +9,21 @@ defmodule Herenow.Clients.WelcomeEmail do
 
   @spec send(%Client{}) :: Email.t
   def send(client) do
-    %{"client_id" => client.id}
-    |> Token.generate()
-    |> create(client)
+    client
+    |> create()
     |> Mailer.deliver_now
   end
 
-  @spec create(String.t, %Client{}) :: Email.t
-  defp create(token, client) do
+  @spec create(%Client{}) :: Email.t
+  def create(client) do
+    token = Token.generate(%{"client_id" => client.id})
+
     Email.new_email(
       to: {client.name, client.email},
       from: {"HereNow Contas", "contas@herenow.com.br"},
-      subject: "Welcome!!!",
-      html_body: "<strong>Welcome #{token}</strong>",
-      text_body: "welcome #{token}"
+      subject: "Bem vindo #{client.name}!!!",
+      html_body: "<strong>Bem vindo à HearNow #{token}</strong>",
+      text_body: "Bem vindo à HearNow #{token}"
     )
   end
 end
