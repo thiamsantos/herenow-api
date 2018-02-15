@@ -6,11 +6,10 @@ defmodule Herenow.Clients.Storage.Client do
   import Ecto.Changeset
   alias Herenow.Clients.Storage.EctoHashedPassword
 
-  @accepted_fields [
+  @required_fields [
     :email,
     :password,
     :name,
-    :legal_name,
     :is_company,
     :segment,
     :cep,
@@ -20,16 +19,8 @@ defmodule Herenow.Clients.Storage.Client do
     :state
   ]
 
-  @required_fields [
-    :email,
-    :password,
-    :name,
-    :segment,
-    :cep,
-    :street,
-    :address_number,
-    :city,
-    :state
+  @optional_fields [
+    :legal_name
   ]
 
   schema "clients" do
@@ -51,7 +42,7 @@ defmodule Herenow.Clients.Storage.Client do
   @doc false
   def changeset(%__MODULE__{} = client, attrs) do
     client
-    |> cast(attrs, @accepted_fields)
+    |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
     |> unique_constraint(:email)
     |> validate_length(:email, max: 254)
