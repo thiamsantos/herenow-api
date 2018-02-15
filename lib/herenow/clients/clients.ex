@@ -21,9 +21,10 @@ defmodule Herenow.Clients do
     end
   end
 
-  defp handle_error(reasons) when is_list(reasons) do
+  defp handle_error(reasons) when is_list(reasons), do:
     ErrorMessage.create(:unprocessable_entity, List.first(reasons))
-  end
+
+  defp handle_error(reason) when is_tuple(reason), do: {:error, reason}
 
   @spec is_email_registered?(String.t) :: {:ok} | ErrorMessage.t
   defp is_email_registered?(email) do

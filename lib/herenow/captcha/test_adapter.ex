@@ -3,7 +3,13 @@ defmodule Herenow.Captcha.TestAdapter do
   @moduledoc """
   Mock Captcha responses.
   """
-  def verify(_response, _options \\ []) do
-    {:ok}
+
+  alias Herenow.Core.ErrorMessage
+
+  def verify(response, _options \\ []) do
+    case response do
+      "valid" -> {:ok}
+      _ -> ErrorMessage.validation("Invalid captcha")
+    end
   end
 end

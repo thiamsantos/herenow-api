@@ -4,7 +4,7 @@ defmodule Herenow.Clients.Storage.Client do
   """
   use Ecto.Schema
   import Ecto.Changeset
-  alias Herenow.Clients.Storage.{Client, EctoHashedPassword}
+  alias Herenow.Clients.Storage.EctoHashedPassword
 
   @accepted_fields [
     :email,
@@ -49,7 +49,7 @@ defmodule Herenow.Clients.Storage.Client do
   end
 
   @doc false
-  def changeset(%Client{} = client, attrs) do
+  def changeset(%__MODULE__{} = client, attrs) do
     client
     |> cast(attrs, @accepted_fields)
     |> validate_required(@required_fields)

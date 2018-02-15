@@ -12,13 +12,13 @@ defmodule HerenowWeb.ClientsTest do
     "segment" => Commerce.department(),
     "state" => Address.state(),
     "street" => Address.street_name(),
-    "captcha" => "captcha code",
+    "captcha" => "valid",
     "cep" => "12345678",
     "city" => Address.city(),
     "email" => Internet.email()
   }
 
-  describe "register client" do
+  describe "register/1" do
     test "missing keys" do
       attrs = @valid_attrs
       |> Map.drop(["cep", "city", "email"])
@@ -37,18 +37,28 @@ defmodule HerenowWeb.ClientsTest do
         if is_boolean(value) do
           attrs = @valid_attrs
           |> Map.put(key, "some string")
-          IO.inspect(attrs)
+
           actual = Clients.register(attrs)
           expected = {:error, {:unprocessable_entity, %{"message" => ~s(Expected BOOLEAN, got STRING "some string", at #{key})}}}
           assert actual == expected
         else
           attrs = @valid_attrs
           |> Map.put(key, 9)
+
           actual = Clients.register(attrs)
           expected = {:error, {:unprocessable_entity, %{"message" => ~s(Expected STRING, got INTEGER 9, at #{key})}}}
           assert actual == expected
         end
       end)
+    end
+
+    test "invalid captcha" do
+      attrs = @valid_attrs
+      |> Map.put("captcha", "invalid")
+
+      actual = Clients.register(attrs)
+      expected = {:error, {:unprocessable_entity, %{"message" => "Invalid captcha"}}}
+      assert actual == expected
     end
   end
 end

@@ -2,5 +2,8 @@ defmodule Herenow.Captcha do
   @moduledoc """
   Verify Captcha responses.
   """
-  @callback verify(String.t, Keyword.t) :: {:ok} | {:error, [atom]}
+
+  alias Herenow.Core.ErrorMessage
+
+  @callback verify(String.t, Keyword.t) :: {:ok} | ErrorMessage.t
 end

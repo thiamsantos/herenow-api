@@ -3,10 +3,13 @@ defmodule Herenow.Captcha.HTTPAdapter do
   @moduledoc """
   Verify Captcha responses by making a http call.
   """
+
+  alias Herenow.Core.ErrorMessage
+
   def verify(response, options \\ []) do
     case Recaptcha.verify(response, options) do
       {:ok, _response} -> {:ok}
-      {:error, errors} -> {:error, errors}
+      {:error, _errors} -> ErrorMessage.validation("Invalid captcha")
     end
   end
 end
