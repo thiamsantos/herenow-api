@@ -17,6 +17,7 @@ defmodule Herenow.Clients do
       {:ok, client} <- Mutator.create(params),
       _email <- WelcomeEmail.send(client) do
         client
+        |> Map.delete(:password)
     else
       {:error, reason} -> handle_error(reason)
     end
@@ -28,8 +29,9 @@ defmodule Herenow.Clients do
   defp handle_error(reason) when is_tuple(reason), do: {:error, reason}
 
   defp handle_error(%Changeset{} = changeset) do
-    message = Error.traverse_errors(changeset)
-    ErrorMessage.validation(message)
+    changeset
+    |> Error.traverse_errors()
+    |> ErrorMessage.validation()
   end
 
   defp validate_params(params) when is_map(params) do
@@ -51,7 +53,5 @@ defmodule Herenow.Clients do
     Skooma.valid?(params, schema)
   end
 
-  defp validate_params(_) do
-    ErrorMessage.validation("Invalid schema")
-  end
+  defp validate_params(_), do: ErrorMessage.validation("Invalid schema")
 end

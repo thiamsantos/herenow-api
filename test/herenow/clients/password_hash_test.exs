@@ -22,7 +22,7 @@ defmodule Herenow.Clients.PasswordHashTest do
     end
 
     test "is_valid/1 returns error" do
-      assert {:error, {:unprocessable_entity, %{"message" => "password should be at least 8 characters"}}} = PasswordHash.is_valid("short")
+      assert {:error, {:unprocessable_entity, %{"message" => ~s("password" should be at least 8 characters)}}} = PasswordHash.is_valid("short")
     end
   end
 end

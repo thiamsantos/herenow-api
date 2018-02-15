@@ -1,28 +1,25 @@
 defmodule Herenow.Clients.Storage.StorageTest do
   use Herenow.DataCase
+  alias Herenow.Clients.Storage.{Client, Mutator, Loader}
+
+  @valid_attrs %{address_number: "54", cep: "88133050", city: "palhoça", email: "someemail@example.com", is_company: true, legal_name: "some legal_name", name: "some name", password: "some password", segment: "some segment", state: "some state", street: "some street"}
+  @update_attrs %{address_number: "227", cep: "88135000", city: "florianópolis", email: "someupdatedemail@gmail.com", is_company: false, is_verified: false, legal_name: "some updated legal_name", name: "some updated name", password: "some updated password", segment: "some updated segment", state: "some updated state", street: "some updated street"}
+  @invalid_attrs %{address_number: nil, cep: nil, city: nil, email: nil, is_company: nil, is_verified: nil, legal_name: nil, name: nil, password: nil, segment: nil, state: nil, street: nil}
+
+  def client_fixture(attrs \\ %{}) do
+    {:ok, client} =
+      attrs
+      |> Enum.into(@valid_attrs)
+      |> Mutator.create()
+
+    client
+  end
 
   describe "clients" do
-    alias Herenow.Clients.Storage.{Client, Mutator, Loader}
-    alias Herenow.Clients.PasswordHash
-
-    @valid_attrs %{address_number: "54", cep: "88133050", city: "palhoça", email: "someemail@example.com", is_company: true, legal_name: "some legal_name", name: "some name", password: "some password", segment: "some segment", state: "some state", street: "some street"}
-    @update_attrs %{address_number: "227", cep: "88135000", city: "florianópolis", email: "someupdatedemail@gmail.com", is_company: false, is_verified: false, legal_name: "some updated legal_name", name: "some updated name", password: "some updated password", segment: "some updated segment", state: "some updated state", street: "some updated street"}
-    @invalid_attrs %{address_number: nil, cep: nil, city: nil, email: nil, is_company: nil, is_verified: nil, legal_name: nil, name: nil, password: nil, segment: nil, state: nil, street: nil}
-
-    def client_fixture(attrs \\ %{}) do
-      {:ok, client} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Mutator.create()
-
-      client
-    end
-
     test "list_clients/0 returns all clients" do
       client = client_fixture()
       assert Loader.all() == [client]
     end
-
 
     test "get_client!/1 returns the client with given id" do
       client = client_fixture()
@@ -38,7 +35,6 @@ defmodule Herenow.Clients.Storage.StorageTest do
       assert client.is_company == true
       assert client.legal_name == "some legal_name"
       assert client.name == "some name"
-      assert PasswordHash.verify("some password", client.password)
       assert client.segment == "some segment"
       assert client.state == "some state"
       assert client.street == "some street"
@@ -59,7 +55,6 @@ defmodule Herenow.Clients.Storage.StorageTest do
       assert client.is_company == false
       assert client.legal_name == "some updated legal_name"
       assert client.name == "some updated name"
-      assert PasswordHash.verify("some updated password", client.password)
       assert client.segment == "some updated segment"
       assert client.state == "some updated state"
       assert client.street == "some updated street"
