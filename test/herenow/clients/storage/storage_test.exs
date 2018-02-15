@@ -76,11 +76,5 @@ defmodule Herenow.Clients.Storage.StorageTest do
       assert {:ok, %Client{}} = Mutator.delete(client)
       assert_raise Ecto.NoResultsError, fn -> Loader.get!(client.id) end
     end
-
-    test "is_email_registered?/1 return a boolean" do
-      client_fixture()
-      assert true == Loader.is_email_registered?("someemail@example.com")
-      assert false == Loader.is_email_registered?("someotheremail@gmail.com")
-    end
   end
 end

@@ -1,7 +1,8 @@
 defmodule HerenowWeb.ClientsTest do
-  use ExUnit.Case
+  use Herenow.DataCase
 
-  alias Faker.{Name, Address, Commerce, Internet}
+  alias Faker.{Name, Address, Commerce, Internet, Company}
+  alias Herenow.Clients.Storage.Mutator
   alias Herenow.Clients
 
   @valid_attrs %{
@@ -9,6 +10,7 @@ defmodule HerenowWeb.ClientsTest do
     "is_company" => true,
     "name" => Name.name(),
     "password" => "some password",
+    "legal_name" => Company.name(),
     "segment" => Commerce.department(),
     "state" => Address.state(),
     "street" => Address.street_name(),
@@ -17,6 +19,15 @@ defmodule HerenowWeb.ClientsTest do
     "city" => Address.city(),
     "email" => Internet.email()
   }
+
+  def client_fixture(attrs \\ %{}) do
+    {:ok, client} =
+      attrs
+      |> Enum.into(@valid_attrs)
+      |> Mutator.create()
+
+    client
+  end
 
   describe "register/1" do
     test "missing keys" do
@@ -58,6 +69,17 @@ defmodule HerenowWeb.ClientsTest do
 
       actual = Clients.register(attrs)
       expected = {:error, {:unprocessable_entity, %{"message" => "Invalid captcha"}}}
+      assert actual == expected
+    end
+
+    test "email should be unique" do
+      client = client_fixture()
+
+      attrs = @valid_attrs
+      |> Map.put("email", client.email)
+
+      actual = Clients.register(attrs)
+      expected = {:error, {:unprocessable_entity, %{"message" => ~s("email" has already been taken)}}}
       assert actual == expected
     end
   end

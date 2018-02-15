@@ -2,8 +2,9 @@ defmodule Herenow.Clients do
   @moduledoc """
   The Clients context.
   """
+  alias Ecto.Changeset
   alias Herenow.Clients.WelcomeEmail
-  alias Herenow.Clients.Storage.{Client, Loader, Mutator}
+  alias Herenow.Clients.Storage.{Client, Mutator, Error}
   alias Herenow.Core.ErrorMessage
 
   @captcha Application.get_env(:herenow, :captcha)
@@ -12,7 +13,6 @@ defmodule Herenow.Clients do
   def register(params) do
     with :ok <- validate_params(params),
       {:ok} <- @captcha.verify(params["captcha"]),
-      {:ok} <- is_email_registered?(params["email"]),
       {:ok, client} <- Mutator.create(params),
       _email <- WelcomeEmail.send(client) do
         client
@@ -22,17 +22,13 @@ defmodule Herenow.Clients do
   end
 
   defp handle_error(reasons) when is_list(reasons), do:
-    ErrorMessage.create(:unprocessable_entity, List.first(reasons))
+    ErrorMessage.validation(List.first(reasons))
 
   defp handle_error(reason) when is_tuple(reason), do: {:error, reason}
 
-  @spec is_email_registered?(String.t) :: {:ok} | ErrorMessage.t
-  defp is_email_registered?(email) do
-    if Loader.is_email_registered?(email) == true do
-      {:ok}
-    else
-      ErrorMessage.validation("Email already in use")
-    end
+  defp handle_error(%Changeset{} = changeset) do
+    message = Error.traverse_errors(changeset)
+    ErrorMessage.validation(message)
   end
 
   defp validate_params(params) when is_map(params) do
