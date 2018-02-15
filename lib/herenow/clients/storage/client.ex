@@ -46,6 +46,7 @@ defmodule Herenow.Clients.Storage.Client do
     |> validate_required(@required_fields)
     |> unique_constraint(:email)
     |> validate_length(:email, max: 254)
+    |> validate_format(:email, ~r/@/)
     |> validate_length(:cep, is: 8)
   end
 end

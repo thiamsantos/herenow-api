@@ -95,5 +95,32 @@ defmodule HerenowWeb.ClientsTest do
       expected = {:error, {:unprocessable_entity, %{"message" => ~s'"email" should be at most 254 character(s)'}}}
       assert actual == expected
     end
+
+    test "email should have a @" do
+      attrs = @valid_attrs
+      |> Map.put("email", "invalidemail")
+
+      actual = Clients.register(attrs)
+      expected = {:error, {:unprocessable_entity, %{"message" => ~s("email" has invalid format)}}}
+      assert actual == expected
+    end
+
+    test "cep should have exact 8 characters, less should return error" do
+      attrs = @valid_attrs
+      |> Map.put("cep", "1234")
+
+      actual = Clients.register(attrs)
+      expected = {:error, {:unprocessable_entity, %{"message" => ~s'"cep" should be 8 character(s)'}}}
+      assert actual == expected
+    end
+
+    test "cep should have exact 8 characters, more should return error" do
+      attrs = @valid_attrs
+      |> Map.put("cep", "123456789")
+
+      actual = Clients.register(attrs)
+      expected = {:error, {:unprocessable_entity, %{"message" => ~s'"cep" should be 8 character(s)'}}}
+      assert actual == expected
+    end
   end
 end
