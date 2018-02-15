@@ -122,5 +122,14 @@ defmodule HerenowWeb.ClientsTest do
       expected = {:error, {:unprocessable_entity, %{"message" => ~s'"cep" should be 8 character(s)'}}}
       assert actual == expected
     end
+
+    test "password should have at least 8 characters" do
+      attrs = @valid_attrs
+      |> Map.put("password", "abcdefg")
+
+      actual = Clients.register(attrs)
+      expected = {:error, {:unprocessable_entity, %{"message" => ~s'"password" should be at least 8 characters'}}}
+      assert actual == expected
+    end
   end
 end

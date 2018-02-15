@@ -3,9 +3,9 @@ defmodule Herenow.Clients do
   The Clients context.
   """
   alias Ecto.Changeset
-  alias Herenow.Clients.WelcomeEmail
-  alias Herenow.Clients.Storage.{Client, Mutator, Error}
   alias Herenow.Core.ErrorMessage
+  alias Herenow.Clients.Storage.{Client, Mutator, Error}
+  alias Herenow.Clients.{WelcomeEmail, PasswordHash}
 
   @captcha Application.get_env(:herenow, :captcha)
 
@@ -13,6 +13,7 @@ defmodule Herenow.Clients do
   def register(params) do
     with :ok <- validate_params(params),
       {:ok} <- @captcha.verify(params["captcha"]),
+      {:ok} <- PasswordHash.is_valid(params["password"]),
       {:ok, client} <- Mutator.create(params),
       _email <- WelcomeEmail.send(client) do
         client

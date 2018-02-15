@@ -23,7 +23,7 @@ defmodule Herenow.Clients.PasswordHash do
     if String.length(password) >= 8 do
       {:ok}
     else
-      ErrorMessage.create(:unprocessable_entity, "password should be at least 8 characters")
+      ErrorMessage.validation(~s("password" should be at least 8 characters))
     end
   end
 end
