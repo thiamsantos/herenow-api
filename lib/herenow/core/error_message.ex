@@ -8,4 +8,9 @@ defmodule Herenow.Core.ErrorMessage do
   def create(type, message) do
     {:error, {type, %{"message" => message}}}
   end
+
+  @spec validation(String.t) :: __MODULE__.t
+  def validation(message) do
+    create(:unprocessable_entity, message)
+  end
 end

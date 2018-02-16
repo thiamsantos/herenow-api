@@ -51,7 +51,8 @@ defmodule Herenow.Mixfile do
       {:pbkdf2_elixir, "~> 0.12"},
       {:poison, "~> 3.1", override: true},
       {:bamboo, "~> 0.8.0"},
-      {:skooma, "~> 0.2.0"}
+      {:skooma, "~> 0.2.0"},
+      {:faker, "~> 0.9", only: :test}
     ]
   end
 

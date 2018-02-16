@@ -5,7 +5,7 @@ defmodule Herenow.Clients.Storage.StorageTest do
     alias Herenow.Clients.Storage.{Client, Mutator, Loader}
     alias Herenow.Clients.PasswordHash
 
-    @valid_attrs %{address_number: "54", cep: "88133050", city: "palhoça", email: "someemail@example.com", is_company: true, is_verified: true,legal_name: "some legal_name", name: "some name", password: "some password", segment: "some segment", state: "some state", street: "some street"}
+    @valid_attrs %{address_number: "54", cep: "88133050", city: "palhoça", email: "someemail@example.com", is_company: true, legal_name: "some legal_name", name: "some name", password: "some password", segment: "some segment", state: "some state", street: "some street"}
     @update_attrs %{address_number: "227", cep: "88135000", city: "florianópolis", email: "someupdatedemail@gmail.com", is_company: false, is_verified: false, legal_name: "some updated legal_name", name: "some updated name", password: "some updated password", segment: "some updated segment", state: "some updated state", street: "some updated street"}
     @invalid_attrs %{address_number: nil, cep: nil, city: nil, email: nil, is_company: nil, is_verified: nil, legal_name: nil, name: nil, password: nil, segment: nil, state: nil, street: nil}
 
@@ -36,7 +36,6 @@ defmodule Herenow.Clients.Storage.StorageTest do
       assert client.city == "palhoça"
       assert client.email == "someemail@example.com"
       assert client.is_company == true
-      assert client.is_verified == true
       assert client.legal_name == "some legal_name"
       assert client.name == "some name"
       assert PasswordHash.verify("some password", client.password)
@@ -58,7 +57,6 @@ defmodule Herenow.Clients.Storage.StorageTest do
       assert client.city == "florianópolis"
       assert client.email == "someupdatedemail@gmail.com"
       assert client.is_company == false
-      assert client.is_verified == false
       assert client.legal_name == "some updated legal_name"
       assert client.name == "some updated name"
       assert PasswordHash.verify("some updated password", client.password)

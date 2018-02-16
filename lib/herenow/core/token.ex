@@ -7,7 +7,7 @@ defmodule Herenow.Core.Token do
   @secret Application.get_env(:herenow, :secret)
   @expiration_time 2 * 60 * 60
 
-  @spec generate(map) :: binary
+  @spec generate(map, integer) :: String.t
   def generate(payload, iat \\ Joken.current_time()) do
     payload
     |> Joken.token()

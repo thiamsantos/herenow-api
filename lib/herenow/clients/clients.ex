@@ -21,7 +21,8 @@ defmodule Herenow.Clients do
     end
   end
 
-  defp handle_error(_) do
+  defp handle_error(reasons) when is_list(reasons) do
+    ErrorMessage.create(:unprocessable_entity, List.first(reasons))
   end
 
   @spec is_email_registered?(String.t) :: {:ok} | ErrorMessage.t
@@ -29,7 +30,7 @@ defmodule Herenow.Clients do
     if Loader.is_email_registered?(email) == true do
       {:ok}
     else
-      ErrorMessage.create(:unprocessable_entity, "Email already in use")
+      ErrorMessage.validation("Email already in use")
     end
   end
 
@@ -39,8 +40,7 @@ defmodule Herenow.Clients do
       "cep" => :string,
       "city" => :string,
       "email" => :string,
-      "is_company" => :boolean,
-      "is_verified" => :boolean,
+      "is_company" => :bool,
       "legal_name" => [:string, :not_required],
       "name" => :string,
       "password" => :string,
@@ -54,6 +54,6 @@ defmodule Herenow.Clients do
   end
 
   defp validate_params(_) do
-    ErrorMessage.create(:unprocessable_entity, "Invalid schema")
+    ErrorMessage.validation("Invalid schema")
   end
 end

@@ -9,7 +9,6 @@ defmodule Herenow.Clients.Storage.Client do
   @accepted_fields [
     :email,
     :password,
-    :is_verified,
     :name,
     :legal_name,
     :is_company,
@@ -39,7 +38,6 @@ defmodule Herenow.Clients.Storage.Client do
     field :city, :string
     field :email, :string
     field :is_company, :boolean
-    field :is_verified, :boolean
     field :legal_name, :string
     field :name, :string
     field :password, EctoHashedPassword

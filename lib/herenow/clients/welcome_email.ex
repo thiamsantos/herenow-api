@@ -9,7 +9,7 @@ defmodule Herenow.Clients.WelcomeEmail do
 
   @spec send(%Client{}) :: Email.t
   def send(client) do
-    %{client_id: client.id}
+    %{"client_id" => client.id}
     |> Token.generate()
     |> create(client)
     |> Mailer.deliver_now
