@@ -173,5 +173,12 @@ defmodule HerenowWeb.ClientsTest do
 
       assert_delivered_email WelcomeEmail.create(client)
     end
+
+    test "client should be a map" do
+      actual = Clients.register("client")
+      expected = {:error, {:unprocessable_entity, "Invalid schema"}}
+
+      assert actual == expected
+    end
   end
 end
