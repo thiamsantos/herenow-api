@@ -8,16 +8,16 @@ defmodule HerenowWeb.ClientsTest do
   alias Herenow.Clients
 
   @valid_attrs %{
-    "address_number" => Address.building_number(),
+    "street_number" => Address.building_number(),
     "is_company" => true,
     "name" => Name.name(),
     "password" => "some password",
     "legal_name" => Company.name(),
     "segment" => Commerce.department(),
     "state" => Address.state(),
-    "street" => Address.street_name(),
+    "street_name" => Address.street_name(),
     "captcha" => "valid",
-    "cep" => "12345678",
+    "postal_code" => "12345678",
     "city" => Address.city(),
     "email" => Internet.email()
   }
@@ -34,10 +34,10 @@ defmodule HerenowWeb.ClientsTest do
   describe "register/1" do
     test "missing keys" do
       attrs = @valid_attrs
-      |> Map.drop(["cep", "city", "email"])
+      |> Map.drop(["postal_code", "city", "email"])
 
       actual = Clients.register(attrs)
-      expected = {:error, {:unprocessable_entity, ~s(Missing required keys: ["cep", "city", "email"])}}
+      expected = {:error, {:unprocessable_entity, ~s(Missing required keys: ["city", "email", "postal_code"])}}
       assert actual == expected
     end
 
@@ -107,21 +107,21 @@ defmodule HerenowWeb.ClientsTest do
       assert actual == expected
     end
 
-    test "cep should have exact 8 characters, less should return error" do
+    test "postal_code should have exact 8 characters, less should return error" do
       attrs = @valid_attrs
-      |> Map.put("cep", "1234")
+      |> Map.put("postal_code", "1234")
 
       actual = Clients.register(attrs)
-      expected = {:error, {:unprocessable_entity, ~s'"cep" should be 8 character(s)'}}
+      expected = {:error, {:unprocessable_entity, ~s'"postal_code" should be 8 character(s)'}}
       assert actual == expected
     end
 
-    test "cep should have exact 8 characters, more should return error" do
+    test "postal_code should have exact 8 characters, more should return error" do
       attrs = @valid_attrs
-      |> Map.put("cep", "123456789")
+      |> Map.put("postal_code", "123456789")
 
       actual = Clients.register(attrs)
-      expected = {:error, {:unprocessable_entity, ~s'"cep" should be 8 character(s)'}}
+      expected = {:error, {:unprocessable_entity, ~s'"postal_code" should be 8 character(s)'}}
       assert actual == expected
     end
 
@@ -137,8 +137,8 @@ defmodule HerenowWeb.ClientsTest do
     test "should return the client's information" do
       {:ok, client} = Clients.register(@valid_attrs)
 
-      assert client.address_number == @valid_attrs["address_number"]
-      assert client.cep == @valid_attrs["cep"]
+      assert client.street_number == @valid_attrs["street_number"]
+      assert client.postal_code == @valid_attrs["postal_code"]
       assert client.city == @valid_attrs["city"]
       assert client.email == @valid_attrs["email"]
       assert client.is_company == @valid_attrs["is_company"]
@@ -146,7 +146,7 @@ defmodule HerenowWeb.ClientsTest do
       assert client.name == @valid_attrs["name"]
       assert client.segment == @valid_attrs["segment"]
       assert client.state == @valid_attrs["state"]
-      assert client.street == @valid_attrs["street"]
+      assert client.street_name == @valid_attrs["street_name"]
     end
 
     test "should persist the client" do
@@ -154,8 +154,8 @@ defmodule HerenowWeb.ClientsTest do
       persisted_client = Loader.get!(client.id)
 
       assert client.id == persisted_client.id
-      assert client.address_number == persisted_client.address_number
-      assert client.cep == persisted_client.cep
+      assert client.street_number == persisted_client.street_number
+      assert client.postal_code == persisted_client.postal_code
       assert client.city == persisted_client.city
       assert client.email == persisted_client.email
       assert client.is_company == persisted_client.is_company
@@ -163,7 +163,7 @@ defmodule HerenowWeb.ClientsTest do
       assert client.name == persisted_client.name
       assert client.segment == persisted_client.segment
       assert client.state == persisted_client.state
-      assert client.street == persisted_client.street
+      assert client.street_name == persisted_client.street_name
       assert client.inserted_at == persisted_client.inserted_at
       assert client.updated_at == persisted_client.updated_at
     end

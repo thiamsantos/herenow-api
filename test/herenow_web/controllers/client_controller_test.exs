@@ -8,16 +8,16 @@ defmodule HerenowWeb.ClientControllerTest do
   end
 
   @valid_attrs %{
-    "address_number" => Address.building_number(),
+    "street_number" => Address.building_number(),
     "is_company" => true,
     "name" => Name.name(),
     "password" => "some password",
     "legal_name" => Company.name(),
     "segment" => Commerce.department(),
     "state" => Address.state(),
-    "street" => Address.street_name(),
+    "street_name" => Address.street_name(),
     "captcha" => "valid",
-    "cep" => "12345678",
+    "postal_code" => "12345678",
     "city" => Address.city(),
     "email" => Internet.email()
   }
@@ -30,14 +30,14 @@ defmodule HerenowWeb.ClientControllerTest do
       client = json_response(conn, 201)
 
       assert is_integer(client["id"])
-      assert client["address_number"] == @valid_attrs["address_number"]
+      assert client["street_number"] == @valid_attrs["street_number"]
       assert client["is_company"] == @valid_attrs["is_company"]
       assert client["name"] == @valid_attrs["name"]
       assert client["legal_name"] == @valid_attrs["legal_name"]
       assert client["segment"] == @valid_attrs["segment"]
       assert client["state"] == @valid_attrs["state"]
-      assert client["street"] == @valid_attrs["street"]
-      assert client["cep"] == @valid_attrs["cep"]
+      assert client["street_name"] == @valid_attrs["street_name"]
+      assert client["postal_code"] == @valid_attrs["postal_code"]
       assert client["city"] == @valid_attrs["city"]
       assert client["email"] == @valid_attrs["email"]
     end

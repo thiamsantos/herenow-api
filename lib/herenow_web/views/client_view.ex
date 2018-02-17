@@ -8,12 +8,12 @@ defmodule HerenowWeb.ClientView do
       name: client.name,
       legal_name: client.legal_name,
       segment: client.segment,
-      address_number: client.address_number,
-      cep: client.cep,
+      street_number: client.street_number,
+      postal_code: client.postal_code,
       city: client.city,
       is_company: client.is_company,
       state: client.state,
-      street: client.street
+      street_name: client.street_name
     }
   end
 end

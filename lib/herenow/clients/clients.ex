@@ -35,8 +35,8 @@ defmodule Herenow.Clients do
 
   defp validate_params(params) when is_map(params) do
     schema = %{
-      "address_number" => :string,
-      "cep" => :string,
+      "street_number" => :string,
+      "postal_code" => :string,
       "city" => :string,
       "email" => :string,
       "is_company" => :bool,
@@ -45,7 +45,7 @@ defmodule Herenow.Clients do
       "password" => :string,
       "segment" => :string,
       "state" => :string,
-      "street" => :string,
+      "street_name" => :string,
       "captcha" => :string
     }
 

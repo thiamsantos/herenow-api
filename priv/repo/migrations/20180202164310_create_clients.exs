@@ -9,9 +9,9 @@ defmodule Herenow.Repo.Migrations.CreateClients do
       add :name, :string
       add :legal_name, :string
       add :segment, :string
-      add :cep, :string, size: 8
-      add :street, :string
-      add :address_number, :string
+      add :postal_code, :string, size: 8
+      add :street_name, :string
+      add :street_number, :string
       add :city, :string
       add :state, :string
 
