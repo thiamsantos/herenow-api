@@ -49,11 +49,11 @@ defmodule Herenow.Mixfile do
       {:recaptcha, "~> 2.0"},
       {:comeonin, "~> 4.1"},
       {:pbkdf2_elixir, "~> 0.12"},
-      {:poison, "~> 3.1", override: true},
       {:bamboo, "~> 0.8.0"},
       {:skooma, "~> 0.2.0"},
       {:faker, "~> 0.9", only: :test},
-      {:explode, "~> 1.0"}
+      {:explode, "~> 1.0"},
+      {:jason, "~> 1.0"}
     ]
   end
 

@@ -7,7 +7,7 @@ defmodule Herenow.Core.TokenTest do
   defp decode_token_parts(part) do
     part
     |> Base.decode64!(padding: false)
-    |> Poison.decode!()
+    |> Jason.decode!()
   end
 
   describe "generate/1" do

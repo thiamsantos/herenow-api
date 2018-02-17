@@ -11,4 +11,11 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+config :phoenix, :format_encoders,
+  json: Jason
+
+config :ecto, json_library: Jason
+
+config :herenow, Herenow.Repo, types: Herenow.PostgresTypes
+
 import_config "#{Mix.env}.exs"

@@ -11,7 +11,7 @@ defmodule HerenowWeb.Endpoint do
   plug Plug.Parsers,
     parsers: [:json],
     pass: ["*/*"],
-    json_decoder: Poison
+    json_decoder: Jason
 
   plug Plug.MethodOverride
   plug Plug.Head
