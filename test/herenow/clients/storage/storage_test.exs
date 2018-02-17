@@ -15,18 +15,22 @@ defmodule Herenow.Clients.Storage.StorageTest do
     client
   end
 
-  describe "clients" do
-    test "list_clients/0 returns all clients" do
+  describe "list_clients/0" do
+    test "returns all clients" do
       client = client_fixture()
       assert Loader.all() == [client]
     end
+  end
 
-    test "get_client!/1 returns the client with given id" do
+  describe "get_client!/1" do
+    test "returns the client with given id" do
       client = client_fixture()
       assert Loader.get!(client.id) == client
     end
+  end
 
-    test "create_client/1 with valid data creates a client" do
+  describe "create_client/1" do
+    test "with valid data creates a client" do
       assert {:ok, %Client{} = client} = Mutator.create(@valid_attrs)
       assert client.address_number == "54"
       assert client.cep == "88133050"
@@ -40,11 +44,13 @@ defmodule Herenow.Clients.Storage.StorageTest do
       assert client.street == "some street"
     end
 
-    test "create_client/1 with invalid data returns error changeset" do
+    test "with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = Mutator.create(@invalid_attrs)
     end
+  end
 
-    test "update_client/2 with valid data updates the client" do
+  describe "update_client/2" do
+    test "with valid data updates the client" do
       client = client_fixture()
       assert {:ok, client} = Mutator.update(client, @update_attrs)
       assert %Client{} = client
@@ -60,13 +66,15 @@ defmodule Herenow.Clients.Storage.StorageTest do
       assert client.street == "some updated street"
     end
 
-    test "update_client/2 with invalid data returns error changeset" do
+    test "with invalid data returns error changeset" do
       client = client_fixture()
       assert {:error, %Ecto.Changeset{}} = Mutator.update(client, @invalid_attrs)
       assert client == Loader.get!(client.id)
     end
+  end
 
-    test "delete_client/1 deletes the client" do
+  describe "delete_client/1" do
+    test "deletes the client" do
       client = client_fixture()
       assert {:ok, %Client{}} = Mutator.delete(client)
       assert_raise Ecto.NoResultsError, fn -> Loader.get!(client.id) end

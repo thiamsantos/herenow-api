@@ -19,8 +19,8 @@ defmodule Herenow.Clients.WelcomeEmailTest do
     email: Internet.email()
   }
 
-  describe "welcome email" do
-    test "send/1" do
+  describe "send/1" do
+    test "welcome email" do
       email = WelcomeEmail.send(@client)
       assert email.to == [{@client.name, @client.email}]
       assert email.subject == "Bem vindo #{@client.name}!!!"

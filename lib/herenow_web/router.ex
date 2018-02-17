@@ -8,6 +8,8 @@ defmodule HerenowWeb.Router do
 
   scope "/", HerenowWeb do
     pipe_through :api
+
+    resources "/clients", ClientController, only: [:create]
   end
 
   if Mix.env == :dev do

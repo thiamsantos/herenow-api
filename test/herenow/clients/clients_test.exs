@@ -37,7 +37,7 @@ defmodule HerenowWeb.ClientsTest do
       |> Map.drop(["cep", "city", "email"])
 
       actual = Clients.register(attrs)
-      expected = {:error, {:unprocessable_entity, %{"message" => ~s(Missing required keys: ["cep", "city", "email"])}}}
+      expected = {:error, {:unprocessable_entity, ~s(Missing required keys: ["cep", "city", "email"])}}
       assert actual == expected
     end
 
@@ -52,14 +52,14 @@ defmodule HerenowWeb.ClientsTest do
           |> Map.put(key, "some string")
 
           actual = Clients.register(attrs)
-          expected = {:error, {:unprocessable_entity, %{"message" => ~s(Expected BOOLEAN, got STRING "some string", at #{key})}}}
+          expected = {:error, {:unprocessable_entity, ~s(Expected BOOLEAN, got STRING "some string", at #{key})}}
           assert actual == expected
         else
           attrs = @valid_attrs
           |> Map.put(key, 9)
 
           actual = Clients.register(attrs)
-          expected = {:error, {:unprocessable_entity, %{"message" => ~s(Expected STRING, got INTEGER 9, at #{key})}}}
+          expected = {:error, {:unprocessable_entity, ~s(Expected STRING, got INTEGER 9, at #{key})}}
           assert actual == expected
         end
       end)
@@ -70,7 +70,7 @@ defmodule HerenowWeb.ClientsTest do
       |> Map.put("captcha", "invalid")
 
       actual = Clients.register(attrs)
-      expected = {:error, {:unprocessable_entity, %{"message" => "Invalid captcha"}}}
+      expected = {:error, {:unprocessable_entity, "Invalid captcha"}}
       assert actual == expected
     end
 
@@ -81,7 +81,7 @@ defmodule HerenowWeb.ClientsTest do
       |> Map.put("email", client.email)
 
       actual = Clients.register(attrs)
-      expected = {:error, {:unprocessable_entity, %{"message" => ~s("email" has already been taken)}}}
+      expected = {:error, {:unprocessable_entity, ~s("email" has already been taken)}}
       assert actual == expected
     end
 
@@ -94,7 +94,7 @@ defmodule HerenowWeb.ClientsTest do
       |> Map.put("email", email)
 
       actual = Clients.register(attrs)
-      expected = {:error, {:unprocessable_entity, %{"message" => ~s'"email" should be at most 254 character(s)'}}}
+      expected = {:error, {:unprocessable_entity, ~s'"email" should be at most 254 character(s)'}}
       assert actual == expected
     end
 
@@ -103,7 +103,7 @@ defmodule HerenowWeb.ClientsTest do
       |> Map.put("email", "invalidemail")
 
       actual = Clients.register(attrs)
-      expected = {:error, {:unprocessable_entity, %{"message" => ~s("email" has invalid format)}}}
+      expected = {:error, {:unprocessable_entity, ~s("email" has invalid format)}}
       assert actual == expected
     end
 
@@ -112,7 +112,7 @@ defmodule HerenowWeb.ClientsTest do
       |> Map.put("cep", "1234")
 
       actual = Clients.register(attrs)
-      expected = {:error, {:unprocessable_entity, %{"message" => ~s'"cep" should be 8 character(s)'}}}
+      expected = {:error, {:unprocessable_entity, ~s'"cep" should be 8 character(s)'}}
       assert actual == expected
     end
 
@@ -121,7 +121,7 @@ defmodule HerenowWeb.ClientsTest do
       |> Map.put("cep", "123456789")
 
       actual = Clients.register(attrs)
-      expected = {:error, {:unprocessable_entity, %{"message" => ~s'"cep" should be 8 character(s)'}}}
+      expected = {:error, {:unprocessable_entity, ~s'"cep" should be 8 character(s)'}}
       assert actual == expected
     end
 
@@ -130,12 +130,12 @@ defmodule HerenowWeb.ClientsTest do
       |> Map.put("password", "abcdefg")
 
       actual = Clients.register(attrs)
-      expected = {:error, {:unprocessable_entity, %{"message" => ~s'"password" should be at least 8 characters'}}}
+      expected = {:error, {:unprocessable_entity, ~s'"password" should be at least 8 characters'}}
       assert actual == expected
     end
 
-    test "register should return the client's information" do
-      client = Clients.register(@valid_attrs)
+    test "should return the client's information" do
+      {:ok, client} = Clients.register(@valid_attrs)
 
       assert client.address_number == @valid_attrs["address_number"]
       assert client.cep == @valid_attrs["cep"]
@@ -149,8 +149,8 @@ defmodule HerenowWeb.ClientsTest do
       assert client.street == @valid_attrs["street"]
     end
 
-    test "register should persist the client" do
-      client = Clients.register(@valid_attrs)
+    test "should persist the client" do
+      {:ok, client} = Clients.register(@valid_attrs)
       persisted_client = Loader.get!(client.id)
 
       assert client.id == persisted_client.id
@@ -169,7 +169,7 @@ defmodule HerenowWeb.ClientsTest do
     end
 
     test "after registering, the user gets a welcome email" do
-      client = Clients.register(@valid_attrs)
+      {:ok, client} = Clients.register(@valid_attrs)
 
       assert_delivered_email WelcomeEmail.create(client)
     end

@@ -33,7 +33,6 @@ defmodule HerenowWeb do
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
 
       import HerenowWeb.Router.Helpers
-      import HerenowWeb.ErrorHelpers
     end
   end
 

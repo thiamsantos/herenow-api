@@ -9,15 +9,14 @@ defmodule Herenow.Clients do
 
   @captcha Application.get_env(:herenow, :captcha)
 
-  @spec register(map) :: {:ok, %Client{}} | {:error, {atom, map}}
+  @spec register(map) :: {:ok, %Client{}} | ErrorMessage.t
   def register(params) do
     with :ok <- validate_params(params),
       {:ok} <- @captcha.verify(params["captcha"]),
       {:ok} <- PasswordHash.is_valid(params["password"]),
       {:ok, client} <- Mutator.create(params),
       _email <- WelcomeEmail.send(client) do
-        client
-        |> Map.delete(:password)
+        {:ok, client}
     else
       {:error, reason} -> handle_error(reason)
     end
