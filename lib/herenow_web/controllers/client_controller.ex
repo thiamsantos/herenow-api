@@ -14,11 +14,11 @@ defmodule HerenowWeb.ClientController do
   # @apiDefine MissingRequiredKeysError
   # @apiError MissingRequiredKeys Missing required keys
   # @apiErrorExample MissingRequiredResponse:
-  #     HTTP/1.1 422 Unprocessable Entity
+  #   HTTP/1.1 422 Unprocessable Entity
   #     {
   #       "statusCode": 422,
   #       "error": "Unprocessable Entity",
-  #       "message": "Missing required keys: [\"postal_code\", \"city\", \"email\"]"
+  #       "message": "Missing required keys: [\"city\", \"email\"]"
   #     }
   #}
 
