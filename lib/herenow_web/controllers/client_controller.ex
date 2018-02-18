@@ -5,120 +5,120 @@ defmodule HerenowWeb.ClientController do
 
   action_fallback HerenowWeb.FallbackController
 
-  # {
+  #{
   # @apiDefine DefaultHeader
   # @apiHeader Content-Type application/json.
-  # }
+  #}
 
-  # {
+  #{
   # @apiDefine MissingRequiredKeysError
   # @apiError MissingRequiredKeys Missing required keys
-  # @apiErrorExample Error-Response:
+  # @apiErrorExample MissingRequiredResponse:
   #     HTTP/1.1 422 Unprocessable Entity
   #     {
   #       "statusCode": 422,
   #       "error": "Unprocessable Entity",
   #       "message": "Missing required keys: [\"postal_code\", \"city\", \"email\"]"
   #     }
-  # }
+  #}
 
-  # {
+  #{
   # @apiDefine InvalidKeyTypeError
   # @apiError InvalidKeyType Invalid key type
-  # @apiErrorExample Error-Response:
+  # @apiErrorExample InvalidKeyTypeResponse:
   #     HTTP/1.1 422 Unprocessable Entity
   #     {
   #       "statusCode": 422,
   #       "error": "Unprocessable Entity",
   #       "message": "Expected STRING, got INTEGER 9, at email"
   #     }
-  # }
+  #}
 
-  # {
+  #{
   # @apiDefine InvalidCaptchaError
   # @apiError InvalidCaptcha Invalid recaptcha code
-  # @apiErrorExample Error-Response:
+  # @apiErrorExample InvalidCaptchaResponse:
   #     HTTP/1.1 422 Unprocessable Entity
   #     {
   #       "statusCode": 422,
   #       "error": "Unprocessable Entity",
   #       "message": "Invalid captcha"
   #     }
-  # }
+  #}
 
-  # {
+  #{
   # @apiDefine EmailAlreadyTakenError
   # @apiError EmailAlreadyTaken Email already taken
-  # @apiErrorExample Error-Response:
+  # @apiErrorExample EmailAlreadyTakenResponse:
   #     HTTP/1.1 422 Unprocessable Entity
   #     {
   #       "statusCode": 422,
   #       "error": "Unprocessable Entity",
   #       "message": "\"email\" has already been taken"
   #     }
-  # }
+  #}
 
-  # {
+  #{
   # @apiDefine LongEmailError
   # @apiError LongEmail Email too long
-  # @apiErrorExample Error-Response:
+  # @apiErrorExample LongEmailResponse:
   #     HTTP/1.1 422 Unprocessable Entity
   #     {
   #       "statusCode": 422,
   #       "error": "Unprocessable Entity",
   #       "message": "\"email\" should be at most 254 character(s)"
   #     }
-  # }
+  #}
 
-  # {
+  #{
   # @apiDefine InvalidEmailFormatError
   # @apiError InvalidEmailFormat Invalid has a invalid format
-  # @apiErrorExample Error-Response:
+  # @apiErrorExample InvalidEmailFormatResponse:
   #     HTTP/1.1 422 Unprocessable Entity
   #     {
   #       "statusCode": 422,
   #       "error": "Unprocessable Entity",
   #       "message": "\"email\" has invalid format"
   #     }
-  # }
+  #}
 
-  # {
+  #{
   # @apiDefine InvalidPostCodeError
   # @apiError InvalidPostCode Postal code has the wrong length
-  # @apiErrorExample Error-Response:
+  # @apiErrorExample InvalidPostCodeResponse:
   #     HTTP/1.1 422 Unprocessable Entity
   #     {
   #       "statusCode": 422,
   #       "error": "Unprocessable Entity",
   #       "message": "\"postal_code\" should be 8 character(s)"
   #     }
-  # }
+  #}
 
-  # {
+  #{
   # @apiDefine ShortPasswordError
   # @apiError ShortPassword Password is too short
-  # @apiErrorExample Error-Response:
+  # @apiErrorExample ShortPasswordResponse:
   #     HTTP/1.1 422 Unprocessable Entity
   #     {
   #       "statusCode": 422,
   #       "error": "Unprocessable Entity",
   #       "message": "\"password\" should be at least 8 characters"
   #     }
-  # }
+  #}
 
-  # {
+  #{
   # @apiDefine InvalidSchemaError
   # @apiError InvalidSchema Body has wrong schema
-  # @apiErrorExample Error-Response:
+  # @apiErrorExample InvalidSchemaResponse:
   #     HTTP/1.1 422 Unprocessable Entity
   #     {
   #       "statusCode": 422,
   #       "error": "Unprocessable Entity",
   #       "message": "Invalid schema"
   #     }
-  # }
+  #}
 
-  # {
+  #{
   # @api {post} /clients Register client
   # @apiName CreateClient
   # @apiGroup Client
@@ -172,7 +172,7 @@ defmodule HerenowWeb.ClientController do
   # @apiUse InvalidEmailFormatError
   # @apiUse InvalidPostCodeError
   # @apiUse ShortPasswordError
-  # }
+  #}
 
   def create(conn, client_params) do
     with {:ok, client} <- Clients.register(client_params) do

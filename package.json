@@ -4,7 +4,7 @@
   "description": "Phoenix demo",
   "scripts": {
     "precommit": "mix credo --strict && mix dialyzer && mix test",
-    "apidoc": "apidoc -i lib/herenow_web -o apidocs/",
+    "apidoc": "apidoc -i lib/herenow_web -o apidocs/ --debug",
     "serve:apidoc": "http-server apidocs/"
   },
   "repository": {
@@ -19,6 +19,7 @@
   "homepage": "https://github.com/herenow-team/core-api#readme",
   "devDependencies": {
     "apidoc": "^0.17.6",
+    "apidoc-core": "https://github.com/techgaun/apidoc-core/tarball/elixir-syntax",
     "http-server": "^0.10.0",
     "husky": "^0.14.3"
   },
