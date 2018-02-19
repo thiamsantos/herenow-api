@@ -1,0 +1,22 @@
+Bem vindo, {{name}}!
+Obrigado por testar HereNow. Estamos entusiasmados por tê-lo a bordo.
+Para poder usar o melhor do HereNow, ative a sua conta:
+Copie e cole a URL abaixo no seu navegador.
+{{activation_url}}
+
+Para referência, aqui estão suas informações de login:
+- Página de Login: {{login_url}}
+- Email: {{email}}
+
+Se você tiver qualquer dúvidas, fique à vontade para enviar um email para a nossa equipe de atendimento ao cliente. (Nós somos rápidos em responder.)
+
+Obrigado, time da HereNow.
+
+P.S. Precisa de ajuda imediata? Responda a este email, o time de suporte da HereNow sempre está disposto a ajudar!
+
+&copy; {{year}} HereNow. Todo os direitos reservados.
+
+HereNow Inc
+Saco Grande, Florianópolis - SC
+Rodovia José Carlos Daux, 4150
+Sala 01

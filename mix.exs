@@ -53,7 +53,8 @@ defmodule Herenow.Mixfile do
       {:skooma, "~> 0.2.0"},
       {:faker, "~> 0.9", only: :test},
       {:explode, "~> 1.0"},
-      {:jason, "~> 1.0"}
+      {:jason, "~> 1.0"},
+      {:mustache, "~> 0.3.0"}
     ]
   end
 

@@ -24,7 +24,8 @@ defmodule Herenow.Clients.WelcomeEmailTest do
       email = WelcomeEmail.send(@client)
       assert email.to == [{@client.name, @client.email}]
       assert email.subject == "Bem vindo #{@client.name}!!!"
-      assert email.html_body =~ "Bem vindo à HearNow"
+      assert email.html_body =~ "ative a sua conta"
+      assert email.html_body =~ "Obrigado por testar HereNow."
     end
   end
 end
