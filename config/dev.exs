@@ -11,10 +11,8 @@ config :logger, :console, format: "[$level] $message\n"
 
 config :phoenix, :stacktrace_depth, 20
 
-config :herenow, Herenow.Mailer,
-  adapter: Bamboo.LocalAdapter
+config :herenow, Herenow.Mailer, adapter: Bamboo.LocalAdapter
 
-config :herenow,
-  captcha: Herenow.Captcha.HTTPAdapter
+config :herenow, captcha: Herenow.Captcha.HTTPAdapter
 
 import_config "dev.secret.exs"

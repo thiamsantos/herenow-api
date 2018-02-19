@@ -24,8 +24,9 @@ defmodule HerenowWeb.ClientControllerTest do
 
   describe "create/2" do
     test "renders client when data is valid", %{conn: conn} do
-      conn = conn
-      |> post(client_path(conn, :create), @valid_attrs)
+      conn =
+        conn
+        |> post(client_path(conn, :create), @valid_attrs)
 
       client = json_response(conn, 201)
 

@@ -3,14 +3,14 @@ defmodule HerenowWeb.ClientController do
 
   alias Herenow.Clients
 
-  action_fallback HerenowWeb.FallbackController
+  action_fallback(HerenowWeb.FallbackController)
 
-  #{
+  # {
   # @apiDefine DefaultHeader
   # @apiHeader Content-Type application/json.
-  #}
+  # }
 
-  #{
+  # {
   # @apiDefine MissingRequiredKeysError
   # @apiError MissingRequiredKeys Missing required keys
   # @apiErrorExample MissingRequiredResponse:
@@ -20,9 +20,9 @@ defmodule HerenowWeb.ClientController do
   #       "error": "Unprocessable Entity",
   #       "message": "Missing required keys: [\"city\", \"email\"]"
   #     }
-  #}
+  # }
 
-  #{
+  # {
   # @apiDefine InvalidKeyTypeError
   # @apiError InvalidKeyType Invalid key type
   # @apiErrorExample InvalidKeyTypeResponse:
@@ -32,9 +32,9 @@ defmodule HerenowWeb.ClientController do
   #       "error": "Unprocessable Entity",
   #       "message": "Expected STRING, got INTEGER 9, at email"
   #     }
-  #}
+  # }
 
-  #{
+  # {
   # @apiDefine InvalidCaptchaError
   # @apiError InvalidCaptcha Invalid recaptcha code
   # @apiErrorExample InvalidCaptchaResponse:
@@ -44,9 +44,9 @@ defmodule HerenowWeb.ClientController do
   #       "error": "Unprocessable Entity",
   #       "message": "Invalid captcha"
   #     }
-  #}
+  # }
 
-  #{
+  # {
   # @apiDefine EmailAlreadyTakenError
   # @apiError EmailAlreadyTaken Email already taken
   # @apiErrorExample EmailAlreadyTakenResponse:
@@ -56,9 +56,9 @@ defmodule HerenowWeb.ClientController do
   #       "error": "Unprocessable Entity",
   #       "message": "\"email\" has already been taken"
   #     }
-  #}
+  # }
 
-  #{
+  # {
   # @apiDefine LongEmailError
   # @apiError LongEmail Email too long
   # @apiErrorExample LongEmailResponse:
@@ -68,9 +68,9 @@ defmodule HerenowWeb.ClientController do
   #       "error": "Unprocessable Entity",
   #       "message": "\"email\" should be at most 254 character(s)"
   #     }
-  #}
+  # }
 
-  #{
+  # {
   # @apiDefine InvalidEmailFormatError
   # @apiError InvalidEmailFormat Invalid has a invalid format
   # @apiErrorExample InvalidEmailFormatResponse:
@@ -80,9 +80,9 @@ defmodule HerenowWeb.ClientController do
   #       "error": "Unprocessable Entity",
   #       "message": "\"email\" has invalid format"
   #     }
-  #}
+  # }
 
-  #{
+  # {
   # @apiDefine InvalidPostCodeError
   # @apiError InvalidPostCode Postal code has the wrong length
   # @apiErrorExample InvalidPostCodeResponse:
@@ -92,9 +92,9 @@ defmodule HerenowWeb.ClientController do
   #       "error": "Unprocessable Entity",
   #       "message": "\"postal_code\" should be 8 character(s)"
   #     }
-  #}
+  # }
 
-  #{
+  # {
   # @apiDefine ShortPasswordError
   # @apiError ShortPassword Password is too short
   # @apiErrorExample ShortPasswordResponse:
@@ -104,9 +104,9 @@ defmodule HerenowWeb.ClientController do
   #       "error": "Unprocessable Entity",
   #       "message": "\"password\" should be at least 8 characters"
   #     }
-  #}
+  # }
 
-  #{
+  # {
   # @apiDefine InvalidSchemaError
   # @apiError InvalidSchema Body has wrong schema
   # @apiErrorExample InvalidSchemaResponse:
@@ -116,9 +116,9 @@ defmodule HerenowWeb.ClientController do
   #       "error": "Unprocessable Entity",
   #       "message": "Invalid schema"
   #     }
-  #}
+  # }
 
-  #{
+  # {
   # @api {post} /clients Register client
   # @apiName CreateClient
   # @apiGroup Client
@@ -172,7 +172,7 @@ defmodule HerenowWeb.ClientController do
   # @apiUse InvalidEmailFormatError
   # @apiUse InvalidPostCodeError
   # @apiUse ShortPasswordError
-  #}
+  # }
 
   def create(conn, client_params) do
     with {:ok, client} <- Clients.register(client_params) do

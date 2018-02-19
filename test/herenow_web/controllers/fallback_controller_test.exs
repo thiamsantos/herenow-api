@@ -9,10 +9,12 @@ defmodule HerenowWeb.FallbackControllerTest do
 
   describe "call/2" do
     test "application error", %{conn: conn} do
-      conn = conn
-      |> FallbackController.call({:error, {:unprocessable_entity, "something wrong"}})
+      conn =
+        conn
+        |> FallbackController.call({:error, {:unprocessable_entity, "something wrong"}})
 
       actual = json_response(conn, 422)
+
       expected = %{
         "statusCode" => 422,
         "message" => "something wrong",
@@ -23,10 +25,12 @@ defmodule HerenowWeb.FallbackControllerTest do
     end
 
     test "not found", %{conn: conn} do
-      conn = conn
-      |> FallbackController.call({:error, :not_found})
+      conn =
+        conn
+        |> FallbackController.call({:error, :not_found})
 
       actual = json_response(conn, 404)
+
       expected = %{
         "statusCode" => 404,
         "error" => "Not Found",

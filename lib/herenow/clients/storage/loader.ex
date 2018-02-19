@@ -14,8 +14,7 @@ defmodule Herenow.Clients.Storage.Loader do
       [%Client{}, ...]
 
   """
-  def all,
-    do: Repo.all(Queries.all)
+  def all, do: Repo.all(Queries.all())
 
   def get!(id), do: Repo.get!(Client, id)
 end

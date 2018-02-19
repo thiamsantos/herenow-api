@@ -6,11 +6,9 @@ config :herenow, HerenowWeb.Endpoint,
 
 config :logger, level: :warn
 
-config :herenow, Herenow.Mailer,
-  adapter: Bamboo.TestAdapter
+config :herenow, Herenow.Mailer, adapter: Bamboo.TestAdapter
 
-config :herenow,
-  captcha: Herenow.Captcha.TestAdapter
+config :herenow, captcha: Herenow.Captcha.TestAdapter
 
 config :recaptcha,
   public_key: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",

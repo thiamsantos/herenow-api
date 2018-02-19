@@ -9,21 +9,21 @@ defmodule Herenow.Clients do
 
   @captcha Application.get_env(:herenow, :captcha)
 
-  @spec register(map) :: {:ok, %Client{}} | ErrorMessage.t
+  @spec register(map) :: {:ok, %Client{}} | ErrorMessage.t()
   def register(params) do
     with :ok <- validate_params(params),
-      {:ok} <- @captcha.verify(params["captcha"]),
-      {:ok} <- PasswordHash.is_valid(params["password"]),
-      {:ok, client} <- Mutator.create(params),
-      _email <- WelcomeEmail.send(client) do
-        {:ok, client}
+         {:ok} <- @captcha.verify(params["captcha"]),
+         {:ok} <- PasswordHash.is_valid(params["password"]),
+         {:ok, client} <- Mutator.create(params),
+         _email <- WelcomeEmail.send(client) do
+      {:ok, client}
     else
       {:error, reason} -> handle_error(reason)
     end
   end
 
-  defp handle_error(reasons) when is_list(reasons), do:
-    ErrorMessage.validation(List.first(reasons))
+  defp handle_error(reasons) when is_list(reasons),
+    do: ErrorMessage.validation(List.first(reasons))
 
   defp handle_error(reason) when is_tuple(reason), do: {:error, reason}
 

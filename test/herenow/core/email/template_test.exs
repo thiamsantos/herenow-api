@@ -7,9 +7,10 @@ defmodule Herenow.Core.Email.TemplateTest do
   test "render/2" do
     name = Name.name()
 
-    body = Template.render(:test, %{
-      "name" => name
-    })
+    body =
+      Template.render(:test, %{
+        "name" => name
+      })
 
     assert body.html =~ "<div>Just a test #{name}</div>"
     assert body.text =~ "Just a test #{name}"

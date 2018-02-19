@@ -12,7 +12,7 @@ defmodule HerenowWeb.Router do
     resources "/clients", ClientController, only: [:create]
   end
 
-  if Mix.env == :dev do
+  if Mix.env() == :dev do
     # If using Phoenix
     forward "/sent_emails", Bamboo.EmailPreviewPlug
   end

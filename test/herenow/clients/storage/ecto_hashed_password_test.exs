@@ -7,7 +7,7 @@ defmodule Herenow.Clients.Storage.EctoHashedPasswordTest do
 
   describe "type" do
     test "should be a string" do
-      assert EctoHashedPassword.type == :string
+      assert EctoHashedPassword.type() == :string
     end
   end
 

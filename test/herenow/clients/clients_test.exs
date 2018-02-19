@@ -33,11 +33,16 @@ defmodule HerenowWeb.ClientsTest do
 
   describe "register/1" do
     test "missing keys" do
-      attrs = @valid_attrs
-      |> Map.drop(["postal_code", "city", "email"])
+      attrs =
+        @valid_attrs
+        |> Map.drop(["postal_code", "city", "email"])
 
       actual = Clients.register(attrs)
-      expected = {:error, {:unprocessable_entity, ~s(Missing required keys: ["city", "email", "postal_code"])}}
+
+      expected =
+        {:error,
+         {:unprocessable_entity, ~s(Missing required keys: ["city", "email", "postal_code"])}}
+
       assert actual == expected
     end
 
@@ -48,26 +53,36 @@ defmodule HerenowWeb.ClientsTest do
         value = Map.get(@valid_attrs, key)
 
         if is_boolean(value) do
-          attrs = @valid_attrs
-          |> Map.put(key, "some string")
+          attrs =
+            @valid_attrs
+            |> Map.put(key, "some string")
 
           actual = Clients.register(attrs)
-          expected = {:error, {:unprocessable_entity, ~s(Expected BOOLEAN, got STRING "some string", at #{key})}}
+
+          expected =
+            {:error,
+             {:unprocessable_entity, ~s(Expected BOOLEAN, got STRING "some string", at #{key})}}
+
           assert actual == expected
         else
-          attrs = @valid_attrs
-          |> Map.put(key, 9)
+          attrs =
+            @valid_attrs
+            |> Map.put(key, 9)
 
           actual = Clients.register(attrs)
-          expected = {:error, {:unprocessable_entity, ~s(Expected STRING, got INTEGER 9, at #{key})}}
+
+          expected =
+            {:error, {:unprocessable_entity, ~s(Expected STRING, got INTEGER 9, at #{key})}}
+
           assert actual == expected
         end
       end)
     end
 
     test "invalid captcha" do
-      attrs = @valid_attrs
-      |> Map.put("captcha", "invalid")
+      attrs =
+        @valid_attrs
+        |> Map.put("captcha", "invalid")
 
       actual = Clients.register(attrs)
       expected = {:error, {:unprocessable_entity, "Invalid captcha"}}
@@ -77,8 +92,9 @@ defmodule HerenowWeb.ClientsTest do
     test "email should be unique" do
       client = client_fixture()
 
-      attrs = @valid_attrs
-      |> Map.put("email", client.email)
+      attrs =
+        @valid_attrs
+        |> Map.put("email", client.email)
 
       actual = Clients.register(attrs)
       expected = {:error, {:unprocessable_entity, ~s("email" has already been taken)}}
@@ -86,12 +102,14 @@ defmodule HerenowWeb.ClientsTest do
     end
 
     test "email should have less than 255 characters" do
-      email = @valid_attrs
-      |> Map.get("email")
-      |> String.pad_leading(256, "abc")
+      email =
+        @valid_attrs
+        |> Map.get("email")
+        |> String.pad_leading(256, "abc")
 
-      attrs = @valid_attrs
-      |> Map.put("email", email)
+      attrs =
+        @valid_attrs
+        |> Map.put("email", email)
 
       actual = Clients.register(attrs)
       expected = {:error, {:unprocessable_entity, ~s'"email" should be at most 254 character(s)'}}
@@ -99,8 +117,9 @@ defmodule HerenowWeb.ClientsTest do
     end
 
     test "email should have a @" do
-      attrs = @valid_attrs
-      |> Map.put("email", "invalidemail")
+      attrs =
+        @valid_attrs
+        |> Map.put("email", "invalidemail")
 
       actual = Clients.register(attrs)
       expected = {:error, {:unprocessable_entity, ~s("email" has invalid format)}}
@@ -108,8 +127,9 @@ defmodule HerenowWeb.ClientsTest do
     end
 
     test "postal_code should have exact 8 characters, less should return error" do
-      attrs = @valid_attrs
-      |> Map.put("postal_code", "1234")
+      attrs =
+        @valid_attrs
+        |> Map.put("postal_code", "1234")
 
       actual = Clients.register(attrs)
       expected = {:error, {:unprocessable_entity, ~s'"postal_code" should be 8 character(s)'}}
@@ -117,8 +137,9 @@ defmodule HerenowWeb.ClientsTest do
     end
 
     test "postal_code should have exact 8 characters, more should return error" do
-      attrs = @valid_attrs
-      |> Map.put("postal_code", "123456789")
+      attrs =
+        @valid_attrs
+        |> Map.put("postal_code", "123456789")
 
       actual = Clients.register(attrs)
       expected = {:error, {:unprocessable_entity, ~s'"postal_code" should be 8 character(s)'}}
@@ -126,8 +147,9 @@ defmodule HerenowWeb.ClientsTest do
     end
 
     test "password should have at least 8 characters" do
-      attrs = @valid_attrs
-      |> Map.put("password", "abcdefg")
+      attrs =
+        @valid_attrs
+        |> Map.put("password", "abcdefg")
 
       actual = Clients.register(attrs)
       expected = {:error, {:unprocessable_entity, ~s'"password" should be at least 8 characters'}}
@@ -171,7 +193,7 @@ defmodule HerenowWeb.ClientsTest do
     test "after registering, the user gets a welcome email" do
       {:ok, client} = Clients.register(@valid_attrs)
 
-      assert_delivered_email WelcomeEmail.create(client)
+      assert_delivered_email(WelcomeEmail.create(client))
     end
 
     test "client should be a map" do

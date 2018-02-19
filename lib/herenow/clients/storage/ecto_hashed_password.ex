@@ -15,6 +15,7 @@ defmodule Herenow.Clients.Storage.EctoHashedPassword do
   def cast(password) when is_binary(password) do
     {:ok, PasswordHash.hash(password)}
   end
+
   def cast(_), do: :error
 
   def load(password) when is_binary(password), do: {:ok, password}
@@ -26,7 +27,7 @@ defmodule Herenow.Clients.Storage.EctoHashedPassword do
   @doc """
   Check password against hash with currently used hashing algorithm.
   """
-  @spec checkpw(String.t, String.t) :: boolean
+  @spec checkpw(String.t(), String.t()) :: boolean
   def checkpw(password, hash) do
     PasswordHash.verify(password, hash)
   end

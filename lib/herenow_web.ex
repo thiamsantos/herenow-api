@@ -27,8 +27,9 @@ defmodule HerenowWeb do
 
   def view do
     quote do
-      use Phoenix.View, root: "lib/herenow_web/templates",
-                        namespace: HerenowWeb
+      use Phoenix.View,
+        root: "lib/herenow_web/templates",
+        namespace: HerenowWeb
 
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
 

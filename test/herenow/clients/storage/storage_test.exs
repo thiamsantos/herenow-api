@@ -2,9 +2,47 @@ defmodule Herenow.Clients.Storage.StorageTest do
   use Herenow.DataCase
   alias Herenow.Clients.Storage.{Client, Mutator, Loader}
 
-  @valid_attrs %{street_number: "54", postal_code: "88133050", city: "palhoça", email: "someemail@example.com", is_company: true, legal_name: "some legal_name", name: "some name", password: "some password", segment: "some segment", state: "some state", street_name: "some street_name"}
-  @update_attrs %{street_number: "227", postal_code: "88135000", city: "florianópolis", email: "someupdatedemail@gmail.com", is_company: false, is_verified: false, legal_name: "some updated legal_name", name: "some updated name", password: "some updated password", segment: "some updated segment", state: "some updated state", street_name: "some updated street_name"}
-  @invalid_attrs %{street_number: nil, postal_code: nil, city: nil, email: nil, is_company: nil, is_verified: nil, legal_name: nil, name: nil, password: nil, segment: nil, state: nil, street_name: nil}
+  @valid_attrs %{
+    street_number: "54",
+    postal_code: "88133050",
+    city: "palhoça",
+    email: "someemail@example.com",
+    is_company: true,
+    legal_name: "some legal_name",
+    name: "some name",
+    password: "some password",
+    segment: "some segment",
+    state: "some state",
+    street_name: "some street_name"
+  }
+  @update_attrs %{
+    street_number: "227",
+    postal_code: "88135000",
+    city: "florianópolis",
+    email: "someupdatedemail@gmail.com",
+    is_company: false,
+    is_verified: false,
+    legal_name: "some updated legal_name",
+    name: "some updated name",
+    password: "some updated password",
+    segment: "some updated segment",
+    state: "some updated state",
+    street_name: "some updated street_name"
+  }
+  @invalid_attrs %{
+    street_number: nil,
+    postal_code: nil,
+    city: nil,
+    email: nil,
+    is_company: nil,
+    is_verified: nil,
+    legal_name: nil,
+    name: nil,
+    password: nil,
+    segment: nil,
+    state: nil,
+    street_name: nil
+  }
 
   def client_fixture(attrs \\ %{}) do
     {:ok, client} =

@@ -7,7 +7,7 @@ defmodule Herenow.Core.Token do
   @secret Application.get_env(:herenow, :secret)
   @expiration_time 2 * 60 * 60
 
-  @spec generate(map, integer) :: String.t
+  @spec generate(map, integer) :: String.t()
   def generate(payload, iat \\ Joken.current_time()) do
     payload
     |> Joken.token()
@@ -33,7 +33,7 @@ defmodule Herenow.Core.Token do
     |> Joken.token()
     |> Joken.with_signer(Joken.hs256(@secret))
     |> Joken.with_validation("exp", &(&1 > now), "Expired token")
-    |> Joken.verify!
+    |> Joken.verify!()
   end
 
   defp split_header(encoded_token) do

@@ -7,7 +7,7 @@ defmodule Herenow.Core.Email.Template do
     "text" => ".txt"
   }
 
-  @spec render(atom, map) ::  Body.t
+  @spec render(atom, map) :: Body.t()
   def render(template, content) do
     html_body = do_render(template, "html", content)
     text_body = do_render(template, "text", content)
@@ -15,20 +15,20 @@ defmodule Herenow.Core.Email.Template do
     %Body{html: html_body, text: text_body}
   end
 
-  @spec do_render(atom, String.t, map) :: String.t
+  @spec do_render(atom, String.t(), map) :: String.t()
   defp do_render(template, type, content) do
     template
     |> Atom.to_string()
     |> concat(@extensions[type])
     |> get_path(type)
-    |> File.read!
+    |> File.read!()
     |> Mustache.render(content)
   end
 
-  @spec concat(String.t, String.t) :: String.t
+  @spec concat(String.t(), String.t()) :: String.t()
   defp concat(left, right), do: left <> right
 
-  @spec get_path(String.t, String.t) :: String.t
+  @spec get_path(String.t(), String.t()) :: String.t()
   defp get_path(filename, type) do
     @basepath
     |> Path.join(type)
