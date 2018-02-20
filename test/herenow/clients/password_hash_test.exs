@@ -19,15 +19,4 @@ defmodule Herenow.Clients.PasswordHashTest do
       assert PasswordHash.verify("test_password", @pbkdf2_hash)
     end
   end
-
-  describe "is_valid/1" do
-    test "returns ok when the password has 8 or more characters" do
-      assert {:ok} = PasswordHash.is_valid("password")
-    end
-
-    test "returns error when the password has less than 8 characters" do
-      assert {:error, {:unprocessable_entity, ~s("password" should be at least 8 characters)}} =
-               PasswordHash.is_valid("short")
-    end
-  end
 end

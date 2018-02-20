@@ -5,15 +5,14 @@ defmodule Herenow.Clients do
   alias Ecto.Changeset
   alias Herenow.Core.ErrorMessage
   alias Herenow.Clients.Storage.{Client, Mutator, Error}
-  alias Herenow.Clients.{WelcomeEmail, PasswordHash}
+  alias Herenow.Clients.{WelcomeEmail, Registration}
 
   @captcha Application.get_env(:herenow, :captcha)
 
   @spec register(map) :: {:ok, %Client{}} | ErrorMessage.t()
   def register(params) do
-    with :ok <- validate_params(params),
+    with {:ok} <- validate_params(params),
          {:ok} <- @captcha.verify(params["captcha"]),
-         {:ok} <- PasswordHash.is_valid(params["password"]),
          {:ok, client} <- Mutator.create(params),
          _email <- WelcomeEmail.send(client) do
       {:ok, client}
@@ -21,9 +20,6 @@ defmodule Herenow.Clients do
       {:error, reason} -> handle_error(reason)
     end
   end
-
-  defp handle_error(reasons) when is_list(reasons),
-    do: ErrorMessage.validation(List.first(reasons))
 
   defp handle_error(reason) when is_tuple(reason), do: {:error, reason}
 
@@ -34,23 +30,16 @@ defmodule Herenow.Clients do
   end
 
   defp validate_params(params) when is_map(params) do
-    schema = %{
-      "street_number" => :string,
-      "postal_code" => :string,
-      "city" => :string,
-      "email" => :string,
-      "is_company" => :bool,
-      "legal_name" => [:string, :not_required],
-      "name" => :string,
-      "password" => :string,
-      "segment" => :string,
-      "state" => :string,
-      "street_name" => :string,
-      "captcha" => :string
-    }
+    changeset =
+      %Registration{}
+      |> Registration.changeset(params)
 
-    Skooma.valid?(params, schema)
+    if changeset.valid? do
+      {:ok}
+    else
+      {:error, changeset}
+    end
   end
 
-  defp validate_params(_), do: ErrorMessage.validation("Invalid schema")
+  defp validate_params(_), do: ErrorMessage.validation(nil, :invalid_schema, "Invalid schema")
 end

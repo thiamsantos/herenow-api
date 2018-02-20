@@ -17,13 +17,4 @@ defmodule Herenow.Clients.PasswordHash do
   def verify(password, hash) do
     Pbkdf2.checkpw(password, hash)
   end
-
-  @spec is_valid(String.t()) :: {:ok} | ErrorMessage.t()
-  def is_valid(password) when is_binary(password) do
-    if String.length(password) >= 8 do
-      {:ok}
-    else
-      ErrorMessage.validation(~s("password" should be at least 8 characters))
-    end
-  end
 end

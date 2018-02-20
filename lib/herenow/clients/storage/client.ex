@@ -4,24 +4,7 @@ defmodule Herenow.Clients.Storage.Client do
   """
   use Ecto.Schema
   import Ecto.Changeset
-  alias Herenow.Clients.Storage.EctoHashedPassword
-
-  @required_fields [
-    :email,
-    :password,
-    :name,
-    :is_company,
-    :segment,
-    :postal_code,
-    :street_name,
-    :street_number,
-    :city,
-    :state
-  ]
-
-  @optional_fields [
-    :legal_name
-  ]
+  alias Herenow.Clients.Storage.{EctoHashedPassword, Fields}
 
   schema "clients" do
     field :street_number, :string
@@ -42,11 +25,8 @@ defmodule Herenow.Clients.Storage.Client do
   @doc false
   def changeset(%__MODULE__{} = client, attrs) do
     client
-    |> cast(attrs, @required_fields ++ @optional_fields)
-    |> validate_required(@required_fields)
+    |> cast(attrs, Fields.required_fields() ++ Fields.optional_fields())
+    |> validate_required(Fields.required_fields())
     |> unique_constraint(:email)
-    |> validate_length(:email, max: 254)
-    |> validate_format(:email, ~r/@/)
-    |> validate_length(:postal_code, is: 8)
   end
 end

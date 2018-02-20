@@ -9,7 +9,7 @@ defmodule Herenow.Captcha.HTTPAdapter do
   def verify(response, options \\ []) do
     case Recaptcha.verify(response, options) do
       {:ok, _response} -> {:ok}
-      {:error, _errors} -> ErrorMessage.validation("Invalid captcha")
+      {:error, _errors} -> ErrorMessage.validation(nil, :invalid_captcha, "Invalid captcha")
     end
   end
 end
