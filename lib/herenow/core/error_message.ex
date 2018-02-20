@@ -2,7 +2,7 @@ defmodule Herenow.Core.ErrorMessage do
   @moduledoc """
   Error message builder
   """
-  @type t :: {:error, {atom, String.t() | map | {atom, String.t()}}}
+  @type t :: {:error, {atom, String.t() | List.t()}}
 
   @spec create(atom, String.t()) :: __MODULE__.t()
   def create(type, message) do
@@ -17,6 +17,6 @@ defmodule Herenow.Core.ErrorMessage do
 
   @spec validation(String.t(), atom, String.t()) :: __MODULE__.t()
   def validation(field, type, message) do
-    create(:validation, %{"field" => field, "type" => type, "message" => message})
+    create(:validation, [%{"field" => field, "type" => type, "message" => message}])
   end
 end

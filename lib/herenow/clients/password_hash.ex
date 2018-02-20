@@ -3,7 +3,6 @@ defmodule Herenow.Clients.PasswordHash do
   Secure hash passwords
   """
   alias Comeonin.Pbkdf2
-  alias Herenow.Core.ErrorMessage
 
   @spec hash(String.t()) :: String.t()
   def hash(password) do

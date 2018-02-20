@@ -5,9 +5,11 @@ defmodule HerenowWeb.FallbackController do
   """
   use HerenowWeb, :controller
 
-  def call(conn, {:error, {status, message}}) do
+  alias HerenowWeb.Explode
+
+  def call(conn, {:error, {type, errors}}) do
     conn
-    |> Explode.with(status, message)
+    |> Explode.reply(type, errors)
   end
 
   def call(conn, {:error, :not_found}) do

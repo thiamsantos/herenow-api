@@ -1,4 +1,7 @@
 defmodule Herenow.Core.Email.Template do
+  @moduledoc """
+  Utility to render HTML/text email templates
+  """
   alias Herenow.Core.Email.Body
 
   @basepath "priv/email_templates"

@@ -1,4 +1,8 @@
 defmodule Herenow.Clients.Storage.Fields do
+  @moduledoc """
+  Shared fields that a client has
+  """
+
   @required_fields [
     :email,
     :password,

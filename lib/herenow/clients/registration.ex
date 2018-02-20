@@ -1,4 +1,7 @@
 defmodule Herenow.Clients.Registration do
+  @moduledoc """
+  Schema of a client registration request
+  """
   use Ecto.Schema
   import Ecto.Changeset
   alias Herenow.Clients.Storage.Fields
@@ -27,7 +30,7 @@ defmodule Herenow.Clients.Registration do
     required_fields = Fields.required_fields() ++ @required_fields
 
     registration
-    |> cast(attrs, required_fields ++ Fields.optional_fields(), required_message: :required)
+    |> cast(attrs, required_fields ++ Fields.optional_fields())
     |> validate_required(required_fields)
     |> validate_length(:email, max: 254)
     |> validate_format(:email, ~r/@/)

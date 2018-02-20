@@ -108,11 +108,13 @@ defmodule HerenowWeb.ClientsTest do
       expected =
         {:error,
          {:validation,
-          %{
-            "field" => nil,
-            "message" => "Invalid captcha",
-            "type" => :invalid_captcha
-          }}}
+          [
+            %{
+              "field" => nil,
+              "message" => "Invalid captcha",
+              "type" => :invalid_captcha
+            }
+          ]}}
 
       assert actual == expected
     end
@@ -296,11 +298,13 @@ defmodule HerenowWeb.ClientsTest do
       expected =
         {:error,
          {:validation,
-          %{
-            "field" => nil,
-            "message" => "Invalid schema",
-            "type" => :invalid_schema
-          }}}
+          [
+            %{
+              "field" => nil,
+              "message" => "Invalid schema",
+              "type" => :invalid_schema
+            }
+          ]}}
 
       assert actual == expected
     end

@@ -14,7 +14,18 @@ defmodule Herenow.Captcha.HTTPAdapterTest do
     test "should return error" do
       Application.put_env(:recaptcha, :secret, "invalid")
 
-      assert {:error, {:unprocessable_entity, "Invalid captcha"}} == HTTPAdapter.verify("invalid")
+      actual = HTTPAdapter.verify("invalid")
+      expected = {:error,
+             {:validation,
+              [
+                %{
+                  "field" => nil,
+                  "message" => "Invalid captcha",
+                  "type" => :invalid_captcha
+                }
+              ]}}
+
+      assert actual == expected
     end
   end
 end
