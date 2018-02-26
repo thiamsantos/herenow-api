@@ -3,6 +3,9 @@ defmodule Herenow.Core.TokenTest do
   alias Herenow.Core.Token
 
   @two_hours_seconds 2 * 60 * 60
+  @secret "supersecret"
+  @current_time 42
+  @expiration_time 12
 
   defp decode_token_parts(part) do
     part
@@ -10,9 +13,9 @@ defmodule Herenow.Core.TokenTest do
     |> Jason.decode!()
   end
 
-  describe "generate/1" do
+  describe "generate/4" do
     test "should return a valid headless jwt with two parts" do
-      token = Token.generate(%{user_id: 1})
+      token = Token.generate(%{user_id: 1}, @secret, @expiration_time,  @current_time)
 
       expected = 2
 
@@ -25,7 +28,7 @@ defmodule Herenow.Core.TokenTest do
     end
 
     test "should return one map after decoded" do
-      token = Token.generate(%{user_id: 1})
+      token = Token.generate(%{user_id: 1}, @secret, @expiration_time, @current_time)
 
       actual =
         token
@@ -38,7 +41,7 @@ defmodule Herenow.Core.TokenTest do
 
     test "should return a valid jwt" do
       current_time = 20
-      token = Token.generate(%{user_id: 1}, current_time)
+      token = Token.generate(%{user_id: 1}, @secret, @two_hours_seconds, current_time)
 
       expected = %{
         "user_id" => 1,
@@ -46,14 +49,31 @@ defmodule Herenow.Core.TokenTest do
         "exp" => current_time + @two_hours_seconds
       }
 
-      assert Token.verify(token, 30) == {:ok, expected}
+      assert Token.verify(token, @secret, current_time + 10) == {:ok, expected}
     end
+
   end
 
-  describe "verify/1" do
-    test " should pass down errors" do
-      expected = {:error, "Some reason"}
-      assert Token.verify(expected) == expected
+  describe "verify/3" do
+
+    test "should return error for a invalid signature" do
+      current_time = 20
+      token = Token.generate(%{user_id: 1}, "a different secret", @two_hours_seconds, current_time)
+
+      actual = Token.verify(token, @secret, current_time)
+      expected = {:error, "Invalid signature"}
+
+      assert actual == expected
+    end
+
+    test "should return error for a expired token" do
+      current_time = 20
+      token = Token.generate(%{user_id: 1}, @secret, @two_hours_seconds, current_time)
+
+      actual = Token.verify(token, @secret, current_time + @two_hours_seconds + 1)
+      expected = {:error, "Expired token"}
+
+      assert actual == expected
     end
   end
 end

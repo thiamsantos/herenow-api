@@ -4,35 +4,32 @@ defmodule Herenow.Core.Token do
   """
   alias Joken
 
-  @secret Application.get_env(:herenow, :secret)
-  @expiration_time 2 * 60 * 60
+  def generate(payload, secret, expiration_time) do
+    generate(payload, secret, expiration_time, Joken.current_time())
+  end
 
-  @spec generate(map, integer) :: String.t()
-  def generate(payload, iat \\ Joken.current_time()) do
+  @spec generate(map, String.t(), integer, integer) :: String.t()
+  def generate(payload, secret, expiration_time, current_time) do
     payload
     |> Joken.token()
-    |> Joken.with_exp(iat + @expiration_time)
-    |> Joken.with_iat(iat)
-    |> Joken.with_signer(Joken.hs256(@secret))
+    |> Joken.with_exp(current_time + expiration_time)
+    |> Joken.with_iat(current_time)
+    |> Joken.with_signer(Joken.hs256(secret))
     |> Joken.sign()
     |> Joken.get_compact()
     |> split_header()
   end
 
-  def verify({:error, reason}) do
-    {:error, reason}
+  def verify(encoded_token, secret) do
+    verify(encoded_token, secret, Joken.current_time())
   end
 
-  def verify({:ok, encoded_token}) do
-    verify(encoded_token)
-  end
-
-  def verify(encoded_token, now \\ Joken.current_time()) do
+  def verify(encoded_token, secret, current_time) do
     encoded_token
     |> concat_header()
     |> Joken.token()
-    |> Joken.with_signer(Joken.hs256(@secret))
-    |> Joken.with_validation("exp", &(&1 > now), "Expired token")
+    |> Joken.with_signer(Joken.hs256(secret))
+    |> Joken.with_validation("exp", &(&1 > current_time), "Expired token")
     |> Joken.verify!()
   end
 

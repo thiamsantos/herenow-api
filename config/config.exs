@@ -1,6 +1,8 @@
 use Mix.Config
 
-config :herenow, ecto_repos: [Herenow.Repo]
+config :herenow,
+  ecto_repos: [Herenow.Repo],
+  account_activation_expiration_time: 7200 # 2 hours in seconds: 2 * 60 * 60
 
 config :herenow, HerenowWeb.Endpoint,
   url: [host: "localhost"],

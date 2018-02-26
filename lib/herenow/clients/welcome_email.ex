@@ -8,6 +8,12 @@ defmodule Herenow.Clients.WelcomeEmail do
   alias Herenow.Core.Token
   alias Herenow.Mailer
 
+  @secret Application.get_env(:herenow, :account_activation_secret)
+  @expiration_time Application.get_env(
+    :herenow,
+    :account_activation_expiration_time
+  )
+
   @spec send(%Client{}) :: Email.t()
   def send(client) do
     client
@@ -17,7 +23,7 @@ defmodule Herenow.Clients.WelcomeEmail do
 
   @spec create(%Client{}) :: Email.t()
   def create(client) do
-    token = Token.generate(%{"client_id" => client.id})
+    token = Token.generate(%{"client_id" => client.id}, @secret, @expiration_time)
 
     body =
       Template.render(:welcome_email, %{
