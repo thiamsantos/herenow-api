@@ -5,7 +5,7 @@ defmodule HerenowWeb.Explode do
 
   alias Plug.Conn
 
-  @spec reply(Conn.t(), atom, List.t()) :: Conn.t()
+  @spec reply(Conn.t(), atom, list) :: Conn.t()
   def reply(conn, type, errors) do
     status =
       type
@@ -38,7 +38,7 @@ defmodule HerenowWeb.Explode do
     |> Conn.halt()
   end
 
-  @spec build_payload(String.t(), atom, List.t()) :: map
+  @spec build_payload(String.t(), atom, list) :: map
   defp build_payload(message, type, errors) do
     %{
       "code" => get_error_code(type),
@@ -71,7 +71,6 @@ defmodule HerenowWeb.Explode do
   defp get_error_code(:cast), do: 102
   defp get_error_code(:length), do: 103
   defp get_error_code(:required), do: 104
-  defp get_error_code(:invalid_schema), do: 105
   defp get_error_code(:format), do: 106
   defp get_error_code(:unique), do: 107
 

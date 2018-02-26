@@ -1,4 +1,4 @@
-defmodule Herenow.Clients.Registration do
+defmodule Herenow.Clients.Validation.Registration do
   @moduledoc """
   Schema of a client registration request
   """

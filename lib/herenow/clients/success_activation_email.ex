@@ -1,11 +1,10 @@
-defmodule Herenow.Clients.WelcomeEmail do
+defmodule Herenow.Clients.SuccessActivationEmail do
   @moduledoc """
   Create welcome emails
   """
   alias Bamboo.Email
   alias Herenow.Clients.Storage.Client
   alias Herenow.Core.Email.Template
-  alias Herenow.Clients.Token
   alias Herenow.Mailer
 
   @spec send(%Client{}) :: Email.t()
@@ -17,21 +16,16 @@ defmodule Herenow.Clients.WelcomeEmail do
 
   @spec create(%Client{}) :: Email.t()
   def create(client) do
-    token = Token.generate_activation_token(%{"client_id" => client.id})
-
     body =
-      Template.render(:welcome_email, %{
-        "name" => client.name,
-        "activation_url" => token,
-        "login_url" => token,
-        "email" => client.email,
+      Template.render(:activation_success, %{
+        "login_url" => "https://herenow.com.br/login",
         "year" => DateTime.utc_now().year
       })
 
     Email.new_email(
       to: {client.name, client.email},
       from: {"HereNow Contas", "contas@herenow.com.br"},
-      subject: "Bem vindo #{client.name}!!!",
+      subject: "Conta ativada com sucesso!",
       html_body: body.html,
       text_body: body.text
     )

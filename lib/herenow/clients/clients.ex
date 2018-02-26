@@ -4,14 +4,16 @@ defmodule Herenow.Clients do
   """
   alias Ecto.Changeset
   alias Herenow.Core.ErrorMessage
-  alias Herenow.Clients.Storage.{Client, Mutator, Error}
-  alias Herenow.Clients.{WelcomeEmail, Registration}
+  alias Herenow.Clients.Storage.{Client, Mutator, Error, Loader}
+  alias Herenow.Clients.{WelcomeEmail, Token, SuccessActivationEmail}
+  alias Herenow.Clients.Validation
+  alias Herenow.Clients.Validation.{Registration, Activation}
 
   @captcha Application.get_env(:herenow, :captcha)
 
   @spec register(map) :: {:ok, %Client{}} | ErrorMessage.t()
   def register(params) do
-    with {:ok} <- validate_params(params),
+    with {:ok} <- Validation.validate(Registration, params),
          {:ok} <- @captcha.verify(params["captcha"]),
          {:ok, client} <- Mutator.create(params),
          _email <- WelcomeEmail.send(client) do
@@ -21,25 +23,35 @@ defmodule Herenow.Clients do
     end
   end
 
+  @spec activate(map) :: {:ok, %Client{}} | ErrorMessage.t()
+  def activate(params) do
+    with {:ok} <- Validation.validate(Activation, params),
+         {:ok} <- @captcha.verify(params["captcha"]),
+         {:ok, payload} <- Token.verify_activation_token(params["token"]),
+         {:ok, verified_client} <- Mutator.verify(payload),
+         client <- Loader.get!(verified_client.client_id),
+         _email <- SuccessActivationEmail.send(client) do
+      {:ok, client}
+    else
+      {:error, reason} -> handle_error(reason)
+    end
+  end
+
   defp handle_error(reason) when is_tuple(reason), do: {:error, reason}
+
+  defp handle_error(reason) when is_binary(reason) do
+    type =
+      reason
+      |> String.downcase()
+      |> String.replace(" ", "_")
+      |> String.to_atom()
+
+    ErrorMessage.validation(nil, type, reason)
+  end
 
   defp handle_error(%Changeset{} = changeset) do
     changeset
     |> Error.traverse_errors()
     |> ErrorMessage.validation()
   end
-
-  defp validate_params(params) when is_map(params) do
-    changeset =
-      %Registration{}
-      |> Registration.changeset(params)
-
-    if changeset.valid? do
-      {:ok}
-    else
-      {:error, changeset}
-    end
-  end
-
-  defp validate_params(_), do: ErrorMessage.validation(nil, :invalid_schema, "Invalid schema")
 end

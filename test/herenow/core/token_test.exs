@@ -15,7 +15,7 @@ defmodule Herenow.Core.TokenTest do
 
   describe "generate/4" do
     test "should return a valid headless jwt with two parts" do
-      token = Token.generate(%{user_id: 1}, @secret, @expiration_time,  @current_time)
+      token = Token.generate(%{user_id: 1}, @secret, @expiration_time, @current_time)
 
       expected = 2
 
@@ -51,14 +51,14 @@ defmodule Herenow.Core.TokenTest do
 
       assert Token.verify(token, @secret, current_time + 10) == {:ok, expected}
     end
-
   end
 
   describe "verify/3" do
-
     test "should return error for a invalid signature" do
       current_time = 20
-      token = Token.generate(%{user_id: 1}, "a different secret", @two_hours_seconds, current_time)
+
+      token =
+        Token.generate(%{user_id: 1}, "a different secret", @two_hours_seconds, current_time)
 
       actual = Token.verify(token, @secret, current_time)
       expected = {:error, "Invalid signature"}
@@ -72,6 +72,13 @@ defmodule Herenow.Core.TokenTest do
 
       actual = Token.verify(token, @secret, current_time + @two_hours_seconds + 1)
       expected = {:error, "Expired token"}
+
+      assert actual == expected
+    end
+
+    test "invalid token" do
+      actual = Token.verify("invalidtoken", @secret)
+      expected = {:error, "Invalid signature"}
 
       assert actual == expected
     end

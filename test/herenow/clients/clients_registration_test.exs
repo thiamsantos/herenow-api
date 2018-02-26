@@ -1,4 +1,4 @@
-defmodule HerenowWeb.ClientsTest do
+defmodule HerenowWeb.ClientsRegistrationTest do
   use Herenow.DataCase
   use Bamboo.Test
 
@@ -290,23 +290,6 @@ defmodule HerenowWeb.ClientsTest do
       {:ok, client} = Clients.register(@valid_attrs)
 
       assert_delivered_email(WelcomeEmail.create(client))
-    end
-
-    test "client should be a map" do
-      actual = Clients.register("client")
-
-      expected =
-        {:error,
-         {:validation,
-          [
-            %{
-              "field" => nil,
-              "message" => "Invalid schema",
-              "type" => :invalid_schema
-            }
-          ]}}
-
-      assert actual == expected
     end
   end
 end
