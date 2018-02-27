@@ -48,7 +48,7 @@ defmodule Herenow.Clients do
     with {:ok} <- Validation.validate(ActivationRequest, params),
          {:ok} <- @captcha.verify(params["captcha"]),
          _email <- RequestActivationEmail.send(params["email"]) do
-      {:ok, %{"message" => "Email successfully sended!"}}
+      {:ok, %{message: "Email successfully sended!"}}
     else
       {:error, reason} -> handle_error(reason)
     end

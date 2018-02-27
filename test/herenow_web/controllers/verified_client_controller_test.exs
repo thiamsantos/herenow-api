@@ -54,7 +54,7 @@ defmodule HerenowWeb.VerifiedClientControllerTest do
 
       conn =
         conn
-        |> post(verified_client_path(conn, :create), attrs)
+        |> post(client_path(conn, :verify), attrs)
 
       response = json_response(conn, 200)
 
@@ -78,7 +78,7 @@ defmodule HerenowWeb.VerifiedClientControllerTest do
 
       conn =
         conn
-        |> post(verified_client_path(conn, :create), attrs)
+        |> post(client_path(conn, :verify), attrs)
 
       actual = json_response(conn, 422)
 
@@ -104,7 +104,7 @@ defmodule HerenowWeb.VerifiedClientControllerTest do
 
       conn =
         conn
-        |> post(verified_client_path(conn, :create), attrs)
+        |> post(client_path(conn, :verify), attrs)
 
       actual = json_response(conn, 422)
 
@@ -126,7 +126,7 @@ defmodule HerenowWeb.VerifiedClientControllerTest do
 
       conn =
         conn
-        |> post(verified_client_path(conn, :create), attrs)
+        |> post(client_path(conn, :verify), attrs)
 
       actual = json_response(conn, 422)
 
@@ -148,7 +148,7 @@ defmodule HerenowWeb.VerifiedClientControllerTest do
 
       conn =
         conn
-        |> post(verified_client_path(conn, :create), attrs)
+        |> post(client_path(conn, :verify), attrs)
 
       actual = json_response(conn, 422)
 
@@ -178,7 +178,7 @@ defmodule HerenowWeb.VerifiedClientControllerTest do
 
       conn =
         conn
-        |> post(verified_client_path(conn, :create), attrs)
+        |> post(client_path(conn, :verify), attrs)
 
       actual = json_response(conn, 422)
 
@@ -200,7 +200,7 @@ defmodule HerenowWeb.VerifiedClientControllerTest do
     test "client not registered", %{conn: conn} do
       conn =
         conn
-        |> post(verified_client_path(conn, :create), @valid_attrs)
+        |> post(client_path(conn, :verify), @valid_attrs)
 
       actual = json_response(conn, 422)
 
@@ -232,7 +232,7 @@ defmodule HerenowWeb.VerifiedClientControllerTest do
 
       conn =
         conn
-        |> post(verified_client_path(conn, :create), attrs)
+        |> post(client_path(conn, :verify), attrs)
 
       actual = json_response(conn, 422)
 

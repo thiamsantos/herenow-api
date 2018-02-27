@@ -16,4 +16,8 @@ defmodule HerenowWeb.ClientView do
       street_name: client.street_name
     }
   end
+
+  def render("request_activation_send.json", %{response: response}) do
+    %{message: response.message}
+  end
 end

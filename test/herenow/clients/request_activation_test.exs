@@ -148,7 +148,7 @@ defmodule HerenowWeb.ClientsActivationRequestTest do
 
     test "client not registered" do
       actual = Clients.request_activation(@valid_attrs)
-      expected = {:ok, %{"message" => "Email successfully sended!"}}
+      expected = {:ok, %{message: "Email successfully sended!"}}
 
       assert actual == expected
       assert_delivered_email(EmailNotRegistered.create(@valid_attrs["email"]))
@@ -157,7 +157,7 @@ defmodule HerenowWeb.ClientsActivationRequestTest do
     test "client registered" do
       client = client_fixture()
       actual = Clients.request_activation(@valid_attrs)
-      expected = {:ok, %{"message" => "Email successfully sended!"}}
+      expected = {:ok, %{message: "Email successfully sended!"}}
 
       assert actual == expected
       assert_delivered_email(WelcomeEmail.create(client))

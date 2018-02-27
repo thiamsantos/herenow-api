@@ -181,4 +181,20 @@ defmodule HerenowWeb.ClientController do
       |> render("show.json", client: client)
     end
   end
+
+  def verify(conn, params) do
+    with {:ok, client} <- Clients.activate(params) do
+      conn
+      |> put_status(:ok)
+      |> render("show.json", client: client)
+    end
+  end
+
+  def request_activation(conn, params) do
+    with {:ok, response} <- Clients.request_activation(params) do
+      conn
+      |> put_status(:ok)
+      |> render("request_activation_send.json", response: response)
+    end
+  end
 end
