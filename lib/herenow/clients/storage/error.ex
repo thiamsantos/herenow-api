@@ -14,10 +14,10 @@ defmodule Herenow.Clients.Storage.Error do
         end)
 
       type =
-        if message == "has already been taken" do
-          :unique
-        else
-          opts[:validation]
+        case message do
+          "has already been taken" -> :unique
+          "does not exist" -> :not_exists
+          _ -> opts[:validation]
         end
 
       %{"type" => type, "message" => message}

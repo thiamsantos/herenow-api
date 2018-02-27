@@ -10,6 +10,7 @@ defmodule HerenowWeb.Router do
     pipe_through :api
 
     resources "/clients", ClientController, only: [:create]
+    resources "/verified_clients", VerifiedClientController, only: [:create]
   end
 
   if Mix.env() == :dev do

@@ -72,7 +72,7 @@ config :recaptcha,
 use Mix.Config
 
 config :herenow,
-  secret: "SECRET", # run `mix phx.gen.secret 512` to generate a secret
+  login_secret: "SECRET", # run `mix phx.gen.secret 512` to generate a secret
   account_activation_secret: "SECRET" # run `mix phx.gen.secret 512` to generate a secret 
 
 config :herenow, Herenow.Repo,

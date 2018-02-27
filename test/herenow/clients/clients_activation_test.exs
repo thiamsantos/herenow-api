@@ -165,7 +165,7 @@ defmodule HerenowWeb.ClientsActivationTest do
             %{
               "field" => "client_id",
               "message" => "does not exist",
-              "type" => nil
+              "type" => :not_exists
             }
           ]}}
 
@@ -225,7 +225,7 @@ defmodule HerenowWeb.ClientsActivationTest do
       assert client.updated_at == activated_client.updated_at
     end
 
-    test "after activation, the user gets an eail" do
+    test "after activation, the user gets an email" do
       client = client_fixture()
 
       token = Token.generate(%{"client_id" => client.id}, @secret, @expiration_time)
