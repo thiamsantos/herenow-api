@@ -23,6 +23,7 @@
     "apidoc": "^0.17.6",
     "apidoc-core": "https://github.com/techgaun/apidoc-core/tarball/elixir-syntax",
     "commitizen": "^2.9.6",
+    "cz-conventional-changelog": "^2.1.0",
     "http-server": "^0.10.0",
     "husky": "^0.14.3",
     "mjml": "^3.3.5"
@@ -30,5 +31,10 @@
   "apidoc": {
     "title": "Phoenix demo",
     "url": "https://api.herenow.com.br"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
