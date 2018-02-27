@@ -34,6 +34,7 @@ defmodule HerenowWeb.VerifiedClientControllerTest do
       "city" => Address.city(),
       "email" => Internet.email()
     }
+
     {:ok, client} =
       attrs
       |> Enum.into(@valid_attrs)
@@ -43,11 +44,13 @@ defmodule HerenowWeb.VerifiedClientControllerTest do
   end
 
   describe "verify/2" do
-    test "renders client when data is valid" , %{conn: conn} do
+    test "renders client when data is valid", %{conn: conn} do
       client = client_fixture()
       token = Token.generate(%{"client_id" => client.id}, @secret, @expiration_time)
-      attrs = @valid_attrs
-      |> Map.put("token", token)
+
+      attrs =
+        @valid_attrs
+        |> Map.put("token", token)
 
       conn =
         conn
@@ -153,11 +156,11 @@ defmodule HerenowWeb.VerifiedClientControllerTest do
         "code" => 100,
         "message" => "Validation failed!",
         "errors" => [
-         %{
-                  "code" => 108,
-                  "field" => nil,
-                  "message" => "Invalid signature"
-                }
+          %{
+            "code" => 108,
+            "field" => nil,
+            "message" => "Invalid signature"
+          }
         ]
       }
 
@@ -183,18 +186,18 @@ defmodule HerenowWeb.VerifiedClientControllerTest do
         "code" => 100,
         "message" => "Validation failed!",
         "errors" => [
-         %{
-                  "code" => 109,
-                  "field" => nil,
-                  "message" => "Expired token"
-                }
+          %{
+            "code" => 109,
+            "field" => nil,
+            "message" => "Expired token"
+          }
         ]
       }
 
       assert actual == expected
     end
 
-    test "client not registered" , %{conn: conn} do
+    test "client not registered", %{conn: conn} do
       conn =
         conn
         |> post(verified_client_path(conn, :create), @valid_attrs)
@@ -205,18 +208,18 @@ defmodule HerenowWeb.VerifiedClientControllerTest do
         "code" => 100,
         "message" => "Validation failed!",
         "errors" => [
-         %{
-                  "code" => 110,
-                  "field" => "client_id",
-                  "message" => "does not exist"
-                }
+          %{
+            "code" => 110,
+            "field" => "client_id",
+            "message" => "does not exist"
+          }
         ]
       }
 
       assert actual == expected
     end
 
-    test "client cannot be activated twice" , %{conn: conn} do
+    test "client cannot be activated twice", %{conn: conn} do
       client = client_fixture()
 
       token = Token.generate(%{"client_id" => client.id}, @secret, @expiration_time)
@@ -226,6 +229,7 @@ defmodule HerenowWeb.VerifiedClientControllerTest do
         |> Map.put("token", token)
 
       Mutator.verify(%{client_id: client.id})
+
       conn =
         conn
         |> post(verified_client_path(conn, :create), attrs)
@@ -236,11 +240,11 @@ defmodule HerenowWeb.VerifiedClientControllerTest do
         "code" => 100,
         "message" => "Validation failed!",
         "errors" => [
-         %{
-                  "code" => 107,
-                  "field" => "client_id",
-                  "message" => "has already been taken"
-                }
+          %{
+            "code" => 107,
+            "field" => "client_id",
+            "message" => "has already been taken"
+          }
         ]
       }
 
