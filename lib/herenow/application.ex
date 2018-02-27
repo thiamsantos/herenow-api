@@ -16,7 +16,7 @@ defmodule Herenow.Application do
       # Start the Ecto repository
       supervisor(Herenow.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(HerenowWeb.Endpoint, []),
+      supervisor(HerenowWeb.Endpoint, [])
       # Start your own worker by calling:
       #   Herenow.Worker.start_link(arg1, arg2, arg3)
       # worker(Herenow.Worker, [arg1, arg2, arg3]),

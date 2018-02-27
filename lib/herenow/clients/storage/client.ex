@@ -4,59 +4,29 @@ defmodule Herenow.Clients.Storage.Client do
   """
   use Ecto.Schema
   import Ecto.Changeset
-  alias Herenow.Clients.Storage.{Client, EctoHashedPassword}
-
-  @accepted_fields [
-    :email,
-    :password,
-    :is_verified,
-    :name,
-    :legal_name,
-    :is_company,
-    :segment,
-    :cep,
-    :street,
-    :address_number,
-    :city,
-    :state
-  ]
-
-  @required_fields [
-    :email,
-    :password,
-    :name,
-    :segment,
-    :cep,
-    :street,
-    :address_number,
-    :city,
-    :state
-  ]
+  alias Herenow.Clients.Storage.{EctoHashedPassword, Fields}
 
   schema "clients" do
-    field :address_number, :string
-    field :cep, :string
+    field :street_number, :string
+    field :postal_code, :string
     field :city, :string
     field :email, :string
     field :is_company, :boolean
-    field :is_verified, :boolean
     field :legal_name, :string
     field :name, :string
     field :password, EctoHashedPassword
     field :segment, :string
     field :state, :string
-    field :street, :string
+    field :street_name, :string
 
     timestamps()
   end
 
   @doc false
-  def changeset(%Client{} = client, attrs) do
+  def changeset(%__MODULE__{} = client, attrs) do
     client
-    |> cast(attrs, @accepted_fields)
-    |> validate_required(@required_fields)
+    |> cast(attrs, Fields.required_fields() ++ Fields.optional_fields())
+    |> validate_required(Fields.required_fields())
     |> unique_constraint(:email)
-    |> validate_length(:email, max: 254)
-    |> validate_length(:cep, is: 8)
   end
 end

@@ -2,64 +2,56 @@ defmodule Herenow.Clients do
   @moduledoc """
   The Clients context.
   """
-  alias Herenow.Clients.WelcomeEmail
-  alias Herenow.Clients.Storage.{Client, Loader, Mutator}
-  alias Herenow.Core.{Token, ErrorMessage}
-  alias Herenow.Mailer
+  alias Ecto.Changeset
+  alias Herenow.Core.ErrorMessage
+  alias Herenow.Clients.Storage.{Client, Mutator, Error, Loader}
+  alias Herenow.Clients.{WelcomeEmail, Token, SuccessActivationEmail}
+  alias Herenow.Clients.Validation
+  alias Herenow.Clients.Validation.{Registration, Activation}
 
   @captcha Application.get_env(:herenow, :captcha)
 
-  @spec register(map) :: {:ok, %Client{}} | {:error, {atom, map}}
+  @spec register(map) :: {:ok, %Client{}} | ErrorMessage.t()
   def register(params) do
-    with :ok <- validate_params(params),
-      {:ok} <- @captcha.verify(params["captcha"]),
-      {:ok} <- is_email_registered?(params["email"]),
-      {:ok, client} <- Mutator.create(params) do
-        %{client_id: client.id}
-        |> Token.generate()
-        |> WelcomeEmail.create(client)
-        |> Mailer.deliver_now
-
-        client
+    with {:ok} <- Validation.validate(Registration, params),
+         {:ok} <- @captcha.verify(params["captcha"]),
+         {:ok, client} <- Mutator.create(params),
+         _email <- WelcomeEmail.send(client) do
+      {:ok, client}
     else
       {:error, reason} -> handle_error(reason)
     end
   end
 
-  defp handle_error(_) do
-
-  end
-
-  @spec is_email_registered?(String.t) :: {:ok} | ErrorMessage.t
-  defp is_email_registered?(email) do
-    if Loader.is_email_registered?(email) == true do
-      {:ok}
+  @spec activate(map) :: {:ok, %Client{}} | ErrorMessage.t()
+  def activate(params) do
+    with {:ok} <- Validation.validate(Activation, params),
+         {:ok} <- @captcha.verify(params["captcha"]),
+         {:ok, payload} <- Token.verify_activation_token(params["token"]),
+         {:ok, verified_client} <- Mutator.verify(payload),
+         client <- Loader.get!(verified_client.client_id),
+         _email <- SuccessActivationEmail.send(client) do
+      {:ok, client}
     else
-      ErrorMessage.create(:unprocessable_entity, "Email already in use")
+      {:error, reason} -> handle_error(reason)
     end
   end
 
-  defp validate_params(params) when is_map(params) do
-    schema = %{
-      "address_number" => :string,
-      "cep" => :string,
-      "city" => :string,
-      "email" => :string,
-      "is_company" => :boolean,
-      "is_verified" => :boolean,
-      "legal_name" => [:string, :not_required],
-      "name" => :string,
-      "password" => :string,
-      "segment" => :string,
-      "state" => :string,
-      "street" => :string,
-      "captcha" => :string
-    }
+  defp handle_error(reason) when is_tuple(reason), do: {:error, reason}
 
-    Skooma.valid?(params, schema)
+  defp handle_error(reason) when is_binary(reason) do
+    type =
+      reason
+      |> String.downcase()
+      |> String.replace(" ", "_")
+      |> String.to_atom()
+
+    ErrorMessage.validation(nil, type, reason)
   end
 
-  defp validate_params(_) do
-    ErrorMessage.create(:unprocessable_entity, "Invalid schema")
+  defp handle_error(%Changeset{} = changeset) do
+    changeset
+    |> Error.traverse_errors()
+    |> ErrorMessage.validation()
   end
 end

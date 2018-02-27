@@ -3,7 +3,9 @@ defmodule Herenow.Core.ErrorMessageTest do
 
   alias Herenow.Core.ErrorMessage
 
-  test "create/2 should return a tuple" do
-    assert {:error, {:type, %{"message" => "message"}}} = ErrorMessage.create(:type, "message")
+  describe "create/2" do
+    test "should return a tuple" do
+      assert {:error, {:type, "message"}} == ErrorMessage.create(:type, "message")
+    end
   end
 end

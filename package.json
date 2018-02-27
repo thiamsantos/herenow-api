@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "Phoenix demo",
   "scripts": {
-    "precommit": "mix credo --strict && mix dialyzer && mix test",
-    "apidoc": "apidoc -i lib/herenow_web -o apidocs/",
-    "serve:apidoc": "http-server apidocs/"
+    "apidoc": "apidoc -i lib/herenow_web -o apidocs/ --debug",
+    "serve:apidoc": "http-server apidocs/",
+    "build:email": "mjml priv/email_templates/mjml/*.mjml -o priv/email_templates/html -m",
+    "precommit": "npm run build:email && mix format && mix credo --strict && mix dialyzer && mix test"
   },
   "repository": {
     "type": "git",
@@ -19,8 +20,10 @@
   "homepage": "https://github.com/herenow-team/core-api#readme",
   "devDependencies": {
     "apidoc": "^0.17.6",
+    "apidoc-core": "https://github.com/techgaun/apidoc-core/tarball/elixir-syntax",
     "http-server": "^0.10.0",
-    "husky": "^0.14.3"
+    "husky": "^0.14.3",
+    "mjml": "^3.3.5"
   },
   "apidoc": {
     "title": "Phoenix demo",

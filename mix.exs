@@ -6,11 +6,11 @@ defmodule Herenow.Mixfile do
       app: :herenow,
       version: "0.0.1",
       elixir: "~> 1.4",
-      elixirc_paths: elixirc_paths(Mix.env),
-      compilers: [:phoenix] ++ Mix.compilers,
+      elixirc_paths: elixirc_paths(Mix.env()),
+      compilers: [:phoenix] ++ Mix.compilers(),
       test_coverage: [tool: ExCoveralls],
-      preferred_cli_env: ["coveralls": :test],
-      start_permanent: Mix.env == :prod,
+      preferred_cli_env: [coveralls: :test],
+      start_permanent: Mix.env() == :prod,
       dialyzer: [plt_add_deps: :transitive],
       aliases: aliases(),
       deps: deps()
@@ -29,7 +29,7 @@ defmodule Herenow.Mixfile do
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_),     do: ["lib"]
+  defp elixirc_paths(_), do: ["lib"]
 
   # Specifies your project dependencies.
   #
@@ -49,9 +49,11 @@ defmodule Herenow.Mixfile do
       {:recaptcha, "~> 2.0"},
       {:comeonin, "~> 4.1"},
       {:pbkdf2_elixir, "~> 0.12"},
-      {:poison, "~> 3.1", override: true},
       {:bamboo, "~> 0.8.0"},
-      {:skooma, "~> 0.2.0"}
+      {:faker, "~> 0.9", only: :test},
+      {:jason, "~> 1.0"},
+      {:hackney, "~> 1.11", override: true},
+      {:mustache, "~> 0.3.0"}
     ]
   end
 
@@ -65,7 +67,7 @@ defmodule Herenow.Mixfile do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      "test": ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
 end

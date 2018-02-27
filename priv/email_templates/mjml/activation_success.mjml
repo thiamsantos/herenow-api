@@ -1,0 +1,62 @@
+<mjml>
+  <mj-body font-family="Helvetica Neue">
+    <mj-container>
+      <mj-section background-color="#f2f4f6" full-width="full-width">
+        <mj-column>
+          <mj-text align="center" font-size="20">
+            <h1>HereNow</h1>
+          </mj-text>
+        </mj-column>
+      </mj-section>
+
+      <mj-section>
+        <mj-column>
+          <mj-text font-size="19">
+            A sua conta foi ativado com sucesso!
+          </mj-text>
+
+          <mj-text font-size="16">
+            Obrigado por testar HereNow. Estamos entusiasmados por tê-lo a bordo.
+          </mj-text>
+          <mj-text font-size="16">
+            Acesse agora a sua conta:
+          </mj-text>
+
+          <mj-button background-color="#3869D4" href="{{login_url}}" font-size="18">
+            Entrar na HereNow
+          </mj-button>
+        </mj-column>
+      </mj-section>
+
+      <mj-section>
+        <mj-column>
+         <mj-text font-size="16">
+          Se você tiver qualquer dúvidas, fique à vontade para enviar um email para a nossa equipe de atendimento ao cliente. (Nós somos rápidos em responder.)
+          </mj-text>
+
+          <mj-text font-size="16">
+            Obrigado, time da HereNow.
+          </mj-text>
+
+          <mj-text font-size="16">
+            P.S. Precisa de ajuda imediata? Responda a este email, o time de suporte da HereNow sempre está disposto a ajudar!
+          </mj-text>
+        </mj-column>
+      </mj-section>
+
+      <mj-section background-color="#f2f4f6" full-width="full-width">
+        <mj-column>
+          <mj-text align="center" font-size="12">
+            &copy; {{year}} HereNow. Todo os direitos reservados.
+          </mj-text>
+          <mj-text align="center" font-size="12">
+            HereNow Inc<br>
+            Saco Grande, Florianópolis - SC<br>
+            Rodovia José Carlos Daux, 4150<br>
+            Sala 01<br>
+          </mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-container>
+  </mj-body>
+</mjml>
