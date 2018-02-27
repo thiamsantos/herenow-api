@@ -1,17 +1,17 @@
-defmodule Herenow.Clients.Validation.Activation do
+defmodule Herenow.Clients.Validation.ActivationRequest do
   @moduledoc """
-  Schema of a client activation
+  Schema of a request for a client activation
   """
   use Ecto.Schema
   import Ecto.Changeset
 
   @fields [
-    :token,
+    :email,
     :captcha
   ]
 
   embedded_schema do
-    field :token, :string
+    field :email, :string
     field :captcha, :string
   end
 
@@ -20,5 +20,7 @@ defmodule Herenow.Clients.Validation.Activation do
     activation
     |> cast(attrs, @fields)
     |> validate_required(@fields)
+    |> validate_length(:email, max: 254)
+    |> validate_format(:email, ~r/@/)
   end
 end

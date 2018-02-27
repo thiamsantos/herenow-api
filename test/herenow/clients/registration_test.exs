@@ -4,7 +4,7 @@ defmodule HerenowWeb.ClientsRegistrationTest do
 
   alias Faker.{Name, Address, Commerce, Internet, Company}
   alias Herenow.Clients.Storage.{Mutator, Loader}
-  alias Herenow.Clients.WelcomeEmail
+  alias Herenow.Clients.Email.WelcomeEmail
   alias Herenow.Clients
 
   @valid_attrs %{

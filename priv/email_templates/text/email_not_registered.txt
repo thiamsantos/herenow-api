@@ -1,7 +1,8 @@
-A sua conta foi ativado com sucesso!
+Olá, parece que alguém acaba de tentar usar seu email para ativar uma conta na HereNow.
 
-Obrigado por testar HereNow. Estamos entusiasmados por tê-lo a bordo.
-Acesse agora a sua conta: {{login_url}}
+Se foi você tenha certeza de preencher o formulário de registro antes de continuar. {{register_url}}
+
+Se não foi você nós lamentamos muito o incômodo. Você pode ignorar esse email.
 
 Se você tiver qualquer dúvida, fique à vontade para enviar um email para a nossa equipe de atendimento ao cliente. (Nós somos rápidos em responder.)
 

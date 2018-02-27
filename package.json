@@ -6,7 +6,8 @@
     "apidoc": "apidoc -i lib/herenow_web -o apidocs/ --debug",
     "serve:apidoc": "http-server apidocs/",
     "build:email": "mjml priv/email_templates/mjml/*.mjml -o priv/email_templates/html -m",
-    "precommit": "npm run build:email && mix format && mix credo --strict && mix dialyzer && mix test"
+    "precommit": "npm run build:email && mix format && mix credo --strict && mix dialyzer && mix test",
+    "cm": "git-cz"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
   "devDependencies": {
     "apidoc": "^0.17.6",
     "apidoc-core": "https://github.com/techgaun/apidoc-core/tarball/elixir-syntax",
+    "commitizen": "^2.9.6",
     "http-server": "^0.10.0",
     "husky": "^0.14.3",
     "mjml": "^3.3.5"

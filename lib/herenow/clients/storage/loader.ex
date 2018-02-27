@@ -17,4 +17,6 @@ defmodule Herenow.Clients.Storage.Loader do
   def all, do: Repo.all(Queries.all())
 
   def get!(id), do: Repo.get!(Client, id)
+
+  def get_one_by_email(email), do: Repo.one(Queries.one_by_email(email))
 end

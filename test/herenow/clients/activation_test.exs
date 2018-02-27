@@ -6,7 +6,7 @@ defmodule HerenowWeb.ClientsActivationTest do
   alias Herenow.Core.Token
   alias Faker.{Name, Address, Commerce, Internet, Company}
   alias Herenow.Clients.Storage.{Mutator}
-  alias Herenow.Clients.SuccessActivationEmail
+  alias Herenow.Clients.Email.SuccessActivationEmail
 
   @expiration_time Application.get_env(
                      :herenow,
@@ -34,10 +34,7 @@ defmodule HerenowWeb.ClientsActivationTest do
       "email" => Internet.email()
     }
 
-    {:ok, client} =
-      attrs
-      |> Enum.into(attrs)
-      |> Mutator.create()
+    {:ok, client} = Mutator.create(attrs)
 
     client
   end

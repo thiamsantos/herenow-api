@@ -5,9 +5,15 @@ defmodule Herenow.Clients do
   alias Ecto.Changeset
   alias Herenow.Core.ErrorMessage
   alias Herenow.Clients.Storage.{Client, Mutator, Error, Loader}
-  alias Herenow.Clients.{WelcomeEmail, Token, SuccessActivationEmail}
+  alias Herenow.Clients.Token
   alias Herenow.Clients.Validation
-  alias Herenow.Clients.Validation.{Registration, Activation}
+  alias Herenow.Clients.Validation.{Registration, Activation, ActivationRequest}
+
+  alias Herenow.Clients.Email.{
+    WelcomeEmail,
+    SuccessActivationEmail,
+    RequestActivationEmail
+  }
 
   @captcha Application.get_env(:herenow, :captcha)
 
@@ -32,6 +38,17 @@ defmodule Herenow.Clients do
          client <- Loader.get!(verified_client.client_id),
          _email <- SuccessActivationEmail.send(client) do
       {:ok, client}
+    else
+      {:error, reason} -> handle_error(reason)
+    end
+  end
+
+  @spec request_activation(map) :: {:ok, map} | ErrorMessage.t()
+  def request_activation(params) do
+    with {:ok} <- Validation.validate(ActivationRequest, params),
+         {:ok} <- @captcha.verify(params["captcha"]),
+         _email <- RequestActivationEmail.send(params["email"]) do
+      {:ok, %{"message" => "Email successfully sended!"}}
     else
       {:error, reason} -> handle_error(reason)
     end
