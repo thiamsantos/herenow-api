@@ -4,7 +4,7 @@ defmodule Herenow.Clients.Validation do
   """
 
   def validate(schema, params) when is_map(params) do
-    changeset = schema.changeset(schema.__struct__, params)
+    changeset = schema.changeset(params)
 
     if changeset.valid? do
       {:ok}

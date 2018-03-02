@@ -16,8 +16,8 @@ defmodule Herenow.Clients.Validation.ActivationRequest do
   end
 
   @doc false
-  def changeset(%__MODULE__{} = activation, attrs) do
-    activation
+  def changeset(attrs) do
+    %__MODULE__{}
     |> cast(attrs, @fields)
     |> validate_required(@fields)
     |> validate_length(:email, max: 254)

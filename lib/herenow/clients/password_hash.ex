@@ -12,8 +12,12 @@ defmodule Herenow.Clients.PasswordHash do
   @doc """
   Check password against hash with currently used hashing algorithm.
   """
-  @spec verify(String.t(), String.t()) :: boolean
-  def verify(password, hash) do
-    Pbkdf2.checkpw(password, hash)
+  @spec valid?(String.t(), String.t()) :: {:ok} | {:error, :invalid_password}
+  def valid?(password, hash) do
+    if Pbkdf2.checkpw(password, hash) do
+      {:ok}
+    else
+      {:error, :invalid_password}
+    end
   end
 end

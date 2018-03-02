@@ -1,11 +1,9 @@
-defmodule HerenowWeb.ClientsActivationRequestTest do
-  use Herenow.DataCase
-  use Bamboo.Test
+defmodule Herenow.Clients.AuthenticationTest do
+  use Herenow.DataCase, async: true
 
   alias Herenow.Clients
-  alias Herenow.Clients.Email.{EmailNotRegistered, WelcomeEmail}
   alias Faker.{Name, Address, Commerce, Internet, Company}
-  alias Herenow.Clients.Storage.{Mutator}
+  alias Herenow.Clients.Storage.Mutator
 
   @client_attrs %{
     "street_number" => Address.building_number(),
@@ -22,8 +20,9 @@ defmodule HerenowWeb.ClientsActivationRequestTest do
     "email" => Internet.email()
   }
   @valid_attrs %{
-    "captcha" => "valid",
-    "email" => @client_attrs["email"]
+    "email" => @client_attrs["email"],
+    "password" => @client_attrs["password"],
+    "captcha" => "valid"
   }
 
   def client_fixture() do
@@ -32,13 +31,13 @@ defmodule HerenowWeb.ClientsActivationRequestTest do
     client
   end
 
-  describe "request_activation/1" do
+  describe "authenticate/1" do
     test "missing keys" do
       attrs =
         @valid_attrs
         |> Map.delete("email")
 
-      actual = Clients.request_activation(attrs)
+      actual = Clients.authenticate(attrs)
 
       expected =
         {:error,
@@ -73,7 +72,7 @@ defmodule HerenowWeb.ClientsActivationRequestTest do
           @valid_attrs
           |> Map.put(key, 9)
 
-        actual = Clients.request_activation(attrs)
+        actual = Clients.authenticate(attrs)
         assert actual == expected
       end)
     end
@@ -83,7 +82,7 @@ defmodule HerenowWeb.ClientsActivationRequestTest do
         @valid_attrs
         |> Map.put("captcha", "invalid")
 
-      actual = Clients.request_activation(attrs)
+      actual = Clients.authenticate(attrs)
 
       expected =
         {:error,
@@ -109,7 +108,7 @@ defmodule HerenowWeb.ClientsActivationRequestTest do
         @valid_attrs
         |> Map.put("email", email)
 
-      actual = Clients.request_activation(attrs)
+      actual = Clients.authenticate(attrs)
 
       expected =
         {:error,
@@ -130,7 +129,7 @@ defmodule HerenowWeb.ClientsActivationRequestTest do
         @valid_attrs
         |> Map.put("email", "invalidemail")
 
-      actual = Clients.request_activation(attrs)
+      actual = Clients.authenticate(attrs)
 
       expected =
         {:error,
@@ -146,21 +145,110 @@ defmodule HerenowWeb.ClientsActivationRequestTest do
       assert actual == expected
     end
 
-    test "client not registered" do
-      actual = Clients.request_activation(@valid_attrs)
-      expected = {:ok, %{message: "Email successfully sended!"}}
+    test "email is not registered" do
+      actual = Clients.authenticate(@valid_attrs)
+
+      expected =
+        {:error,
+         {:unauthorized,
+          [
+            %{
+              "message" => "Invalid credentials",
+              "type" => :invalid_credentials
+            }
+          ]}}
 
       assert actual == expected
-      assert_delivered_email(EmailNotRegistered.create(@valid_attrs["email"]))
     end
 
-    test "client registered" do
-      client = client_fixture()
-      actual = Clients.request_activation(@valid_attrs)
-      expected = {:ok, %{message: "Email successfully sended!"}}
+    test "wrong password" do
+      client_fixture()
+
+      attrs =
+        @valid_attrs
+        |> Map.put("password", "some other password")
+
+      actual = Clients.authenticate(attrs)
+
+      expected =
+        {:error,
+         {:unauthorized,
+          [
+            %{
+              "message" => "Invalid credentials",
+              "type" => :invalid_credentials
+            }
+          ]}}
 
       assert actual == expected
-      assert_delivered_email(WelcomeEmail.create(client))
+    end
+
+    test "account is not activated" do
+      client_fixture()
+
+      actual = Clients.authenticate(@valid_attrs)
+
+      expected =
+        {:error,
+         {:unauthorized,
+          [
+            %{
+              "message" => "Account not verified",
+              "type" => :account_not_verified
+            }
+          ]}}
+
+      assert actual == expected
+    end
+
+    test "should return a jwt with the client_id" do
+      client = client_fixture()
+      Mutator.verify(%{"client_id" => client.id})
+
+      {:ok, %{"token" => token}} = Clients.authenticate(@valid_attrs)
+
+      actual =
+        token
+        |> String.split(".")
+        |> List.first()
+        |> Base.decode64!(padding: false)
+        |> Jason.decode!()
+
+      assert actual["client_id"] == client.id
+    end
+
+    test "should return a headless jwt" do
+      client = client_fixture()
+      Mutator.verify(%{"client_id" => client.id})
+
+      {:ok, %{"token" => token}} = Clients.authenticate(@valid_attrs)
+
+      actual =
+        token
+        |> String.split(".")
+        |> length()
+
+      expected = 2
+
+      assert actual == expected
+    end
+
+    test "should return a token with two hours of life time" do
+      client = client_fixture()
+      Mutator.verify(%{"client_id" => client.id})
+
+      {:ok, %{"token" => token}} = Clients.authenticate(@valid_attrs)
+
+      actual =
+        token
+        |> String.split(".")
+        |> List.first()
+        |> Base.decode64!(padding: false)
+        |> Jason.decode!()
+
+      life_time = actual["exp"] - actual["iat"]
+
+      assert life_time == 7200
     end
   end
 end

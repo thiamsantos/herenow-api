@@ -1,5 +1,5 @@
 defmodule HerenowWeb.FallbackControllerTest do
-  use HerenowWeb.ConnCase
+  use HerenowWeb.ConnCase, async: true
 
   alias HerenowWeb.FallbackController
 
