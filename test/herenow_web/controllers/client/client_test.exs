@@ -1,4 +1,4 @@
-defmodule HerenowWeb.ClientControllerTest do
+defmodule HerenowWeb.Controllers.ClientTest do
   use HerenowWeb.ConnCase, async: true
 
   alias Faker.{Name, Address, Commerce, Internet, Company}

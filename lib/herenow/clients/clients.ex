@@ -61,12 +61,12 @@ defmodule Herenow.Clients do
     end
   end
 
-  @spec authenticate(map) :: {:ok, map} | ErrorMessage.t()
+  @spec authenticate(map) :: {:ok, String.t()} | ErrorMessage.t()
   def authenticate(params) do
     with {:ok} <- Validation.validate(Authentication, params),
          {:ok} <- @captcha.verify(params["captcha"]),
          {:ok, token} <- do_authenticate(params) do
-      {:ok, %{"token" => token}}
+      {:ok, token}
     else
       {:error, reason} -> handle_error(reason)
     end

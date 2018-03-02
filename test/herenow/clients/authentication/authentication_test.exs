@@ -205,7 +205,7 @@ defmodule Herenow.Clients.AuthenticationTest do
       client = client_fixture()
       Mutator.verify(%{"client_id" => client.id})
 
-      {:ok, %{"token" => token}} = Clients.authenticate(@valid_attrs)
+      {:ok, token} = Clients.authenticate(@valid_attrs)
 
       actual =
         token
@@ -221,7 +221,7 @@ defmodule Herenow.Clients.AuthenticationTest do
       client = client_fixture()
       Mutator.verify(%{"client_id" => client.id})
 
-      {:ok, %{"token" => token}} = Clients.authenticate(@valid_attrs)
+      {:ok, token} = Clients.authenticate(@valid_attrs)
 
       actual =
         token
@@ -237,7 +237,7 @@ defmodule Herenow.Clients.AuthenticationTest do
       client = client_fixture()
       Mutator.verify(%{"client_id" => client.id})
 
-      {:ok, %{"token" => token}} = Clients.authenticate(@valid_attrs)
+      {:ok, token} = Clients.authenticate(@valid_attrs)
 
       actual =
         token

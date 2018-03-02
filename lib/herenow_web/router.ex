@@ -6,12 +6,14 @@ defmodule HerenowWeb.Router do
     plug PlugSecex, except: ["content-security-policy"]
   end
 
-  scope "/", HerenowWeb do
+  scope "/v1", HerenowWeb do
     pipe_through :api
 
     resources "/clients", ClientController, only: [:create]
     post "/verified-clients", ClientController, :verify
     post "/clients/request-activation", ClientController, :request_activation
+
+    post "/auth/identity", AuthController, :create
   end
 
   if Mix.env() == :dev do

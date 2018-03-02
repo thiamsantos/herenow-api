@@ -43,16 +43,21 @@ defmodule HerenowWeb.Explode do
     %{
       "code" => get_error_code(type),
       "message" => message,
-      "errors" => build_errors(errors)
+      "errors" => build_errors(errors, type)
     }
   end
 
-  defp build_errors(errors) do
+  defp build_errors(errors, :validation) do
     errors
-    |> Enum.map(&build_error/1)
+    |> Enum.map(&build_validation_error/1)
   end
 
-  defp build_error(error) do
+  defp build_errors(errors, :unauthorized) do
+    errors
+    |> Enum.map(&build_authorization_error/1)
+  end
+
+  defp build_validation_error(error) do
     %{
       "message" => error["message"],
       "code" => get_error_code(error["type"]),
@@ -60,10 +65,19 @@ defmodule HerenowWeb.Explode do
     }
   end
 
+  defp build_authorization_error(error) do
+    %{
+      "message" => error["message"],
+      "code" => get_error_code(error["type"])
+    }
+  end
+
   defp get_message(:validation), do: "Validation failed!"
+  defp get_message(:unauthorized), do: "Authorization failed!"
 
   defp get_status_code(:validation), do: 422
   defp get_status_code(:not_found), do: 404
+  defp get_status_code(:unauthorized), do: 401
 
   @spec get_error_code(atom) :: integer
   defp get_error_code(:validation), do: 100
@@ -78,4 +92,8 @@ defmodule HerenowWeb.Explode do
   defp get_error_code(:not_exists), do: 110
 
   defp get_error_code(:not_found), do: 200
+
+  defp get_error_code(:unauthorized), do: 300
+  defp get_error_code(:invalid_credentials), do: 301
+  defp get_error_code(:account_not_verified), do: 302
 end
