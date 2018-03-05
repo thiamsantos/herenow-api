@@ -4,6 +4,7 @@ defmodule Herenow.Clients.Authenticate do
   """
   @behaviour Herenow.Service
 
+  alias Herenow.Repo
   alias Herenow.Clients.Authenticate.Authentication
   alias Herenow.Core.{ErrorMessage, ErrorHandler, EctoUtils}
   alias Herenow.Clients.Storage.Loader
@@ -13,16 +14,26 @@ defmodule Herenow.Clients.Authenticate do
 
   @spec call(map) :: {:ok, String.t()} | ErrorMessage.t()
   def call(params) do
+    Repo.transaction(fn ->
+      with {:ok, token} <- authenticate(params) do
+        token
+      else
+        {:error, reason} -> Repo.rollback(reason)
+      end
+    end)
+  end
+
+  defp authenticate(params) do
     with {:ok, request} <- EctoUtils.validate(Authentication, params),
          {:ok} <- @captcha.verify(request.captcha),
-         {:ok, token} <- do_authenticate(request) do
+         {:ok, token} <- validate_credentials(request) do
       {:ok, token}
     else
       {:error, reason} -> ErrorHandler.handle(reason)
     end
   end
 
-  defp do_authenticate(%{email: email, password: password}) do
+  defp validate_credentials(%{email: email, password: password}) do
     with {:ok, client} <- Loader.get_password_by_email(email),
          {:ok} <- PasswordHash.valid?(password, client.password),
          {:ok, _client} <- Loader.is_verified?(client.id) do

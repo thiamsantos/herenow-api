@@ -4,6 +4,7 @@ defmodule Herenow.Clients.Activate do
   """
   @behaviour Herenow.Service
 
+  alias Herenow.Repo
   alias Herenow.Core.{ErrorMessage, ErrorHandler, EctoUtils}
   alias Herenow.Clients.Storage.{Client, Mutator, Loader}
   alias Herenow.Clients.Token
@@ -14,6 +15,16 @@ defmodule Herenow.Clients.Activate do
 
   @spec call(map) :: {:ok, %Client{}} | ErrorMessage.t()
   def call(params) do
+    Repo.transaction(fn ->
+      with {:ok, response} <- activate(params) do
+        response
+      else
+        {:error, reason} -> Repo.rollback(reason)
+      end
+    end)
+  end
+
+  def activate(params) do
     with {:ok, request} <- EctoUtils.validate(Activation, params),
          {:ok} <- @captcha.verify(request.captcha),
          {:ok, payload} <- Token.verify_activation_token(request.token),

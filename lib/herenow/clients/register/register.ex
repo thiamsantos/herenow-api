@@ -4,6 +4,7 @@ defmodule Herenow.Clients.Register do
   """
   @behaviour Herenow.Service
 
+  alias Herenow.Repo
   alias Herenow.Core.{ErrorMessage, EctoUtils, ErrorHandler}
   alias Herenow.Clients.Register.Registration
   alias Herenow.Clients.Storage.{Client, Mutator}
@@ -13,6 +14,16 @@ defmodule Herenow.Clients.Register do
 
   @spec call(map) :: {:ok, %Client{}} | ErrorMessage.t()
   def call(params) do
+    Repo.transaction(fn ->
+      with {:ok, response} <- register(params) do
+        response
+      else
+        {:error, reason} -> Repo.rollback(reason)
+      end
+    end)
+  end
+
+  def register(params) do
     with {:ok, request} <- EctoUtils.validate(Registration, params),
          {:ok} <- @captcha.verify(request.captcha),
          {:ok, client} <- Mutator.create(params),
