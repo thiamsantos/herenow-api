@@ -4,5 +4,21 @@ defmodule Herenow.Service do
   """
 
   alias Herenow.Core.ErrorMessage
-  @callback call(map) :: {:ok, struct | map | String.t()} | ErrorMessage.t()
+  @callback run(map) :: {:ok, struct | map | String.t()} | ErrorMessage.t()
+
+  defmacro __using__(_) do
+    quote do
+      import Herenow.Repo, only: [transaction: 1, rollback: 1]
+
+      def call(params) do
+        transaction(fn ->
+          with {:ok, response} <- run(params) do
+            response
+          else
+            {:error, reason} -> rollback(reason)
+          end
+        end)
+      end
+    end
+  end
 end

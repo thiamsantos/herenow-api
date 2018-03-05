@@ -3,8 +3,8 @@ defmodule Herenow.Clients.RequestActivation do
   Request the activation of a client
   """
   @behaviour Herenow.Service
+  use Herenow.Service
 
-  alias Herenow.Repo
   alias Herenow.Core.{ErrorMessage, ErrorHandler, EctoUtils}
   alias Herenow.Clients.Storage.{Loader, Client}
   alias Herenow.Clients.RequestActivation.ActivationRequest
@@ -12,21 +12,10 @@ defmodule Herenow.Clients.RequestActivation do
 
   @captcha Application.get_env(:herenow, :captcha)
 
-  @spec call(map) :: {:ok, map} | ErrorMessage.t()
-  def call(params) do
-    Repo.transaction(fn ->
-      with {:ok, response} <- request_activation(params) do
-        response
-      else
-        {:error, reason} -> Repo.rollback(reason)
-      end
-    end)
-  end
-
-  defp request_activation(params) do
+  defp run(params) do
     with {:ok, request} <- EctoUtils.validate(ActivationRequest, params),
-          {:ok} <- @captcha.verify(request.captcha),
-          _email <- send_email(request.email) do
+         {:ok} <- @captcha.verify(request.captcha),
+         _email <- send_email(request.email) do
       {:ok, %{message: "Email successfully sended!"}}
     else
       {:error, reason} -> ErrorHandler.handle(reason)

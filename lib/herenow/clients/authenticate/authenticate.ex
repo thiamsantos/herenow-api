@@ -3,8 +3,8 @@ defmodule Herenow.Clients.Authenticate do
   Create an access token for a client
   """
   @behaviour Herenow.Service
+  use Herenow.Service
 
-  alias Herenow.Repo
   alias Herenow.Clients.Authenticate.Authentication
   alias Herenow.Core.{ErrorMessage, ErrorHandler, EctoUtils}
   alias Herenow.Clients.Storage.Loader
@@ -12,18 +12,7 @@ defmodule Herenow.Clients.Authenticate do
 
   @captcha Application.get_env(:herenow, :captcha)
 
-  @spec call(map) :: {:ok, String.t()} | ErrorMessage.t()
-  def call(params) do
-    Repo.transaction(fn ->
-      with {:ok, token} <- authenticate(params) do
-        token
-      else
-        {:error, reason} -> Repo.rollback(reason)
-      end
-    end)
-  end
-
-  defp authenticate(params) do
+  def run(params) do
     with {:ok, request} <- EctoUtils.validate(Authentication, params),
          {:ok} <- @captcha.verify(request.captcha),
          {:ok, token} <- validate_credentials(request) do
