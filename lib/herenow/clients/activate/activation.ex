@@ -1,4 +1,4 @@
-defmodule Herenow.Clients.Validation.Activation do
+defmodule Herenow.Clients.Activate.Activation do
   @moduledoc """
   Schema of a client activation
   """

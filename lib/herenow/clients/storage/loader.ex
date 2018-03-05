@@ -21,22 +21,32 @@ defmodule Herenow.Clients.Storage.Loader do
   def get_one_by_email(email), do: Repo.one(Queries.one_by_email(email))
 
   def get_password_by_email(email) do
-    client = Repo.one(Queries.password_by_email(email))
+    email
+    |> Queries.password_by_email()
+    |> Repo.one()
+    |> handle_password_query()
+  end
 
-    if is_nil(client) do
-      {:error, :email_not_found}
-    else
-      {:ok, client}
-    end
+  def handle_password_query(client) when is_nil(client) do
+    {:error, :email_not_found}
+  end
+
+  def handle_password_query(client) do
+    {:ok, client}
   end
 
   def is_verified?(id) do
-    client = Repo.one(Queries.one_verified_client(id))
+    id
+    |> Queries.one_verified_client()
+    |> Repo.one()
+    |> handle_verified_query()
+  end
 
-    if is_nil(client) do
-      {:error, :account_not_verified}
-    else
-      {:ok, client}
-    end
+  defp handle_verified_query(client) when is_nil(client) do
+    {:error, :account_not_verified}
+  end
+
+  defp handle_verified_query(client) do
+    {:ok, client}
   end
 end

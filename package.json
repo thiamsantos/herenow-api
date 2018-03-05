@@ -7,7 +7,8 @@
     "serve:apidoc": "http-server apidocs/",
     "build:email": "mjml priv/email_templates/mjml/*.mjml -o priv/email_templates/html -m",
     "precommit": "npm run build:email && mix format && mix credo --strict && mix dialyzer && mix test",
-    "cm": "git-cz"
+    "cm": "git-cz",
+    "test": "mix test"
   },
   "repository": {
     "type": "git",

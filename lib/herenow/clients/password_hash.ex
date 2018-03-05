@@ -14,10 +14,11 @@ defmodule Herenow.Clients.PasswordHash do
   """
   @spec valid?(String.t(), String.t()) :: {:ok} | {:error, :invalid_password}
   def valid?(password, hash) do
-    if Pbkdf2.checkpw(password, hash) do
-      {:ok}
-    else
-      {:error, :invalid_password}
-    end
+    password
+    |> Pbkdf2.checkpw(hash)
+    |> handle_password_check()
   end
+
+  def handle_password_check(true), do: {:ok}
+  def handle_password_check(false), do: {:error, :invalid_password}
 end
