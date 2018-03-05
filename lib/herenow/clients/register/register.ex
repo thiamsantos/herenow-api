@@ -5,7 +5,7 @@ defmodule Herenow.Clients.Register do
   @behaviour Herenow.Service
   use Herenow.Service
 
-  alias Herenow.Core.{ErrorMessage, EctoUtils, ErrorHandler}
+  alias Herenow.Core.{EctoUtils, ErrorHandler}
   alias Herenow.Clients.Register.Registration
   alias Herenow.Clients.Storage.Mutator
   alias Herenow.Clients.Email.WelcomeEmail
