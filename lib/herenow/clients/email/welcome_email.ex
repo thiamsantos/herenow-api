@@ -5,7 +5,7 @@ defmodule Herenow.Clients.Email.WelcomeEmail do
   alias Bamboo.Email
   alias Herenow.Clients.Storage.Client
   alias Herenow.Core.Email.Template
-  alias Herenow.Clients.Token
+  alias Herenow.Clients.Activate.Token
   alias Herenow.Mailer
 
   @spec send(%Client{}) :: Email.t()
@@ -17,7 +17,7 @@ defmodule Herenow.Clients.Email.WelcomeEmail do
 
   @spec create(%Client{}) :: Email.t()
   def create(client) do
-    token = Token.generate_activation_token(%{"client_id" => client.id})
+    token = Token.generate(%{"client_id" => client.id})
 
     body =
       Template.render(:welcome_email, %{

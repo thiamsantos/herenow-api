@@ -1,5 +1,5 @@
 defmodule Herenow.Clients.RecoverPassword.Params do
-@moduledoc """
+  @moduledoc """
   Schema of a client password recovery request
   """
   use Ecto.Schema

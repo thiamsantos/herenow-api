@@ -1,4 +1,4 @@
-defmodule Herenow.Clients.Register.Registration do
+defmodule Herenow.Clients.Register.Params do
   @moduledoc """
   Schema of a client registration request
   """
