@@ -42,7 +42,8 @@ defmodule Herenow.Clients.Storage.Mutator do
   end
 
   def update_password(client_id, password) do
-    Loader.get!(client_id)
+    client_id
+    |> Loader.get!()
     |> Client.changeset(%{password: password})
     |> Repo.update()
   end

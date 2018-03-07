@@ -12,6 +12,21 @@ defmodule Herenow.Clients.RecoverPasswordTest do
                      :password_recovery_expiration_time
                    )
   @secret Application.get_env(:herenow, :password_recovery_secret)
+  @client_attrs %{
+    "street_number" => Address.building_number(),
+    "is_company" => true,
+    "name" => Name.name(),
+    "password" => "old password",
+    "legal_name" => Company.name(),
+    "segment" => Commerce.department(),
+    "state" => Address.state(),
+    "street_name" => Address.street_name(),
+    "captcha" => "valid",
+    "postal_code" => "12345678",
+    "city" => Address.city(),
+    "email" => Internet.email()
+  }
+
   @valid_attrs %{
     "captcha" => "valid",
     "password" => "new password",
@@ -19,22 +34,7 @@ defmodule Herenow.Clients.RecoverPasswordTest do
   }
 
   def client_fixture() do
-    attrs = %{
-      "street_number" => Address.building_number(),
-      "is_company" => true,
-      "name" => Name.name(),
-      "password" => "old password",
-      "legal_name" => Company.name(),
-      "segment" => Commerce.department(),
-      "state" => Address.state(),
-      "street_name" => Address.street_name(),
-      "captcha" => "valid",
-      "postal_code" => "12345678",
-      "city" => Address.city(),
-      "email" => Internet.email()
-    }
-
-    {:ok, client} = Mutator.create(attrs)
+    {:ok, client} = Mutator.create(@client_attrs)
 
     client
   end
@@ -210,10 +210,10 @@ defmodule Herenow.Clients.RecoverPasswordTest do
 
       {:ok, response} = Clients.recover_password(attrs)
 
-      assert {:ok} == PasswordHash.valid?("new password", response.password)
+      assert {:ok} == PasswordHash.valid?(@valid_attrs["password"], response.password)
 
       assert {:error, :invalid_password} ==
-               PasswordHash.valid?("some password", response.password)
+               PasswordHash.valid?(@client_attrs["password"], response.password)
     end
   end
 end
