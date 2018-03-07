@@ -52,7 +52,8 @@ use Mix.Config
 
 config :herenow,
   login_secret: "SECRET", # run `mix phx.gen.secret 512` to generate a secret
-  account_activation_secret: "SECRET" # run `mix phx.gen.secret 512` to generate a secret
+  account_activation_secret: "SECRET", # run `mix phx.gen.secret 512` to generate a secret
+  password_recovery_secret: "SECRET" # run `mix phx.gen.secret 512` to generate a secret
 
 config :herenow, Herenow.Repo,
   adapter: Ecto.Adapters.Postgres,
@@ -73,7 +74,8 @@ use Mix.Config
 
 config :herenow,
   login_secret: "SECRET", # run `mix phx.gen.secret 512` to generate a secret
-  account_activation_secret: "SECRET" # run `mix phx.gen.secret 512` to generate a secret 
+  account_activation_secret: "SECRET", # run `mix phx.gen.secret 512` to generate a secret 
+  password_recovery_secret: "SECRET" # run `mix phx.gen.secret 512` to generate a secret 
 
 config :herenow, Herenow.Repo,
   adapter: Ecto.Adapters.Postgres,
