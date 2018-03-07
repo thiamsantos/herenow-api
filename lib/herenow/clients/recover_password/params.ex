@@ -22,5 +22,6 @@ defmodule Herenow.Clients.RecoverPassword.Params do
     %__MODULE__{}
     |> cast(attrs, @required_fields)
     |> validate_required(@required_fields)
+    |> validate_length(:password, min: 8)
   end
 end

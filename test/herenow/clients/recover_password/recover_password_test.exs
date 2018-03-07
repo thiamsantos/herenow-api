@@ -5,6 +5,7 @@ defmodule Herenow.Clients.RecoverPasswordTest do
   alias Herenow.Core.Token
   alias Faker.{Name, Address, Commerce, Internet, Company}
   alias Herenow.Clients.Storage.{Mutator}
+  alias Herenow.Clients.PasswordHash
 
   @expiration_time Application.get_env(
                      :herenow,
@@ -22,7 +23,7 @@ defmodule Herenow.Clients.RecoverPasswordTest do
       "street_number" => Address.building_number(),
       "is_company" => true,
       "name" => Name.name(),
-      "password" => "some password",
+      "password" => "old password",
       "legal_name" => Company.name(),
       "segment" => Commerce.department(),
       "state" => Address.state(),
@@ -149,6 +150,70 @@ defmodule Herenow.Clients.RecoverPasswordTest do
           ]}}
 
       assert actual == expected
+    end
+
+    test "used token" do
+      client = client_fixture()
+
+      token = Token.generate(%{"client_id" => client.id}, @secret, @expiration_time)
+
+      attrs =
+        @valid_attrs
+        |> Map.put("token", token)
+
+      _actual = Clients.recover_password(attrs)
+      actual = Clients.recover_password(attrs)
+
+      expected =
+        {:error,
+         {:validation,
+          [
+            %{
+              "field" => nil,
+              "message" => "Already used token",
+              "type" => :used_token
+            }
+          ]}}
+
+      assert actual == expected
+    end
+
+    test "weak password" do
+      attrs =
+        @valid_attrs
+        |> Map.put("password", "weak")
+
+      actual = Clients.recover_password(attrs)
+
+      expected =
+        {:error,
+         {:validation,
+          [
+            %{
+              "field" => "password",
+              "message" => "should be at least 8 character(s)",
+              "type" => :length
+            }
+          ]}}
+
+      assert actual == expected
+    end
+
+    test "change the password" do
+      client = client_fixture()
+
+      token = Token.generate(%{"client_id" => client.id}, @secret, @expiration_time)
+
+      attrs =
+        @valid_attrs
+        |> Map.put("token", token)
+
+      {:ok, response} = Clients.recover_password(attrs)
+
+      assert {:ok} == PasswordHash.valid?("new password", response.password)
+
+      assert {:error, :invalid_password} ==
+               PasswordHash.valid?("some password", response.password)
     end
   end
 end
