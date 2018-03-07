@@ -1,4 +1,4 @@
-defmodule Herenow.Clients.Storage.Error do
+defmodule Herenow.Core.EctoUtils do
   @moduledoc """
   Storage error handling utilities
   """
@@ -28,4 +28,16 @@ defmodule Herenow.Clients.Storage.Error do
       |> Map.put("field", to_string(key))
     end)
   end
+
+  def validate(schema, params) when is_map(params) do
+    changeset = schema.changeset(params)
+
+    handle_validity_check(changeset.valid?, changeset)
+  end
+
+  defp handle_validity_check(true = _valid, changeset) do
+    {:ok, changeset.changes}
+  end
+
+  defp handle_validity_check(false = _valid, changeset), do: {:error, changeset}
 end

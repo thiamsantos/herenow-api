@@ -1,5 +1,5 @@
 defmodule Herenow.Clients.Storage.StorageTest do
-  use Herenow.DataCase
+  use Herenow.DataCase, async: true
   alias Herenow.Clients.Storage.{Client, Mutator, Loader}
 
   @valid_attrs %{

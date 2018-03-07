@@ -1,12 +1,10 @@
-defmodule HerenowWeb.ClientsActivationTest do
-  use Herenow.DataCase
-  use Bamboo.Test
+defmodule Herenow.Clients.ActivationTest do
+  use Herenow.DataCase, async: true
 
   alias Herenow.Clients
   alias Herenow.Core.Token
   alias Faker.{Name, Address, Commerce, Internet, Company}
   alias Herenow.Clients.Storage.{Mutator}
-  alias Herenow.Clients.SuccessActivationEmail
 
   @expiration_time Application.get_env(
                      :herenow,
@@ -34,10 +32,7 @@ defmodule HerenowWeb.ClientsActivationTest do
       "email" => Internet.email()
     }
 
-    {:ok, client} =
-      attrs
-      |> Enum.into(attrs)
-      |> Mutator.create()
+    {:ok, client} = Mutator.create(attrs)
 
     client
   end
@@ -223,20 +218,6 @@ defmodule HerenowWeb.ClientsActivationTest do
       assert client.street_name == activated_client.street_name
       assert client.inserted_at == activated_client.inserted_at
       assert client.updated_at == activated_client.updated_at
-    end
-
-    test "after activation, the user gets an email" do
-      client = client_fixture()
-
-      token = Token.generate(%{"client_id" => client.id}, @secret, @expiration_time)
-
-      attrs =
-        @valid_attrs
-        |> Map.put("token", token)
-
-      {:ok, client} = Clients.activate(attrs)
-
-      assert_delivered_email(SuccessActivationEmail.create(client))
     end
   end
 end

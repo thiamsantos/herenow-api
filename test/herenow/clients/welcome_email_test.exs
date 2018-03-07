@@ -3,7 +3,7 @@ defmodule Herenow.Clients.WelcomeEmailTest do
   use Bamboo.Test
 
   alias Faker.{Name, Address, Commerce, Internet, Company}
-  alias Herenow.Clients.WelcomeEmail
+  alias Herenow.Clients.Email.WelcomeEmail
 
   @client %{
     id: 1,

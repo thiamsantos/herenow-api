@@ -1,5 +1,5 @@
 defmodule Herenow.Core.TokenTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   alias Herenow.Core.Token
 
   @two_hours_seconds 2 * 60 * 60

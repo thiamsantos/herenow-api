@@ -1,10 +1,8 @@
-defmodule HerenowWeb.ClientsRegistrationTest do
-  use Herenow.DataCase
-  use Bamboo.Test
+defmodule Herenow.Clients.RegistrationTest do
+  use Herenow.DataCase, async: true
 
   alias Faker.{Name, Address, Commerce, Internet, Company}
   alias Herenow.Clients.Storage.{Mutator, Loader}
-  alias Herenow.Clients.WelcomeEmail
   alias Herenow.Clients
 
   @valid_attrs %{
@@ -284,12 +282,6 @@ defmodule HerenowWeb.ClientsRegistrationTest do
       assert client.street_name == persisted_client.street_name
       assert client.inserted_at == persisted_client.inserted_at
       assert client.updated_at == persisted_client.updated_at
-    end
-
-    test "after registering, the user gets a welcome email" do
-      {:ok, client} = Clients.register(@valid_attrs)
-
-      assert_delivered_email(WelcomeEmail.create(client))
     end
   end
 end

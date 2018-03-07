@@ -9,14 +9,14 @@ defmodule Herenow.Clients.PasswordHashTest do
     test "should produce a valid hash" do
       hash = PasswordHash.hash("test_password")
 
-      assert PasswordHash.verify("test_password", hash)
-      assert !PasswordHash.verify("wrong_password", hash)
+      assert {:ok} == PasswordHash.valid?("test_password", hash)
+      assert {:error, :invalid_password} == PasswordHash.valid?("wrong_password", hash)
     end
   end
 
-  describe "verify/1" do
+  describe "valid?/1" do
     test "should support a pbkdf2 hash" do
-      assert PasswordHash.verify("test_password", @pbkdf2_hash)
+      assert PasswordHash.valid?("test_password", @pbkdf2_hash)
     end
   end
 end

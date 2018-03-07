@@ -1,4 +1,4 @@
-defmodule Herenow.Clients.Validation.Registration do
+defmodule Herenow.Clients.Register.Registration do
   @moduledoc """
   Schema of a client registration request
   """
@@ -26,10 +26,10 @@ defmodule Herenow.Clients.Validation.Registration do
   end
 
   @doc false
-  def changeset(%__MODULE__{} = registration, attrs) do
+  def changeset(attrs) do
     required_fields = Fields.required_fields() ++ @required_fields
 
-    registration
+    %__MODULE__{}
     |> cast(attrs, required_fields ++ Fields.optional_fields())
     |> validate_required(required_fields)
     |> validate_length(:email, max: 254)

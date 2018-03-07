@@ -9,6 +9,10 @@ defmodule Herenow.Core.ErrorMessage do
     {:error, {type, message}}
   end
 
+  def unauthorized(type, message) do
+    create(:unauthorized, [%{"type" => type, "message" => message}])
+  end
+
   @spec validation(String.t()) :: __MODULE__.t()
   def validation(error) when is_binary(error), do: create(:validation, error)
 

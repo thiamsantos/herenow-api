@@ -23,12 +23,4 @@ defmodule Herenow.Clients.Storage.EctoHashedPassword do
 
   def dump(password) when is_binary(password), do: {:ok, password}
   def dump(_), do: :error
-
-  @doc """
-  Check password against hash with currently used hashing algorithm.
-  """
-  @spec checkpw(String.t(), String.t()) :: boolean
-  def checkpw(password, hash) do
-    PasswordHash.verify(password, hash)
-  end
 end

@@ -1,6 +1,6 @@
-defmodule Herenow.Clients.Validation.Activation do
+defmodule Herenow.Clients.Activate.Activation do
   @moduledoc """
-  Schema of a client activation request
+  Schema of a client activation
   """
   use Ecto.Schema
   import Ecto.Changeset
@@ -16,8 +16,8 @@ defmodule Herenow.Clients.Validation.Activation do
   end
 
   @doc false
-  def changeset(%__MODULE__{} = activation, attrs) do
-    activation
+  def changeset(attrs) do
+    %__MODULE__{}
     |> cast(attrs, @fields)
     |> validate_required(@fields)
   end

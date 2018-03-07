@@ -8,7 +8,7 @@ Para referência, aqui estão suas informações de login:
 - Página de Login: {{login_url}}
 - Email: {{email}}
 
-Se você tiver qualquer dúvidas, fique à vontade para enviar um email para a nossa equipe de atendimento ao cliente. (Nós somos rápidos em responder.)
+Se você tiver qualquer dúvida, fique à vontade para enviar um email para a nossa equipe de atendimento ao cliente. (Nós somos rápidos em responder.)
 
 Obrigado, time da HereNow.
 
