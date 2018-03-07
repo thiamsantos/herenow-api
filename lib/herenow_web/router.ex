@@ -12,12 +12,12 @@ defmodule HerenowWeb.Router do
     resources "/clients", ClientController, only: [:create]
     post "/verified-clients", ClientController, :verify
     post "/clients/request-activation", ClientController, :request_activation
+    post "/clients/password-recovery", ClientController, :recover_password
 
     post "/auth/identity", AuthController, :create
   end
 
   if Mix.env() == :dev do
-    # If using Phoenix
     forward "/sent_emails", Bamboo.EmailPreviewPlug
   end
 end

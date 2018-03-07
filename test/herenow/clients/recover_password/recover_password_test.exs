@@ -1,49 +1,51 @@
-defmodule Herenow.Clients.ActivationTest do
+defmodule Herenow.Clients.RecoverPasswordTest do
   use Herenow.DataCase, async: true
 
   alias Herenow.Clients
   alias Herenow.Core.Token
   alias Faker.{Name, Address, Commerce, Internet, Company}
   alias Herenow.Clients.Storage.{Mutator}
+  alias Herenow.Clients.PasswordHash
 
   @expiration_time Application.get_env(
                      :herenow,
-                     :account_activation_expiration_time
+                     :password_recovery_expiration_time
                    )
-  @secret Application.get_env(:herenow, :account_activation_secret)
+  @secret Application.get_env(:herenow, :password_recovery_secret)
+  @client_attrs %{
+    "street_number" => Address.building_number(),
+    "is_company" => true,
+    "name" => Name.name(),
+    "password" => "old password",
+    "legal_name" => Company.name(),
+    "segment" => Commerce.department(),
+    "state" => Address.state(),
+    "street_name" => Address.street_name(),
+    "captcha" => "valid",
+    "postal_code" => "12345678",
+    "city" => Address.city(),
+    "email" => Internet.email()
+  }
+
   @valid_attrs %{
     "captcha" => "valid",
+    "password" => "new password",
     "token" => Token.generate(%{"client_id" => 1}, @secret, @expiration_time)
   }
 
   def client_fixture() do
-    attrs = %{
-      "street_number" => Address.building_number(),
-      "is_company" => true,
-      "name" => Name.name(),
-      "password" => "some password",
-      "legal_name" => Company.name(),
-      "segment" => Commerce.department(),
-      "state" => Address.state(),
-      "street_name" => Address.street_name(),
-      "captcha" => "valid",
-      "postal_code" => "12345678",
-      "city" => Address.city(),
-      "email" => Internet.email()
-    }
-
-    {:ok, client} = Mutator.create(attrs)
+    {:ok, client} = Mutator.create(@client_attrs)
 
     client
   end
 
-  describe "activate/1" do
+  describe "recover_password/1" do
     test "missing keys" do
       attrs =
         @valid_attrs
         |> Map.delete("token")
 
-      actual = Clients.activate(attrs)
+      actual = Clients.recover_password(attrs)
 
       expected =
         {:error,
@@ -78,7 +80,7 @@ defmodule Herenow.Clients.ActivationTest do
           @valid_attrs
           |> Map.put(key, 9)
 
-        actual = Clients.activate(attrs)
+        actual = Clients.recover_password(attrs)
         assert actual == expected
       end)
     end
@@ -88,7 +90,7 @@ defmodule Herenow.Clients.ActivationTest do
         @valid_attrs
         |> Map.put("captcha", "invalid")
 
-      actual = Clients.activate(attrs)
+      actual = Clients.recover_password(attrs)
 
       expected =
         {:error,
@@ -109,7 +111,7 @@ defmodule Herenow.Clients.ActivationTest do
         @valid_attrs
         |> Map.put("token", "invalidtoken")
 
-      actual = Clients.activate(attrs)
+      actual = Clients.recover_password(attrs)
 
       expected =
         {:error,
@@ -134,7 +136,7 @@ defmodule Herenow.Clients.ActivationTest do
         @valid_attrs
         |> Map.put("token", token)
 
-      actual = Clients.activate(attrs)
+      actual = Clients.recover_password(attrs)
 
       expected =
         {:error,
@@ -150,24 +152,7 @@ defmodule Herenow.Clients.ActivationTest do
       assert actual == expected
     end
 
-    test "client not registered" do
-      actual = Clients.activate(@valid_attrs)
-
-      expected =
-        {:error,
-         {:validation,
-          [
-            %{
-              "field" => "client_id",
-              "message" => "does not exist",
-              "type" => :not_exists
-            }
-          ]}}
-
-      assert actual == expected
-    end
-
-    test "client cannot be activated twice" do
+    test "used token" do
       client = client_fixture()
 
       token = Token.generate(%{"client_id" => client.id}, @secret, @expiration_time)
@@ -176,25 +161,45 @@ defmodule Herenow.Clients.ActivationTest do
         @valid_attrs
         |> Map.put("token", token)
 
-      Mutator.verify(%{client_id: client.id})
-
-      actual = Clients.activate(attrs)
+      _actual = Clients.recover_password(attrs)
+      actual = Clients.recover_password(attrs)
 
       expected =
         {:error,
          {:validation,
           [
             %{
-              "field" => "client_id",
-              "message" => "has already been taken",
-              "type" => :unique
+              "field" => nil,
+              "message" => "Already used token",
+              "type" => :used_token
             }
           ]}}
 
       assert actual == expected
     end
 
-    test "activation success" do
+    test "weak password" do
+      attrs =
+        @valid_attrs
+        |> Map.put("password", "weak")
+
+      actual = Clients.recover_password(attrs)
+
+      expected =
+        {:error,
+         {:validation,
+          [
+            %{
+              "field" => "password",
+              "message" => "should be at least 8 character(s)",
+              "type" => :length
+            }
+          ]}}
+
+      assert actual == expected
+    end
+
+    test "change the password" do
       client = client_fixture()
 
       token = Token.generate(%{"client_id" => client.id}, @secret, @expiration_time)
@@ -203,21 +208,12 @@ defmodule Herenow.Clients.ActivationTest do
         @valid_attrs
         |> Map.put("token", token)
 
-      {:ok, activated_client} = Clients.activate(attrs)
+      {:ok, response} = Clients.recover_password(attrs)
 
-      assert client.id == activated_client.id
-      assert client.street_number == activated_client.street_number
-      assert client.postal_code == activated_client.postal_code
-      assert client.city == activated_client.city
-      assert client.email == activated_client.email
-      assert client.is_company == activated_client.is_company
-      assert client.legal_name == activated_client.legal_name
-      assert client.name == activated_client.name
-      assert client.segment == activated_client.segment
-      assert client.state == activated_client.state
-      assert client.street_name == activated_client.street_name
-      assert client.inserted_at == activated_client.inserted_at
-      assert client.updated_at == activated_client.updated_at
+      assert {:ok} == PasswordHash.valid?(@valid_attrs["password"], response.password)
+
+      assert {:error, :invalid_password} ==
+               PasswordHash.valid?(@client_attrs["password"], response.password)
     end
   end
 end

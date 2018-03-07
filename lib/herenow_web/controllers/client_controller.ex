@@ -197,4 +197,12 @@ defmodule HerenowWeb.ClientController do
       |> render("request_activation_send.json", response: response)
     end
   end
+
+  def recover_password(conn, params) do
+    with {:ok, client} <- Clients.recover_password(params) do
+      conn
+      |> put_status(:ok)
+      |> render("show.json", client: client)
+    end
+  end
 end

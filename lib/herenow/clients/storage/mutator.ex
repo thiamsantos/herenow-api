@@ -3,7 +3,7 @@ defmodule Herenow.Clients.Storage.Mutator do
   Mutation operations on clients storage
   """
   alias Herenow.Repo
-  alias Herenow.Clients.Storage.{Client, VerifiedClient}
+  alias Herenow.Clients.Storage.{Client, VerifiedClient, Loader}
 
   @doc """
   Creates a client.
@@ -38,6 +38,13 @@ defmodule Herenow.Clients.Storage.Mutator do
   def update(%Client{} = client, attrs) do
     client
     |> Client.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def update_password(client_id, password) do
+    client_id
+    |> Loader.get!()
+    |> Client.changeset(%{password: password})
     |> Repo.update()
   end
 

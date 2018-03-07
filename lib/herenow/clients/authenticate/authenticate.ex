@@ -5,15 +5,15 @@ defmodule Herenow.Clients.Authenticate do
   @behaviour Herenow.Service
   use Herenow.Service
 
-  alias Herenow.Clients.Authenticate.Authentication
+  alias Herenow.Clients.Authenticate.{Params, Token}
   alias Herenow.Core.{ErrorMessage, ErrorHandler, EctoUtils}
   alias Herenow.Clients.Storage.Loader
-  alias Herenow.Clients.{Token, PasswordHash}
+  alias Herenow.Clients.PasswordHash
 
   @captcha Application.get_env(:herenow, :captcha)
 
   def run(params) do
-    with {:ok, request} <- EctoUtils.validate(Authentication, params),
+    with {:ok, request} <- EctoUtils.validate(Params, params),
          {:ok} <- @captcha.verify(request.captcha),
          {:ok, token} <- validate_credentials(request) do
       {:ok, token}
@@ -26,7 +26,7 @@ defmodule Herenow.Clients.Authenticate do
     with {:ok, client} <- Loader.get_password_by_email(email),
          {:ok} <- PasswordHash.valid?(password, client.password),
          {:ok, _client} <- Loader.is_verified?(client.id) do
-      token = Token.generate_activation_token(%{"client_id" => client.id})
+      token = Token.generate(%{"client_id" => client.id})
       {:ok, token}
     else
       {:error, :email_not_found} ->

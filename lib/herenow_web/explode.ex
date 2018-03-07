@@ -90,6 +90,7 @@ defmodule HerenowWeb.Explode do
   defp get_error_code(:invalid_signature), do: 108
   defp get_error_code(:expired_token), do: 109
   defp get_error_code(:not_exists), do: 110
+  defp get_error_code(:used_token), do: 111
 
   defp get_error_code(:not_found), do: 200
 

@@ -7,13 +7,13 @@ defmodule Herenow.Clients.RequestActivation do
 
   alias Herenow.Core.{ErrorHandler, EctoUtils}
   alias Herenow.Clients.Storage.{Loader, Client}
-  alias Herenow.Clients.RequestActivation.ActivationRequest
+  alias Herenow.Clients.RequestActivation.Params
   alias Herenow.Clients.Email.{EmailNotRegistered, WelcomeEmail}
 
   @captcha Application.get_env(:herenow, :captcha)
 
   def run(params) do
-    with {:ok, request} <- EctoUtils.validate(ActivationRequest, params),
+    with {:ok, request} <- EctoUtils.validate(Params, params),
          {:ok} <- @captcha.verify(request.captcha),
          _email <- send_email(request.email) do
       {:ok, %{message: "Email successfully sended!"}}
