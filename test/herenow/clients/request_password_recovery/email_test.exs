@@ -29,20 +29,20 @@ defmodule Herenow.Clients.RequestPasswordRecovery.EmailTest do
     "browser_name" => "Firefox"
   }
 
-  @keyword_attrs %{captcha: "valid",
+  @keyword_attrs %{
+    captcha: "valid",
     email: @client_attrs["email"],
     operating_system: "Android",
-    browser_name: "Firefox"}
+    browser_name: "Firefox"
+  }
 
   def client_fixture() do
     {:ok, client} = Mutator.create(@client_attrs)
     client
   end
 
-
   describe "request_password_recovery/1" do
     test "client not registered" do
-
       actual = Clients.request_password_recovery(@valid_attrs)
       expected = {:ok, %{message: "Email successfully sended!"}}
 

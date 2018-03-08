@@ -7,7 +7,12 @@ defmodule Herenow.Clients.RequestPasswordRecovery do
   alias Herenow.Core.{EctoUtils, ErrorHandler}
   alias Herenow.Clients.Storage.Loader
   alias Herenow.Clients.Storage.Client
-  alias Herenow.Clients.RequestPasswordRecovery.{Params, RecoveryEmail, InvalidClientEmail}
+
+  alias Herenow.Clients.RequestPasswordRecovery.{
+    Params,
+    RecoveryEmail,
+    InvalidClientEmail
+  }
 
   @captcha Application.get_env(:herenow, :captcha)
 
