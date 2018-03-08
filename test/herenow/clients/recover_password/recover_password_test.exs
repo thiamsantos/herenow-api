@@ -4,7 +4,7 @@ defmodule Herenow.Clients.RecoverPasswordTest do
   alias Herenow.Clients
   alias Herenow.Core.Token
   alias Faker.{Name, Address, Commerce, Internet, Company}
-  alias Herenow.Clients.Storage.{Mutator}
+  alias Herenow.Clients.Storage.{Mutator, Loader}
   alias Herenow.Clients.PasswordHash
 
   @expiration_time Application.get_env(
@@ -214,6 +214,23 @@ defmodule Herenow.Clients.RecoverPasswordTest do
 
       assert {:error, :invalid_password} ==
                PasswordHash.valid?(@client_attrs["password"], response.password)
+    end
+
+    test "should verify unverified accounts" do
+      client = client_fixture()
+
+      token = Token.generate(%{"client_id" => client.id}, @secret, @expiration_time)
+
+      attrs =
+        @valid_attrs
+        |> Map.put("token", token)
+
+      {:ok, response} = Clients.recover_password(attrs)
+
+      assert {:ok} == PasswordHash.valid?(@valid_attrs["password"], response.password)
+
+      assert {:ok, verified_client} = Loader.is_verified?(client.id)
+      assert verified_client.client_id == client.id
     end
   end
 end

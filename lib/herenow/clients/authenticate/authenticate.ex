@@ -2,7 +2,6 @@ defmodule Herenow.Clients.Authenticate do
   @moduledoc """
   Create an access token for a client
   """
-  @behaviour Herenow.Service
   use Herenow.Service
 
   alias Herenow.Clients.Authenticate.{Params, Token}

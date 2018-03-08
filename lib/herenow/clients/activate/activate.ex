@@ -2,7 +2,6 @@ defmodule Herenow.Clients.Activate do
   @moduledoc """
   Activate a client
   """
-  @behaviour Herenow.Service
   use Herenow.Service
 
   alias Herenow.Core.{ErrorHandler, EctoUtils}

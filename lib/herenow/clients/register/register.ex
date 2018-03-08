@@ -2,7 +2,6 @@ defmodule Herenow.Clients.Register do
   @moduledoc """
   Create a new client
   """
-  @behaviour Herenow.Service
   use Herenow.Service
 
   alias Herenow.Core.{EctoUtils, ErrorHandler}
