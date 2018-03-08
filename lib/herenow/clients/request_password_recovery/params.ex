@@ -7,12 +7,16 @@ defmodule Herenow.Clients.RequestPasswordRecovery.Params do
 
   @required_fields [
     :captcha,
-    :email
+    :email,
+    :browser_name,
+    :operating_system
   ]
 
   embedded_schema do
     field :email, :string
     field :captcha, :string
+    field :browser_name, :string
+    field :operating_system, :string
   end
 
   @doc false

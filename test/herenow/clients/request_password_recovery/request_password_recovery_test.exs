@@ -22,12 +22,13 @@ defmodule Herenow.Clients.RequestPasswordRecoveryTest do
 
   @valid_attrs %{
     "captcha" => "valid",
-    "email" => @client_attrs["email"]
+    "email" => @client_attrs["email"],
+    "operating_system" => "Android",
+    "browser_name" => "Firefox"
   }
 
   def client_fixture() do
     {:ok, client} = Mutator.create(@client_attrs)
-
     client
   end
 

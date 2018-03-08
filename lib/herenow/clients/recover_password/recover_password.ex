@@ -5,9 +5,15 @@ defmodule Herenow.Clients.RecoverPassword do
   use Herenow.Service
 
   alias Herenow.Core.{EctoUtils, ErrorHandler, ErrorMessage}
-  alias Herenow.Clients.RecoverPassword.{Params, Token, Mutator, Loader}
   alias Herenow.Clients.Storage.Mutator, as: ClientMutator
   alias Herenow.Clients.Storage.Loader, as: ClientLoader
+  alias Herenow.Clients.RecoverPassword.{
+    Params,
+    Token,
+    Mutator,
+    Loader,
+    SuccessEmail
+  }
 
   @captcha Application.get_env(:herenow, :captcha)
 
@@ -18,7 +24,8 @@ defmodule Herenow.Clients.RecoverPassword do
          {:ok, false = _was_used} <- Loader.is_token_used?(request.token),
          {:ok, client} <- update_password(payload, request),
          {:ok, _used_token} <- Mutator.store_token(request.token),
-         {:ok, _verified_client} <- verify_account(client) do
+         {:ok, _verified_client} <- verify_account(client),
+         _email <- SuccessEmail.send(client) do
       {:ok, client}
     else
       {:error, :used_token} -> ErrorMessage.validation(nil, :used_token, "Already used token")
