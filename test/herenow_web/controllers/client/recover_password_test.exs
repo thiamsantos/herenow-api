@@ -12,19 +12,19 @@ defmodule HerenowWeb.Controllers.Client.RecoverPasswordTest do
                    )
   @secret Application.get_env(:herenow, :password_recovery_secret)
   @client_attrs %{
-      "street_number" => Address.building_number(),
-      "is_company" => true,
-      "name" => Name.name(),
-      "password" => "some password",
-      "legal_name" => Company.name(),
-      "segment" => Commerce.department(),
-      "state" => Address.state(),
-      "street_name" => Address.street_name(),
-      "captcha" => "valid",
-      "postal_code" => "12345678",
-      "city" => Address.city(),
-      "email" => Internet.email()
-    }
+    "street_number" => Address.building_number(),
+    "is_company" => true,
+    "name" => Name.name(),
+    "password" => "some password",
+    "legal_name" => Company.name(),
+    "segment" => Commerce.department(),
+    "state" => Address.state(),
+    "street_name" => Address.street_name(),
+    "captcha" => "valid",
+    "postal_code" => "12345678",
+    "city" => Address.city(),
+    "email" => Internet.email()
+  }
 
   @valid_attrs %{
     "captcha" => "valid",
@@ -213,20 +213,19 @@ defmodule HerenowWeb.Controllers.Client.RecoverPasswordTest do
       actual = json_response(conn, 422)
 
       expected = %{
-              "code" => 100,
-              "message" => "Validation failed!",
-              "errors" => [
-                %{
-                  "code" => 111,
-                  "field" => nil,
-                  "message" => "Already used token"
-                }
-              ]
-            }
+        "code" => 100,
+        "message" => "Validation failed!",
+        "errors" => [
+          %{
+            "code" => 111,
+            "field" => nil,
+            "message" => "Already used token"
+          }
+        ]
+      }
 
       assert actual == expected
     end
-
 
     test "weak password", %{conn: conn} do
       attrs =
@@ -239,17 +238,17 @@ defmodule HerenowWeb.Controllers.Client.RecoverPasswordTest do
 
       actual = json_response(conn, 422)
 
-      expected =  %{
-              "code" => 100,
-              "message" => "Validation failed!",
-              "errors" => [
-                %{
-                  "code" => 103,
-                  "field" => "password",
-                  "message" => "should be at least 8 character(s)"
-                }
-              ]
-            }
+      expected = %{
+        "code" => 100,
+        "message" => "Validation failed!",
+        "errors" => [
+          %{
+            "code" => 103,
+            "field" => "password",
+            "message" => "should be at least 8 character(s)"
+          }
+        ]
+      }
 
       assert actual == expected
     end
@@ -270,6 +269,24 @@ defmodule HerenowWeb.Controllers.Client.RecoverPasswordTest do
 
       assert {:error, :invalid_password} ==
                PasswordHash.valid?(@client_attrs["password"], persisted_client.password)
+    end
+
+    test "should verify unverified accounts", %{conn: conn} do
+      client = client_fixture()
+
+      token = Token.generate(%{"client_id" => client.id}, @secret, @expiration_time)
+
+      attrs =
+        @valid_attrs
+        |> Map.put("token", token)
+
+      post(conn, client_path(conn, :recover_password), attrs)
+
+      persisted_client = Loader.get!(client.id)
+      assert {:ok} == PasswordHash.valid?(@valid_attrs["password"], persisted_client.password)
+
+      assert {:ok, verified_client} = Loader.is_verified?(client.id)
+      assert verified_client.client_id == client.id
     end
   end
 end

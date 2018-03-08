@@ -8,6 +8,7 @@ defmodule Herenow.Service do
 
   defmacro __using__(_) do
     quote do
+      @behaviour Herenow.Service
       import Herenow.Repo, only: [transaction: 1, rollback: 1]
 
       def call(params) do
