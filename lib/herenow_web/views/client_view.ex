@@ -17,7 +17,7 @@ defmodule HerenowWeb.ClientView do
     }
   end
 
-  def render("request_activation_send.json", %{response: response}) do
+  def render("rpc_response.json", %{response: response}) do
     %{message: response.message}
   end
 end

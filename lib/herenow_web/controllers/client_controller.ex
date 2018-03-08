@@ -194,7 +194,7 @@ defmodule HerenowWeb.ClientController do
     with {:ok, response} <- Clients.request_activation(params) do
       conn
       |> put_status(:ok)
-      |> render("request_activation_send.json", response: response)
+      |> render("rpc_response.json", response: response)
     end
   end
 
@@ -203,6 +203,21 @@ defmodule HerenowWeb.ClientController do
       conn
       |> put_status(:ok)
       |> render("show.json", client: client)
+    end
+  end
+
+  def request_password_recovery(conn, params) do
+    user_agent = %{
+      "operating_system" => Browser.full_platform_name(conn),
+      "browser_name" => Browser.name(conn)
+    }
+
+    request = Map.merge(params, user_agent)
+
+    with {:ok, response} <- Clients.request_password_recovery(request) do
+      conn
+      |> put_status(:ok)
+      |> render("rpc_response.json", response: response)
     end
   end
 end

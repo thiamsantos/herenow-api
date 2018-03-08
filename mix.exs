@@ -53,7 +53,8 @@ defmodule Herenow.Mixfile do
       {:faker, "~> 0.9", only: :test},
       {:jason, "~> 1.0"},
       {:hackney, "~> 1.11", override: true},
-      {:mustache, "~> 0.3.0"}
+      {:mustache, "~> 0.3.0"},
+      {:browser, "~> 0.4.1"}
     ]
   end
 
