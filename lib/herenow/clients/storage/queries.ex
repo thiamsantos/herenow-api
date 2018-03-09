@@ -11,6 +11,12 @@ defmodule Herenow.Clients.Storage.Queries do
     from c in Client, where: c.email == ^email
   end
 
+  def password_by_id(id) do
+    from c in Client,
+      where: c.id == ^id,
+      select: c.password
+  end
+
   def password_by_email(email) do
     from c in Client,
       where: c.email == ^email,

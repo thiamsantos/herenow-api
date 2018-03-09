@@ -1,18 +1,12 @@
-defmodule Herenow.Clients.RecoverPassword.EmailTest do
+defmodule Herenow.Clients.UpdatePassword.EmailTest do
   use Herenow.DataCase
   use Bamboo.Test
 
   alias Herenow.Clients
-  alias Herenow.Core.Token
   alias Faker.{Name, Address, Commerce, Internet, Company}
-  alias Herenow.Clients.Storage.{Mutator}
+  alias Herenow.Clients.Storage.Mutator
   alias Herenow.Clients.UpdatePassword.SuccessEmail
 
-  @expiration_time Application.get_env(
-                     :herenow,
-                     :password_recovery_expiration_time
-                   )
-  @secret Application.get_env(:herenow, :password_recovery_secret)
   @client_attrs %{
     "street_number" => Address.building_number(),
     "is_company" => true,
@@ -29,9 +23,9 @@ defmodule Herenow.Clients.RecoverPassword.EmailTest do
   }
 
   @valid_attrs %{
-    "captcha" => "valid",
-    "password" => "new password",
-    "token" => Token.generate(%{"client_id" => 1}, @secret, @expiration_time)
+    "client_id" => 1,
+    "current_password" => @client_attrs["password"],
+    "password" => "new password"
   }
 
   def client_fixture() do
@@ -40,17 +34,15 @@ defmodule Herenow.Clients.RecoverPassword.EmailTest do
     client
   end
 
-  describe "recover_password/1" do
+  describe "update_password/1" do
     test "after password change, the user gets an email" do
       client = client_fixture()
 
-      token = Token.generate(%{"client_id" => client.id}, @secret, @expiration_time)
-
       attrs =
         @valid_attrs
-        |> Map.put("token", token)
+        |> Map.put("client_id", client.id)
 
-      {:ok, client} = Clients.recover_password(attrs)
+      {:ok, client} = Clients.update_password(attrs)
 
       assert_delivered_email(SuccessEmail.create(client))
     end

@@ -7,13 +7,13 @@ defmodule Herenow.Clients.RecoverPassword do
   alias Herenow.Core.{EctoUtils, ErrorHandler, ErrorMessage}
   alias Herenow.Clients.Storage.Mutator, as: ClientMutator
   alias Herenow.Clients.Storage.Loader, as: ClientLoader
+  alias Herenow.Clients.UpdatePassword.SuccessEmail
 
   alias Herenow.Clients.RecoverPassword.{
     Params,
     Token,
     Mutator,
-    Loader,
-    SuccessEmail
+    Loader
   }
 
   @captcha Application.get_env(:herenow, :captcha)

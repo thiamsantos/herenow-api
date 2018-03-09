@@ -8,7 +8,8 @@ defmodule Herenow.Clients do
     RequestActivation,
     Authenticate,
     RecoverPassword,
-    RequestPasswordRecovery
+    RequestPasswordRecovery,
+    UpdatePassword
   }
 
   def register(params), do: Register.call(params)
@@ -17,4 +18,5 @@ defmodule Herenow.Clients do
   def authenticate(params), do: Authenticate.call(params)
   def recover_password(params), do: RecoverPassword.call(params)
   def request_password_recovery(params), do: RequestPasswordRecovery.call(params)
+  def update_password(params), do: UpdatePassword.call(params)
 end

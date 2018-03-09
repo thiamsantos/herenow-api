@@ -1,6 +1,6 @@
-defmodule Herenow.Clients.RecoverPassword.SuccessEmail do
+defmodule Herenow.Clients.UpdatePassword.SuccessEmail do
   @moduledoc """
-  Create success password recovery emails
+  Create success email for password update
   """
   alias Bamboo.Email
   alias Herenow.Clients.Storage.Client
@@ -17,7 +17,7 @@ defmodule Herenow.Clients.RecoverPassword.SuccessEmail do
   @spec create(%Client{}) :: Email.t()
   def create(client) do
     body =
-      Template.render(:password_recovery_success, %{
+      Template.render(:password_update_success, %{
         "login_url" => "some login",
         "year" => DateTime.utc_now().year
       })
