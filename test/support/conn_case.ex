@@ -23,6 +23,48 @@ defmodule HerenowWeb.ConnCase do
 
       # The default endpoint for testing
       @endpoint HerenowWeb.Endpoint
+
+      def authenticate_conn(conn, %{} = attrs) do
+        alias Herenow.Repo
+        alias Herenow.Clients.Storage.{Client, Mutator}
+
+        {:ok, client} = Mutator.create(attrs)
+
+        {:ok, _verified_client} = Mutator.verify(%{"client_id" => client.id})
+
+        credentials = %{
+          "email" => attrs["email"],
+          "password" => attrs["password"],
+          "captcha" => "valid"
+        }
+
+        conn = post(conn, auth_path(conn, :create), credentials)
+        %{"token" => token} = json_response(conn, 201)
+
+        conn
+        |> recycle()
+        |> put_req_header("authorization", "Bearer #{token}")
+      end
+
+      def authenticate_conn(conn) do
+        alias Faker.{Name, Address, Commerce, Company, Internet}
+
+        attrs = %{
+          "street_number" => Address.building_number(),
+          "is_company" => true,
+          "name" => Name.name(),
+          "password" => "toortoor",
+          "legal_name" => Company.name(),
+          "segment" => Commerce.department(),
+          "state" => Address.state(),
+          "street_name" => Address.street_name(),
+          "postal_code" => "12345678",
+          "city" => Address.city(),
+          "email" => Internet.email()
+        }
+
+        authenticate_conn(conn, attrs)
+      end
     end
   end
 

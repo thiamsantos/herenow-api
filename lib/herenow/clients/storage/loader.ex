@@ -20,7 +20,6 @@ defmodule Herenow.Clients.Storage.Loader do
 
   def get_one_by_email(email), do: Repo.one(Queries.one_by_email(email))
 
-  @spec get_password_by_email(String.t()) :: {:ok, struct} | {:error, :email__not_found}
   def get_password_by_email(email) do
     email
     |> Queries.password_by_email()

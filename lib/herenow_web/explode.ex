@@ -97,4 +97,5 @@ defmodule HerenowWeb.Explode do
   defp get_error_code(:unauthorized), do: 300
   defp get_error_code(:invalid_credentials), do: 301
   defp get_error_code(:account_not_verified), do: 302
+  defp get_error_code(:invalid_password), do: 303
 end

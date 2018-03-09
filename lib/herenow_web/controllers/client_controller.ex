@@ -220,4 +220,16 @@ defmodule HerenowWeb.ClientController do
       |> render("rpc_response.json", response: response)
     end
   end
+
+  def update_password(conn, params) do
+    params =
+      params
+      |> Map.put("client_id", conn.assigns[:client_id])
+
+    with {:ok, client} <- Clients.update_password(params) do
+      conn
+      |> put_status(:ok)
+      |> render("show.json", client: client)
+    end
+  end
 end

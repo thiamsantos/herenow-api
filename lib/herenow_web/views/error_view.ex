@@ -5,6 +5,10 @@ defmodule HerenowWeb.ErrorView do
     %{message: "Not found"}
   end
 
+  def render("401.json", %{message: message}) do
+    %{message: message}
+  end
+
   def render("500.json", _assigns) do
     %{message: "Internal server error"}
   end
