@@ -33,6 +33,15 @@ defmodule Herenow.Core.Token do
     |> Joken.verify!()
   end
 
+  @spec get_payload(String.t()) :: map
+  def get_payload(encoded_token) do
+    encoded_token
+    |> String.split(".")
+    |> List.first()
+    |> Base.decode64!(padding: false)
+    |> Jason.decode!()
+  end
+
   defp split_header(encoded_token) do
     List.last(Regex.run(~r/.+?\.(.+)/, encoded_token))
   end

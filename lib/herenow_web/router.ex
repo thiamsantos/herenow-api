@@ -4,6 +4,7 @@ defmodule HerenowWeb.Router do
   pipeline :api do
     plug :accepts, ["json"]
     plug PlugSecex, except: ["content-security-policy"]
+    plug HerenowWeb.Plugs.AccessLogPlug
   end
 
   scope "/v1", HerenowWeb do

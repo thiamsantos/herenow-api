@@ -1,5 +1,5 @@
 defmodule Herenow.Clients.Storage.EctoHashedPasswordTest do
-  use Herenow.DataCase, async: true
+  use ExUnit.Case, async: true
 
   alias Herenow.Clients.Storage.EctoHashedPassword
   alias Herenow.Clients.PasswordHash

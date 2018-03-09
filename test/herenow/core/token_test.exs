@@ -7,12 +7,6 @@ defmodule Herenow.Core.TokenTest do
   @current_time 42
   @expiration_time 12
 
-  defp decode_token_parts(part) do
-    part
-    |> Base.decode64!(padding: false)
-    |> Jason.decode!()
-  end
-
   describe "generate/4" do
     test "should return a valid headless jwt with two parts" do
       token = Token.generate(%{user_id: 1}, @secret, @expiration_time, @current_time)
@@ -33,10 +27,11 @@ defmodule Herenow.Core.TokenTest do
       actual =
         token
         |> String.split(".")
-        |> Enum.take(1)
-        |> Enum.map(&decode_token_parts/1)
+        |> List.first()
+        |> Base.decode64!(padding: false)
+        |> Jason.decode!()
 
-      Enum.each(actual, fn part -> assert is_map(part) end)
+      assert is_map(actual)
     end
 
     test "should return a valid jwt" do
@@ -81,6 +76,17 @@ defmodule Herenow.Core.TokenTest do
       expected = {:error, "Invalid signature"}
 
       assert actual == expected
+    end
+  end
+
+  describe "get_payload/1" do
+    test "should return a map with the payload" do
+      payload =
+        %{"client_id" => 2}
+        |> Token.generate(@secret, @two_hours_seconds)
+        |> Token.get_payload()
+
+      assert is_map(payload)
     end
   end
 end
