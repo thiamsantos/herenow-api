@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Phoenix demo",
   "scripts": {
-    "apidoc": "apidoc -i lib/herenow_web -o apidocs/ --debug",
+    "apidoc": "apidoc -i lib/herenow_web -o apidocs/",
     "serve:apidoc": "http-server apidocs/",
     "build:email": "mjml priv/email_templates/mjml/*.mjml -o priv/email_templates/html -m",
     "precommit": "npm run build:email && mix format && mix credo --strict && mix dialyzer && mix test",
@@ -22,7 +22,7 @@
   "homepage": "https://github.com/herenow-team/core-api#readme",
   "devDependencies": {
     "apidoc": "^0.17.6",
-    "apidoc-core": "https://github.com/techgaun/apidoc-core/tarball/elixir-syntax",
+    "apidoc-core": "https://github.com/thiamsantos/apidoc-core/tarball/elixir-syntax",
     "commitizen": "^2.9.6",
     "cz-conventional-changelog": "^2.1.0",
     "http-server": "^0.10.0",
