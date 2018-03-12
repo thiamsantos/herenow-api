@@ -11,14 +11,25 @@ defmodule HerenowWeb.ClientController do
   # }
 
   # {
+  # @apiDefine AuthenticationHeader
+  # @apiHeader Authorization Bearer YOUR_TOKEN.
+  # }
+
+  # {
   # @apiDefine MissingRequiredKeysError
   # @apiError MissingRequiredKeys Missing required keys
   # @apiErrorExample MissingRequiredResponse:
-  #   HTTP/1.1 422 Unprocessable Entity
+  #     HTTP/1.1 422 Unprocessable Entity
   #     {
-  #       "statusCode": 422,
-  #       "error": "Unprocessable Entity",
-  #       "message": "Missing required keys: [\"city\", \"email\"]"
+  #       "code": 100,
+  #       "message": "Validation failed!",
+  #       "errors": [
+  #         {
+  #           "message": "can't be blank",
+  #           "field": "city",
+  #           "code": 104
+  #         }
+  #       ]
   #     }
   # }
 
@@ -28,9 +39,15 @@ defmodule HerenowWeb.ClientController do
   # @apiErrorExample InvalidKeyTypeResponse:
   #     HTTP/1.1 422 Unprocessable Entity
   #     {
-  #       "statusCode": 422,
-  #       "error": "Unprocessable Entity",
-  #       "message": "Expected STRING, got INTEGER 9, at email"
+  #       "message": "Validation failed!",
+  #       "errors": [
+  #         {
+  #           "message": "is invalid",
+  #           "field": "email",
+  #           "code": 102
+  #         }
+  #       ],
+  #       "code": 100
   #     }
   # }
 
@@ -40,9 +57,15 @@ defmodule HerenowWeb.ClientController do
   # @apiErrorExample InvalidCaptchaResponse:
   #     HTTP/1.1 422 Unprocessable Entity
   #     {
-  #       "statusCode": 422,
-  #       "error": "Unprocessable Entity",
-  #       "message": "Invalid captcha"
+  #       "message": "Validation failed!",
+  #       "errors": [
+  #         {
+  #           "message": "Invalid captcha",
+  #           "field": null,
+  #           "code": 101
+  #         }
+  #       ],
+  #       "code": 100
   #     }
   # }
 
@@ -52,9 +75,15 @@ defmodule HerenowWeb.ClientController do
   # @apiErrorExample EmailAlreadyTakenResponse:
   #     HTTP/1.1 422 Unprocessable Entity
   #     {
-  #       "statusCode": 422,
-  #       "error": "Unprocessable Entity",
-  #       "message": "\"email\" has already been taken"
+  #       "message": "Validation failed!",
+  #       "errors": [
+  #         {
+  #           "message": "has already been taken",
+  #           "field": "email",
+  #           "code": 107
+  #         }
+  #       ],
+  #       "code": 100
   #     }
   # }
 
@@ -64,9 +93,15 @@ defmodule HerenowWeb.ClientController do
   # @apiErrorExample LongEmailResponse:
   #     HTTP/1.1 422 Unprocessable Entity
   #     {
-  #       "statusCode": 422,
-  #       "error": "Unprocessable Entity",
-  #       "message": "\"email\" should be at most 254 character(s)"
+  #       "message": "Validation failed!",
+  #       "errors": [
+  #         {
+  #           "message": "should be at most 254 character(s)",
+  #           "field": "email",
+  #           "code": 103
+  #         }
+  #       ],
+  #       "code": 100
   #     }
   # }
 
@@ -76,9 +111,15 @@ defmodule HerenowWeb.ClientController do
   # @apiErrorExample InvalidEmailFormatResponse:
   #     HTTP/1.1 422 Unprocessable Entity
   #     {
-  #       "statusCode": 422,
-  #       "error": "Unprocessable Entity",
-  #       "message": "\"email\" has invalid format"
+  #       "message": "Validation failed!",
+  #       "errors": [
+  #         {
+  #           "message": "has invalid format",
+  #           "field": "email",
+  #           "code": 106
+  #         }
+  #       ],
+  #       "code": 100
   #     }
   # }
 
@@ -88,33 +129,140 @@ defmodule HerenowWeb.ClientController do
   # @apiErrorExample InvalidPostCodeResponse:
   #     HTTP/1.1 422 Unprocessable Entity
   #     {
-  #       "statusCode": 422,
-  #       "error": "Unprocessable Entity",
-  #       "message": "\"postal_code\" should be 8 character(s)"
+  #       "message": "Validation failed!",
+  #       "errors": [
+  #         {
+  #           "message": "should be 8 character(s)",
+  #           "field": "postal_code",
+  #           "code": 103
+  #         }
+  #       ],
+  #       "code": 100
   #     }
   # }
 
   # {
-  # @apiDefine ShortPasswordError
-  # @apiError ShortPassword Password is too short
-  # @apiErrorExample ShortPasswordResponse:
+  # @apiDefine WeakPasswordError
+  # @apiError WeakPassword Password is too short
+  # @apiErrorExample WeakPasswordResponse:
   #     HTTP/1.1 422 Unprocessable Entity
   #     {
-  #       "statusCode": 422,
-  #       "error": "Unprocessable Entity",
-  #       "message": "\"password\" should be at least 8 characters"
+  #       "message": "Validation failed!",
+  #       "errors": [
+  #         {
+  #           "message": "should be at least 8 character(s)",
+  #           "field": "password",
+  #           "code": 103
+  #         }
+  #       ],
+  #       "code": 100
   #     }
   # }
 
   # {
-  # @apiDefine InvalidSchemaError
-  # @apiError InvalidSchema Body has wrong schema
-  # @apiErrorExample InvalidSchemaResponse:
+  # @apiDefine InvalidSignatureError
+  # @apiError InvalidSignature Token has an invalid signature
+  # @apiErrorExample InvalidSignatureResponse:
   #     HTTP/1.1 422 Unprocessable Entity
   #     {
-  #       "statusCode": 422,
-  #       "error": "Unprocessable Entity",
-  #       "message": "Invalid schema"
+  #       "message": "Validation failed!",
+  #       "errors": [
+  #         {
+  #           "message": "Invalid signature",
+  #           "field": null,
+  #           "code": 108
+  #         }
+  #       ],
+  #       "code": 100
+  #     }
+  # }
+
+  # {
+  # @apiDefine ExpiredTokenError
+  # @apiError ExpiredToken Token has expired
+  # @apiErrorExample ExpiredTokenResponse:
+  #     HTTP/1.1 422 Unprocessable Entity
+  #     {
+  #       "message": "Validation failed!",
+  #       "errors": [
+  #         {
+  #           "message": "Expired token",
+  #           "field": null,
+  #           "code": 109
+  #         }
+  #       ],
+  #       "code": 100
+  #     }
+  # }
+
+  # {
+  # @apiDefine ClientNotRegisteredError
+  # @apiError ClientNotRegistered Client is not registered
+  # @apiErrorExample ClientNotRegisteredResponse:
+  #     HTTP/1.1 422 Unprocessable Entity
+  #     {
+  #       "message": "Validation failed!",
+  #       "errors": [
+  #         {
+  #           "message": "does not exist",
+  #           "field": "client_id",
+  #           "code": 110
+  #         }
+  #       ],
+  #       "code": 100
+  #     }
+  # }
+
+  # {
+  # @apiDefine ClientAlreadyVerifiedError
+  # @apiError ClientAlreadyVerified Client is not registered
+  # @apiErrorExample ClientAlreadyVerifiedResponse:
+  #     HTTP/1.1 422 Unprocessable Entity
+  #     {
+  #       "message": "Validation failed!",
+  #       "errors": [
+  #         {
+  #           "message": "has already been taken",
+  #           "field": "client_id",
+  #           "code": 107
+  #         }
+  #       ],
+  #       "code": 100
+  #     }
+  # }
+
+  # {
+  # @apiDefine UsedTokenError
+  # @apiError UsedToken Token was already used.
+  # @apiErrorExample UsedTokenResponse:
+  #     HTTP/1.1 422 Unprocessable Entity
+  #     {
+  #       "message": "Validation failed!",
+  #       "errors": [
+  #         {
+  #           "message": "has already been taken",
+  #           "field": null,
+  #           "code": 111
+  #         }
+  #       ],
+  #       "code": 100
+  #     }
+  # }
+
+  # {
+  # @apiDefine CurrentPasswordError
+  # @apiError CurrentPassword Wrong current password.
+  # @apiErrorExample CurrentPasswordResponse:
+  #     HTTP/1.1 401 Unauthorized
+  #     {
+  #       "message": "Authorization failed!",
+  #       "errors": [
+  #         {
+  #           "message": "Invalid password",
+  #           "code": 303
+  #         }
+  #       ],
+  #       "code": 300
   #     }
   # }
 
@@ -136,17 +284,17 @@ defmodule HerenowWeb.ClientController do
   # @apiParam {String} state Client's state.
   # @apiParam {String} captcha Recaptcha code.
   #
-  # @apiSucesss {Number} id Client's unique ID.
-  # @apiSucesss {String} email Client's email.
-  # @apiSucesss {String} name Client's full name.
-  # @apiSucesss {String} legal_name Client's legal name.
-  # @apiSucesss {Boolean} is_company Client is a company?
-  # @apiSucesss {String} segment Client's market segment.
-  # @apiSucesss {String} postal_code Client's postal code.
-  # @apiSucesss {String} street_name Client's street name.
-  # @apiSucesss {String} street_number Client's street number.
-  # @apiSucesss {String} city Client's city.
-  # @apiSucesss {String} state Client's state.
+  # @apiSuccess {Number} id Client's unique ID.
+  # @apiSuccess {String} email Client's email.
+  # @apiSuccess {String} name Client's full name.
+  # @apiSuccess {String} legal_name Client's legal name.
+  # @apiSuccess {Boolean} is_company Client is a company?
+  # @apiSuccess {String} segment Client's market segment.
+  # @apiSuccess {String} postal_code Client's postal code.
+  # @apiSuccess {String} street_name Client's street name.
+  # @apiSuccess {String} street_number Client's street number.
+  # @apiSuccess {String} city Client's city.
+  # @apiSuccess {String} state Client's state.
   # @apiSuccessExample Success-Response:
   #     HTTP/1.1 201 Created
   #     {
@@ -159,7 +307,7 @@ defmodule HerenowWeb.ClientController do
   #       "postal_code": "88813000",
   #       "street_number": "221 B",
   #       "street_name": "Baker Street",
-  #       "city": "São Paulo,
+  #       "city": "São Paulo",
   #       "state": "London"
   #     }
   #
@@ -171,7 +319,7 @@ defmodule HerenowWeb.ClientController do
   # @apiUse LongEmailError
   # @apiUse InvalidEmailFormatError
   # @apiUse InvalidPostCodeError
-  # @apiUse ShortPasswordError
+  # @apiUse WeakPasswordError
   # }
 
   def create(conn, client_params) do
@@ -182,6 +330,50 @@ defmodule HerenowWeb.ClientController do
     end
   end
 
+  # {
+  # @api {post} /verified-clients Verify client
+  # @apiName VerifyClient
+  # @apiGroup Client
+  #
+  # @apiParam {String} token Token sent by email to verify client.
+  # @apiParam {String} captcha Recaptcha code.
+  #
+  # @apiSuccess {Number} id Client's unique ID.
+  # @apiSuccess {String} email Client's email.
+  # @apiSuccess {String} name Client's full name.
+  # @apiSuccess {String} legal_name Client's legal name.
+  # @apiSuccess {Boolean} is_company Client is a company?
+  # @apiSuccess {String} segment Client's market segment.
+  # @apiSuccess {String} postal_code Client's postal code.
+  # @apiSuccess {String} street_name Client's street name.
+  # @apiSuccess {String} street_number Client's street number.
+  # @apiSuccess {String} city Client's city.
+  # @apiSuccess {String} state Client's state.
+  # @apiSuccessExample Success-Response:
+  #     HTTP/1.1 200 OK
+  #     {
+  #       "id": 16,
+  #       "email": "john@gmail.com",
+  #       "name": "John",
+  #       "legal_name": "John INC",
+  #       "is_company": true,
+  #       "segment": "john@gmail.com",
+  #       "postal_code": "88813000",
+  #       "street_number": "221 B",
+  #       "street_name": "Baker Street",
+  #       "city": "São Paulo",
+  #       "state": "London"
+  #     }
+  #
+  # @apiUse DefaultHeader
+  # @apiUse MissingRequiredKeysError
+  # @apiUse InvalidKeyTypeError
+  # @apiUse InvalidCaptchaError
+  # @apiUse InvalidSignatureError
+  # @apiUse ExpiredTokenError
+  # @apiUse ClientNotRegisteredError
+  # @apiUse ClientAlreadyVerifiedError
+  # }
   def verify(conn, params) do
     with {:ok, client} <- Clients.activate(params) do
       conn
@@ -190,6 +382,28 @@ defmodule HerenowWeb.ClientController do
     end
   end
 
+  # {
+  # @api {post} /clients/request-activation Request client activation email
+  # @apiName RequestClientActivation
+  # @apiGroup Client
+  #
+  # @apiSuccess {String} email Client's email.
+  # @apiParam {String} captcha Recaptcha code.
+  #
+  # @apiSuccess {String} message API message.
+  # @apiSuccessExample Success-Response:
+  #     HTTP/1.1 200 OK
+  #     {
+  #       "message": "Email successfully sended!"
+  #     }
+  #
+  # @apiUse DefaultHeader
+  # @apiUse MissingRequiredKeysError
+  # @apiUse InvalidKeyTypeError
+  # @apiUse InvalidCaptchaError
+  # @apiUse LongEmailError
+  # @apiUse InvalidEmailFormatError
+  # }
   def request_activation(conn, params) do
     with {:ok, response} <- Clients.request_activation(params) do
       conn
@@ -198,6 +412,51 @@ defmodule HerenowWeb.ClientController do
     end
   end
 
+  # {
+  # @api {post} /clients/recover-password Recover client password
+  # @apiName RecoverClientPassword
+  # @apiGroup Client
+  #
+  # @apiParam {String} token Token sent by email to recover the password.
+  # @apiParam {String} password Client's new password.
+  # @apiParam {String} captcha Recaptcha code.
+  #
+  # @apiSuccess {Number} id Client's unique ID.
+  # @apiSuccess {String} email Client's email.
+  # @apiSuccess {String} name Client's full name.
+  # @apiSuccess {String} legal_name Client's legal name.
+  # @apiSuccess {Boolean} is_company Client is a company?
+  # @apiSuccess {String} segment Client's market segment.
+  # @apiSuccess {String} postal_code Client's postal code.
+  # @apiSuccess {String} street_name Client's street name.
+  # @apiSuccess {String} street_number Client's street number.
+  # @apiSuccess {String} city Client's city.
+  # @apiSuccess {String} state Client's state.
+  # @apiSuccessExample Success-Response:
+  #     HTTP/1.1 200 OK
+  #     {
+  #       "id": 16,
+  #       "email": "john@gmail.com",
+  #       "name": "John",
+  #       "legal_name": "John INC",
+  #       "is_company": true,
+  #       "segment": "john@gmail.com",
+  #       "postal_code": "88813000",
+  #       "street_number": "221 B",
+  #       "street_name": "Baker Street",
+  #       "city": "São Paulo",
+  #       "state": "London"
+  #     }
+  #
+  # @apiUse DefaultHeader
+  # @apiUse MissingRequiredKeysError
+  # @apiUse InvalidKeyTypeError
+  # @apiUse InvalidCaptchaError
+  # @apiUse InvalidSignatureError
+  # @apiUse ExpiredTokenError
+  # @apiUse UsedTokenError
+  # @apiUse WeakPasswordError
+  # }
   def recover_password(conn, params) do
     with {:ok, client} <- Clients.recover_password(params) do
       conn
@@ -206,6 +465,28 @@ defmodule HerenowWeb.ClientController do
     end
   end
 
+  # {
+  # @api {post} /clients/password-recovery Request a password recovery token
+  # @apiName RequestPasswordRecovery
+  # @apiGroup Client
+  #
+  # @apiParam {String} email Client's email.
+  # @apiParam {String} captcha Recaptcha code.
+  #
+  # @apiSuccess {String} message API message.
+  # @apiSuccessExample Success-Response:
+  #     HTTP/1.1 200 OK
+  #     {
+  #       "message": "Email successfully sended!"
+  #     }
+  #
+  # @apiUse DefaultHeader
+  # @apiUse MissingRequiredKeysError
+  # @apiUse InvalidKeyTypeError
+  # @apiUse InvalidCaptchaError
+  # @apiUse LongEmailError
+  # @apiUse InvalidEmailFormatError
+  # }
   def request_password_recovery(conn, params) do
     user_agent = %{
       "operating_system" => Browser.full_platform_name(conn),
@@ -221,6 +502,48 @@ defmodule HerenowWeb.ClientController do
     end
   end
 
+  # {
+  # @api {post} /profile/password Update a client's password
+  # @apiName UpdatePassword
+  # @apiGroup Client
+  #
+  # @apiParam {String} current_password Client's current password.
+  # @apiParam {String} password Client's password.
+  #
+  # @apiSuccess {Number} id Client's unique ID.
+  # @apiSuccess {String} email Client's email.
+  # @apiSuccess {String} name Client's full name.
+  # @apiSuccess {String} legal_name Client's legal name.
+  # @apiSuccess {Boolean} is_company Client is a company?
+  # @apiSuccess {String} segment Client's market segment.
+  # @apiSuccess {String} postal_code Client's postal code.
+  # @apiSuccess {String} street_name Client's street name.
+  # @apiSuccess {String} street_number Client's street number.
+  # @apiSuccess {String} city Client's city.
+  # @apiSuccess {String} state Client's state.
+  # @apiSuccessExample Success-Response:
+  #     HTTP/1.1 200 OK
+  #     {
+  #       "id": 16,
+  #       "email": "john@gmail.com",
+  #       "name": "John",
+  #       "legal_name": "John INC",
+  #       "is_company": true,
+  #       "segment": "john@gmail.com",
+  #       "postal_code": "88813000",
+  #       "street_number": "221 B",
+  #       "street_name": "Baker Street",
+  #       "city": "São Paulo",
+  #       "state": "London"
+  #     }
+  #
+  # @apiUse DefaultHeader
+  # @apiUse AuthenticationHeader
+  # @apiUse MissingRequiredKeysError
+  # @apiUse InvalidKeyTypeError
+  # @apiUse WeakPasswordError
+  # @apiUse CurrentPasswordError
+  # }
   def update_password(conn, params) do
     params =
       params
