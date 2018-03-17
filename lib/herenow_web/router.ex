@@ -27,6 +27,7 @@ defmodule HerenowWeb.Router do
     pipe_through [:api, :auth]
 
     put "/profile/password", ClientController, :update_password
+    resources "/products", ProductController, except: [:new, :edit]
   end
 
   if Mix.env() == :dev do
