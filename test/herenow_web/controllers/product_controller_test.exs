@@ -3,20 +3,35 @@ defmodule HerenowWeb.ProductControllerTest do
 
   alias Herenow.Products
   alias Herenow.Products.Product
+  alias Faker.{Commerce, Code}
 
-  @create_attrs %{category: "some category", code: "some code", description: "some description", name: "some name", price: 120.5}
-  @update_attrs %{category: "some updated category", code: "some updated code", description: "some updated description", name: "some updated name", price: 456.7}
-  @invalid_attrs %{category: nil, code: nil, description: nil, name: nil, price: nil}
+  @create_attrs %{
+    "category" => Commerce.department(),
+    "code" => Code.iban(),
+    "description" => Commerce.product_name(),
+    "name" => Commerce.product_name_product(),
+    "price" => Commerce.price()
+  }
+
+  @update_attrs %{
+    "category" => Commerce.department(),
+    "code" => Code.iban(),
+    "description" => Commerce.product_name(),
+    "name" => Commerce.product_name_product(),
+    "price" => Commerce.price()
+  }
 
   def fixture(:product) do
-    {:ok, product} = Products.create_product(@create_attrs)
+    {:ok, product} = Products.create(@create_attrs)
     product
   end
 
   setup %{conn: conn} do
-    conn = conn
-    |> put_req_header("accept", "application/json")
-    |> authenticate_conn()
+    conn =
+      conn
+      |> put_req_header("accept", "application/json")
+      |> authenticate_conn()
+
     {:ok, conn: conn}
   end
 
@@ -27,24 +42,59 @@ defmodule HerenowWeb.ProductControllerTest do
     end
   end
 
+  describe "show product" do
+    setup [:create_product]
+
+    test "renders product", %{conn: conn, product: product} do
+      conn = get conn, product_path(conn, :show, product)
+      product = json_response(conn, 200)
+
+      assert is_integer(product["id"])
+      assert product["category"] == @create_attrs["category"]
+      assert product["code"] == @create_attrs["code"]
+      assert product["description"] == @create_attrs["description"]
+      assert product["name"] == @create_attrs["name"]
+      assert product["price"] == @create_attrs["price"]
+    end
+  end
+
   describe "create product" do
     test "renders product when data is valid", %{conn: conn} do
-      conn = post conn, product_path(conn, :create), product: @create_attrs
-      assert %{"id" => id} = json_response(conn, 201)
+      conn = post conn, product_path(conn, :create), @create_attrs
+      product = json_response(conn, 201)
 
-      conn = get conn, product_path(conn, :show, id)
-      assert json_response(conn, 200) == %{
-        "id" => id,
-        "category" => "some category",
-        "code" => "some code",
-        "description" => "some description",
-        "name" => "some name",
-        "price" => 120.5}
+      assert is_integer(product["id"])
+      assert product["category"] == @create_attrs["category"]
+      assert product["code"] == @create_attrs["code"]
+      assert product["description"] == @create_attrs["description"]
+      assert product["name"] == @create_attrs["name"]
+      assert product["price"] == @create_attrs["price"]
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post conn, product_path(conn, :create), product: @invalid_attrs
-      assert json_response(conn, 422) != %{}
+      attrs =
+        @create_attrs
+        |> Map.delete("category")
+
+      conn =
+        conn
+        |> post(product_path(conn, :create), attrs)
+
+      actual = json_response(conn, 422)
+
+      expected = %{
+        "code" => 100,
+        "message" => "Validation failed!",
+        "errors" => [
+          %{
+            "code" => 104,
+            "field" => "category",
+            "message" => "can't be blank"
+          }
+        ]
+      }
+
+      assert actual == expected
     end
   end
 
@@ -52,35 +102,42 @@ defmodule HerenowWeb.ProductControllerTest do
     setup [:create_product]
 
     test "renders product when data is valid", %{conn: conn, product: %Product{id: id} = product} do
-      conn = put conn, product_path(conn, :update, product), product: @update_attrs
+      conn = put conn, product_path(conn, :update, product), @update_attrs
       actual = json_response(conn, 200)
 
       expected = %{
         "id" => id,
-        "category" => "some updated category",
-        "code" => "some updated code",
-        "description" => "some updated description",
-        "name" => "some updated name",
-        "price" => 456.7}
+        "category" => @update_attrs["category"],
+        "code" => @update_attrs["code"],
+        "description" => @update_attrs["description"],
+        "name" => @update_attrs["name"],
+        "price" => @update_attrs["price"]
+      }
 
       assert actual == expected
     end
 
     test "renders errors when data is invalid", %{conn: conn, product: product} do
-      conn = put conn, product_path(conn, :update, product), product: @invalid_attrs
-      assert json_response(conn, 422) != %{}
-    end
-  end
+      attrs =
+        @update_attrs
+        |> Map.put("category", nil)
 
-  describe "delete product" do
-    setup [:create_product]
+      conn = put conn, product_path(conn, :update, product), attrs
+      actual = json_response(conn, 422)
 
-    test "deletes chosen product", %{conn: conn, product: product} do
-      conn = delete conn, product_path(conn, :delete, product)
-      assert response(conn, 204)
-      assert_error_sent 404, fn ->
-        get conn, product_path(conn, :show, product)
-      end
+      expected = %{
+        "code" => 100,
+        "errors" => [
+          %{
+            "code" => 104,
+            "field" => "category",
+            "message" => "can't be blank"
+          }
+        ],
+        "message" => "Validation failed!"
+      }
+
+      assert actual == expected
     end
   end
 

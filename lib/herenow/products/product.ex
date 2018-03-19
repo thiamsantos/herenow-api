@@ -1,7 +1,11 @@
 defmodule Herenow.Products.Product do
+  @moduledoc """
+  Product schema.
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
+  @fields [:name, :category, :code, :price, :description]
 
   schema "products" do
     field :category, :string
@@ -17,7 +21,7 @@ defmodule Herenow.Products.Product do
   @doc false
   def changeset(product, attrs) do
     product
-    |> cast(attrs, [:name, :category, :code, :price, :description])
-    |> validate_required([:name, :category, :code, :price, :description])
+    |> cast(attrs, @fields)
+    |> validate_required(@fields)
   end
 end
