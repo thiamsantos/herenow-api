@@ -65,4 +65,19 @@ defmodule Herenow.Clients.Storage.Loader do
   defp handle_verified_query(client) do
     {:ok, client}
   end
+
+  def get_location(id) do
+    id
+    |> Queries.location_by_id()
+    |> Repo.one()
+    |> handle_location()
+  end
+
+  defp handle_location(nil) do
+    {:error, :client_not_found}
+  end
+
+  defp handle_location(client) do
+    {:ok, client}
+  end
 end

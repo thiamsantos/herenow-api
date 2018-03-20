@@ -3,7 +3,8 @@ defmodule HerenowWeb.ProductControllerTest do
 
   alias Herenow.Products
   alias Herenow.Products.Product
-  alias Faker.{Commerce, Code}
+  alias Faker.{Name, Address, Commerce, Internet, Company, Code}
+  alias Herenow.Clients.Storage.Mutator
 
   @create_attrs %{
     "category" => Commerce.department(),
@@ -21,8 +22,37 @@ defmodule HerenowWeb.ProductControllerTest do
     "price" => Commerce.price()
   }
 
+  def fixture(:client) do
+    attrs = %{
+      "street_number" => Address.building_number(),
+      "is_company" => true,
+      "name" => Name.name(),
+      "password" => "some password",
+      "legal_name" => Company.name(),
+      "segment" => Commerce.department(),
+      "state" => Address.state(),
+      "street_name" => Address.street_name(),
+      "captcha" => "valid",
+      "postal_code" => "12345678",
+      "city" => Address.city(),
+      "email" => Internet.email(),
+      "lat" => Address.latitude(),
+      "lon" => Address.longitude()
+    }
+
+    {:ok, client} = Mutator.create(attrs)
+
+    client
+  end
+
   def fixture(:product) do
-    {:ok, product} = Products.create(@create_attrs)
+    client = fixture(:client)
+
+    attrs =
+      @create_attrs
+      |> Map.put("client_id", client.id)
+
+    {:ok, product} = Products.create(attrs)
     product
   end
 
@@ -60,7 +90,13 @@ defmodule HerenowWeb.ProductControllerTest do
 
   describe "create product" do
     test "renders product when data is valid", %{conn: conn} do
-      conn = post conn, product_path(conn, :create), @create_attrs
+      client = fixture(:client)
+
+      attrs =
+        @create_attrs
+        |> Map.put("client_id", client.id)
+
+      conn = post conn, product_path(conn, :create), attrs
       product = json_response(conn, 201)
 
       assert is_integer(product["id"])
@@ -72,8 +108,11 @@ defmodule HerenowWeb.ProductControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
+      client = fixture(:client)
+
       attrs =
         @create_attrs
+        |> Map.put("client_id", client.id)
         |> Map.delete("category")
 
       conn =
@@ -118,8 +157,11 @@ defmodule HerenowWeb.ProductControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, product: product} do
+      client = fixture(:client)
+
       attrs =
-        @update_attrs
+        @create_attrs
+        |> Map.put("client_id", client.id)
         |> Map.put("category", nil)
 
       conn = put conn, product_path(conn, :update, product), attrs

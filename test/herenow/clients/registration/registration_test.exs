@@ -17,7 +17,9 @@ defmodule Herenow.Clients.RegistrationTest do
     "captcha" => "valid",
     "postal_code" => "12345678",
     "city" => Address.city(),
-    "email" => Internet.email()
+    "email" => Internet.email(),
+    "lat" => Address.latitude(),
+    "lon" => Address.longitude()
   }
 
   def client_fixture(attrs \\ %{}) do
@@ -62,38 +64,23 @@ defmodule Herenow.Clients.RegistrationTest do
     end
 
     test "invalid type of keys" do
-      keys = Map.keys(@valid_attrs)
+      expected =
+        {:error,
+         {:validation,
+          [
+            %{
+              "field" => "is_company",
+              "message" => "is invalid",
+              "type" => :cast
+            }
+          ]}}
 
-      Enum.each(keys, fn key ->
-        value = Map.get(@valid_attrs, key)
+      attrs =
+        @valid_attrs
+        |> Map.put("is_company", "some string")
 
-        expected =
-          {:error,
-           {:validation,
-            [
-              %{
-                "field" => key,
-                "message" => "is invalid",
-                "type" => :cast
-              }
-            ]}}
-
-        if is_boolean(value) do
-          attrs =
-            @valid_attrs
-            |> Map.put(key, "some string")
-
-          actual = Clients.register(attrs)
-          assert actual == expected
-        else
-          attrs =
-            @valid_attrs
-            |> Map.put(key, 9)
-
-          actual = Clients.register(attrs)
-          assert actual == expected
-        end
-      end)
+      actual = Clients.register(attrs)
+      assert actual == expected
     end
 
     test "invalid captcha" do

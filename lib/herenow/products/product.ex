@@ -5,7 +5,7 @@ defmodule Herenow.Products.Product do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @fields [:name, :category, :code, :price, :description]
+  @fields [:name, :category, :code, :price, :description, :client_id]
 
   schema "products" do
     field :category, :string
@@ -23,5 +23,6 @@ defmodule Herenow.Products.Product do
     product
     |> cast(attrs, @fields)
     |> validate_required(@fields)
+    |> foreign_key_constraint(:client_id)
   end
 end
