@@ -4,18 +4,28 @@ defmodule Herenow.Products.Create do
   """
   use Herenow.Service
 
-  alias Herenow.{Repo, Elasticsearch}
-  alias Herenow.Products.Product
-  alias Herenow.Core.ErrorHandler
+  alias Herenow.Repo
+  alias Herenow.Products.{Product, Search}
+  alias Herenow.Core.{ErrorHandler, ErrorMessage}
   alias Herenow.Clients.Storage.Loader, as: ClientLoader
 
   def run(params) do
     with {:ok, %Product{} = product} <- create(params),
          {:ok, location} <- ClientLoader.get_location(product.client_id),
-         {:ok, _res} <- insert_elasticsearch(product, location) do
+         {:ok, _body} <- insert_elasticsearch(product, location) do
       {:ok, product}
     else
-      {:error, reason} -> ErrorHandler.handle(reason)
+      {:error, :elastisearch_timeout} ->
+        ErrorMessage.internal(:elastisearch_timeout, "Elasticsearch Timeout")
+
+      {:error, :elasticsearch_error} ->
+        ErrorMessage.internal(:elasticsearch_error, "Elasticsearch error")
+
+      {:error, :client_not_found} ->
+        ErrorMessage.validation(nil, :invalid_client, "Invalid Client ID")
+
+      {:error, reason} ->
+        ErrorHandler.handle(reason)
     end
   end
 
@@ -26,7 +36,7 @@ defmodule Herenow.Products.Create do
   end
 
   defp insert_elasticsearch(%Product{} = product, location) do
-    Elasticsearch.put_data("products", "product", product.id, %{
+    Search.put(product.id, %{
       category: product.category,
       description: product.description,
       name: product.name,

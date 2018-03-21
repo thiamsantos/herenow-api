@@ -9,6 +9,10 @@ defmodule Herenow.Core.ErrorMessage do
     {:error, {type, message}}
   end
 
+  def internal(type, message) do
+    create(:internal, [%{"type" => type, "message" => message}])
+  end
+
   def not_found(type, message) do
     create(:not_found, [%{"type" => type, "message" => message}])
   end

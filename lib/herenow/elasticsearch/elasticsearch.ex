@@ -22,6 +22,10 @@ defmodule Herenow.Elasticsearch do
     Document.index(@elastic_url, index_name, doc_type, id, data)
   end
 
+  def update_data(index_name, doc_type, id, data) do
+    Document.update(@elastic_url, index_name, doc_type, id, data)
+  end
+
   def get_data(index_name, doc_type, id) do
     Document.get(@elastic_url, index_name, doc_type, id)
   end
