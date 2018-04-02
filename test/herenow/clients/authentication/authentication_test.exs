@@ -17,7 +17,9 @@ defmodule Herenow.Clients.AuthenticationTest do
     "captcha" => "valid",
     "postal_code" => "12345678",
     "city" => Address.city(),
-    "email" => Internet.email()
+    "email" => Internet.email(),
+    "lat" => Address.latitude(),
+    "lon" => Address.longitude()
   }
   @valid_attrs %{
     "email" => @client_attrs["email"],

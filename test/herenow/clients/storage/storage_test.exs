@@ -1,6 +1,7 @@
 defmodule Herenow.Clients.Storage.StorageTest do
   use Herenow.DataCase, async: true
   alias Herenow.Clients.Storage.{Client, Mutator, Loader}
+  alias Faker.Address
 
   @valid_attrs %{
     street_number: "54",
@@ -13,7 +14,9 @@ defmodule Herenow.Clients.Storage.StorageTest do
     password: "some password",
     segment: "some segment",
     state: "some state",
-    street_name: "some street_name"
+    street_name: "some street_name",
+    lat: Address.latitude(),
+    lon: Address.longitude()
   }
   @update_attrs %{
     street_number: "227",
@@ -27,7 +30,9 @@ defmodule Herenow.Clients.Storage.StorageTest do
     password: "some updated password",
     segment: "some updated segment",
     state: "some updated state",
-    street_name: "some updated street_name"
+    street_name: "some updated street_name",
+    lat: Address.latitude(),
+    lon: Address.longitude()
   }
   @invalid_attrs %{
     street_number: nil,
@@ -41,7 +46,9 @@ defmodule Herenow.Clients.Storage.StorageTest do
     password: nil,
     segment: nil,
     state: nil,
-    street_name: nil
+    street_name: nil,
+    lat: nil,
+    lon: nil
   }
 
   def client_fixture(attrs \\ %{}) do

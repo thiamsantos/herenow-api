@@ -13,7 +13,9 @@ defmodule Herenow.Clients.Storage.Fields do
     :street_name,
     :street_number,
     :city,
-    :state
+    :state,
+    :lat,
+    :lon
   ]
 
   def required_fields, do: @required_fields

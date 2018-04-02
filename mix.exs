@@ -54,7 +54,8 @@ defmodule Herenow.Mixfile do
       {:jason, "~> 1.0"},
       {:hackney, "~> 1.11", override: true},
       {:mustache, "~> 0.3.0"},
-      {:browser, "~> 0.4.1"}
+      {:browser, "~> 0.4.1"},
+      {:elastix, "~> 0.5.0"}
     ]
   end
 
@@ -68,7 +69,7 @@ defmodule Herenow.Mixfile do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["run priv/elasticsearch_up.exs", "ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
 end

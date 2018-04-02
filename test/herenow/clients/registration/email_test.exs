@@ -18,7 +18,9 @@ defmodule Herenow.Clients.Registration.EmailTest do
     "captcha" => "valid",
     "postal_code" => "12345678",
     "city" => Address.city(),
-    "email" => Internet.email()
+    "email" => Internet.email(),
+    "lat" => Address.latitude(),
+    "lon" => Address.longitude()
   }
 
   describe "register/1" do

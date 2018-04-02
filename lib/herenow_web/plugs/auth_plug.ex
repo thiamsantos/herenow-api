@@ -13,7 +13,7 @@ defmodule HerenowWeb.AuthPlug do
   end
 
   def call(conn, _opts) do
-    with {:ok, token} <- authenticate(conn),
+    with {:ok, token} <- get_token(conn),
          {:ok, claims} <- Token.verify(token) do
       assign(conn, :client_id, claims["client_id"])
     else
@@ -25,13 +25,13 @@ defmodule HerenowWeb.AuthPlug do
     end
   end
 
-  defp authenticate(conn) do
+  def get_token(conn) do
     conn
     |> get_req_header("authorization")
-    |> get_token()
+    |> parse_token()
   end
 
-  defp get_token(authorization_header) do
+  defp parse_token(authorization_header) do
     trimmed_authorization =
       authorization_header
       |> Enum.at(0, "")

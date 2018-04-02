@@ -18,6 +18,8 @@ defmodule Herenow.Clients.Storage.Client do
     field :segment, :string
     field :state, :string
     field :street_name, :string
+    field :lat, :float
+    field :lon, :float
 
     timestamps()
   end

@@ -21,4 +21,6 @@ config :ecto, json_library: Jason
 
 config :herenow, Herenow.Repo, types: Herenow.PostgresTypes
 
+config :elastix, json_codec: Jason
+
 import_config "#{Mix.env()}.exs"

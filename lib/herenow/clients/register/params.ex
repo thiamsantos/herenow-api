@@ -23,6 +23,8 @@ defmodule Herenow.Clients.Register.Params do
     field :city, :string
     field :state, :string
     field :captcha, :string
+    field :lat, :float
+    field :lon, :float
   end
 
   @doc false
