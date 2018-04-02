@@ -24,6 +24,10 @@ defmodule HerenowWeb.ProductController do
   end
 
   def show(conn, params) do
+    params =
+      params
+      |> Map.put("client_id", conn.assigns[:client_id])
+
     with {:ok, product} <- Products.show(params) do
       render(conn, "show.json", product: product)
     end

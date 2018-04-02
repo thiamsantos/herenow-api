@@ -72,7 +72,8 @@ defmodule Herenow.Products.UpdateTest do
       assert updated_product.name == @update_attrs["name"]
       assert updated_product.price == @update_attrs["price"]
 
-      assert Products.show(%{"id" => product.id}) == {:ok, updated_product}
+      assert Products.show(%{"id" => "#{product.id}", "client_id" => product.client_id}) ==
+               {:ok, updated_product}
     end
 
     test "not found when different clients tries to update" do
@@ -122,7 +123,9 @@ defmodule Herenow.Products.UpdateTest do
           ]}}
 
       assert actual == expected
-      assert Products.show(%{"id" => product.id}) == {:ok, product}
+
+      assert Products.show(%{"id" => "#{product.id}", "client_id" => product.client_id}) ==
+               {:ok, product}
     end
   end
 end

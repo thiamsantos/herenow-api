@@ -51,8 +51,27 @@ defmodule Herenow.Products.ShowTest do
     test "returns the product with given id" do
       product = fixture(:product)
 
-      actual = Products.show(%{"id" => product.id})
+      actual = Products.show(%{"id" => "#{product.id}", "client_id" => product.client_id})
       expected = {:ok, product}
+      assert actual == expected
+    end
+
+    test "returns not found" do
+      product = fixture(:product)
+      different_client = fixture(:client)
+
+      actual = Products.show(%{"id" => "#{product.id}", "client_id" => different_client.id})
+
+      expected =
+        {:error,
+         {:not_found,
+          [
+            %{
+              "message" => "Product not found",
+              "type" => :product_not_found
+            }
+          ]}}
+
       assert actual == expected
     end
   end

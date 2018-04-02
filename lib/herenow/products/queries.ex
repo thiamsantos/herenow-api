@@ -1,6 +1,6 @@
-defmodule Herenow.Products.Update.Queries do
+defmodule Herenow.Products.Queries do
   @moduledoc """
-  Database queries of product update.
+  Database queries of product.
   """
   import Ecto.Query, warn: false
   alias Herenow.Products.Product

@@ -61,11 +61,6 @@ defmodule HerenowWeb.ProductControllerTest do
     product
   end
 
-  defp create_product(_) do
-    product = fixture(:product)
-    {:ok, product: product}
-  end
-
   defp get_client_id(conn) do
     {:ok, token} = AuthPlug.get_token(conn)
     {:ok, claims} = Token.verify(token)
@@ -90,9 +85,8 @@ defmodule HerenowWeb.ProductControllerTest do
   end
 
   describe "show product" do
-    setup [:create_product]
-
-    test "renders product", %{conn: conn, product: product} do
+    test "renders product", %{conn: conn} do
+      product = fixture(:product, get_client_id(conn))
       conn = get conn, product_path(conn, :show, product)
       product = json_response(conn, 200)
 
@@ -102,6 +96,22 @@ defmodule HerenowWeb.ProductControllerTest do
       assert product["description"] == @create_attrs["description"]
       assert product["name"] == @create_attrs["name"]
       assert product["price"] == @create_attrs["price"]
+    end
+
+    test "client cannot see products from other clients", %{conn: conn} do
+      different_client = fixture(:client)
+      product = fixture(:product, different_client.id)
+
+      conn = get conn, product_path(conn, :show, product)
+      actual = json_response(conn, 404)
+
+      expected = %{
+        "code" => 200,
+        "errors" => [%{"code" => 201, "message" => "Product not found"}],
+        "message" => "Not found!"
+      }
+
+      assert actual == expected
     end
   end
 
