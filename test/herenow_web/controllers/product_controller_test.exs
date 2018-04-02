@@ -80,7 +80,25 @@ defmodule HerenowWeb.ProductControllerTest do
   describe "index" do
     test "lists all products", %{conn: conn} do
       conn = get conn, product_path(conn, :index)
-      assert json_response(conn, 200) == []
+      actual = json_response(conn, 200)
+
+      assert length(actual) == 0
+    end
+
+    test "should return some products", %{conn: conn} do
+      fixture(:product, get_client_id(conn))
+      conn = get conn, product_path(conn, :index)
+      actual = json_response(conn, 200)
+
+      assert length(actual) == 1
+    end
+
+    test "should not return products from others clients", %{conn: conn} do
+      fixture(:product)
+      conn = get conn, product_path(conn, :index)
+      actual = json_response(conn, 200)
+
+      assert length(actual) == 0
     end
   end
 

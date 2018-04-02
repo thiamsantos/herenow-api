@@ -36,12 +36,10 @@ defmodule Herenow.Products.ListTest do
     client
   end
 
-  def fixture(:product) do
-    client = fixture(:client)
-
+  def fixture(:product, client_id) do
     {:ok, product} =
       @valid_attrs
-      |> Map.put("client_id", client.id)
+      |> Map.put("client_id", client_id)
       |> Products.create()
 
     product
@@ -49,8 +47,17 @@ defmodule Herenow.Products.ListTest do
 
   describe "list/0" do
     test "returns all products" do
-      product = fixture(:product)
-      assert Products.list() == {:ok, [product]}
+      client = fixture(:client)
+      product = fixture(:product, client.id)
+      assert Products.list(client.id) == {:ok, [product]}
+    end
+
+    test "not returns products from other clients" do
+      client = fixture(:client)
+      fixture(:product, client.id)
+
+      another_client = fixture(:client)
+      assert Products.list(another_client.id) == {:ok, []}
     end
   end
 end

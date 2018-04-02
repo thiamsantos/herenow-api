@@ -5,9 +5,14 @@ defmodule Herenow.Products.List do
   use Herenow.Service
 
   alias Herenow.Repo
-  alias Herenow.Products.Product
+  alias Herenow.Products.Queries
 
-  def run(_) do
-    {:ok, Repo.all(Product)}
+  def run(client_id) do
+    results =
+      client_id
+      |> Queries.all_products()
+      |> Repo.all()
+
+    {:ok, results}
   end
 end

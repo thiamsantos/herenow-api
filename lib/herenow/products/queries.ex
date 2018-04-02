@@ -10,4 +10,8 @@ defmodule Herenow.Products.Queries do
       where: [id: ^id],
       where: [client_id: ^client_id]
   end
+
+  def all_products(client_id) do
+    from p in Product, where: [client_id: ^client_id]
+  end
 end

@@ -7,7 +7,7 @@ defmodule HerenowWeb.ProductController do
   action_fallback(HerenowWeb.FallbackController)
 
   def index(conn, _params) do
-    {:ok, products} = Products.list()
+    {:ok, products} = Products.list(conn.assigns[:client_id])
     render(conn, "index.json", products: products)
   end
 
