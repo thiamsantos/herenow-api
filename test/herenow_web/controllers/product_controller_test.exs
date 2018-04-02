@@ -2,9 +2,10 @@ defmodule HerenowWeb.ProductControllerTest do
   use HerenowWeb.ConnCase, async: true
 
   alias Herenow.Products
-  alias Herenow.Products.Product
   alias Faker.{Name, Address, Commerce, Internet, Company, Code}
   alias Herenow.Clients.Storage.Mutator
+  alias Herenow.Clients.Authenticate.Token
+  alias HerenowWeb.AuthPlug
 
   @create_attrs %{
     "category" => Commerce.department(),
@@ -48,9 +49,13 @@ defmodule HerenowWeb.ProductControllerTest do
   defp fixture(:product) do
     client = fixture(:client)
 
+    fixture(:product, client.id)
+  end
+
+  defp fixture(:product, client_id) do
     attrs =
       @create_attrs
-      |> Map.put("client_id", client.id)
+      |> Map.put("client_id", client_id)
 
     {:ok, product} = Products.create(attrs)
     product
@@ -59,6 +64,13 @@ defmodule HerenowWeb.ProductControllerTest do
   defp create_product(_) do
     product = fixture(:product)
     {:ok, product: product}
+  end
+
+  defp get_client_id(conn) do
+    {:ok, token} = AuthPlug.get_token(conn)
+    {:ok, claims} = Token.verify(token)
+
+    claims["client_id"]
   end
 
   setup %{conn: conn} do
@@ -134,14 +146,15 @@ defmodule HerenowWeb.ProductControllerTest do
   end
 
   describe "update product" do
-    setup [:create_product]
+    test "renders product when data is valid", %{conn: conn} do
+      client_id = get_client_id(conn)
+      product = fixture(:product, client_id)
 
-    test "renders product when data is valid", %{conn: conn, product: %Product{id: id} = product} do
       conn = put conn, product_path(conn, :update, product), @update_attrs
       actual = json_response(conn, 200)
 
       expected = %{
-        "id" => id,
+        "id" => product.id,
         "category" => @update_attrs["category"],
         "code" => @update_attrs["code"],
         "description" => @update_attrs["description"],
@@ -152,7 +165,26 @@ defmodule HerenowWeb.ProductControllerTest do
       assert actual == expected
     end
 
-    test "renders errors when data is invalid", %{conn: conn, product: product} do
+    test "not found when different clients tries to update", %{conn: conn} do
+      product = fixture(:product)
+
+      conn = put conn, product_path(conn, :update, product), @update_attrs
+      actual = json_response(conn, 404)
+
+      expected = %{
+        "code" => 200,
+        "errors" => [%{"code" => 201, "message" => "Product not found"}],
+        "message" => "Not found!"
+      }
+
+      assert actual == expected
+    end
+
+    test "renders errors when data is invalid", %{conn: conn} do
+      client_id = get_client_id(conn)
+
+      product = fixture(:product, client_id)
+
       attrs =
         @create_attrs
         |> Map.put("category", nil)

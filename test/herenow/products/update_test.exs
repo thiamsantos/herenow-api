@@ -61,7 +61,8 @@ defmodule Herenow.Products.UpdateTest do
 
       attrs =
         @update_attrs
-        |> Map.put("id", product.id)
+        |> Map.put("client_id", product.client_id)
+        |> Map.put("id", "#{product.id}")
 
       assert {:ok, updated_product} = Products.update(attrs)
       assert updated_product.id == product.id
@@ -74,12 +75,37 @@ defmodule Herenow.Products.UpdateTest do
       assert Products.show(%{"id" => product.id}) == {:ok, updated_product}
     end
 
+    test "not found when different clients tries to update" do
+      product = fixture(:product)
+      different_client = fixture(:client)
+
+      attrs =
+        @update_attrs
+        |> Map.put("client_id", different_client.id)
+        |> Map.put("id", "#{product.id}")
+
+      actual = Products.update(attrs)
+
+      expected =
+        {:error,
+         {:not_found,
+          [
+            %{
+              "message" => "Product not found",
+              "type" => :product_not_found
+            }
+          ]}}
+
+      assert actual == expected
+    end
+
     test "with invalid data returns error changeset" do
       product = fixture(:product)
 
       attrs =
         @update_attrs
-        |> Map.put("id", product.id)
+        |> Map.put("client_id", product.client_id)
+        |> Map.put("id", "#{product.id}")
         |> Map.put("category", nil)
 
       actual = Products.update(attrs)
