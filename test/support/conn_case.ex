@@ -24,17 +24,10 @@ defmodule HerenowWeb.ConnCase do
       # The default endpoint for testing
       @endpoint HerenowWeb.Endpoint
 
-      def authenticate_conn(conn, %{} = attrs) do
-        alias Herenow.Repo
-        alias Herenow.Clients.Storage.{Client, Mutator}
-
-        {:ok, client} = Mutator.create(attrs)
-
-        {:ok, _verified_client} = Mutator.verify(%{"client_id" => client.id})
-
+      def authenticate_conn(conn, %{email: email, password: password}) do
         credentials = %{
-          "email" => attrs["email"],
-          "password" => attrs["password"],
+          "email" => email,
+          "password" => password,
           "captcha" => "valid"
         }
 
@@ -48,6 +41,7 @@ defmodule HerenowWeb.ConnCase do
 
       def authenticate_conn(conn) do
         alias Faker.{Name, Address, Commerce, Company, Internet}
+        alias Herenow.Clients.Storage.Mutator
 
         attrs = %{
           "street_number" => Address.building_number(),
@@ -65,7 +59,10 @@ defmodule HerenowWeb.ConnCase do
           "lon" => Address.longitude()
         }
 
-        authenticate_conn(conn, attrs)
+        {:ok, client} = Mutator.create(attrs)
+        {:ok, _verified_client} = Mutator.verify(%{"client_id" => client.id})
+
+        authenticate_conn(conn, %{email: attrs["email"], password: attrs["password"]})
       end
     end
   end

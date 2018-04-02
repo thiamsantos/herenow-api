@@ -12,6 +12,10 @@ defmodule HerenowWeb.ProductController do
   end
 
   def create(conn, params) do
+    params =
+      params
+      |> Map.put("client_id", conn.assigns[:client_id])
+
     with {:ok, %Product{} = product} <- Products.create(params) do
       conn
       |> put_status(:created)
@@ -26,6 +30,10 @@ defmodule HerenowWeb.ProductController do
   end
 
   def update(conn, params) do
+    params =
+      params
+      |> Map.put("client_id", conn.assigns[:client_id])
+
     with {:ok, product} <- Products.update(params) do
       render(conn, "show.json", product: product)
     end
