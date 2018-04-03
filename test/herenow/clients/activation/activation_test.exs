@@ -1,9 +1,8 @@
 defmodule Herenow.Clients.ActivationTest do
   use Herenow.DataCase, async: true
 
-  alias Herenow.Clients
+  alias Herenow.{Clients, Fixtures}
   alias Herenow.Core.Token
-  alias Faker.{Name, Address, Commerce, Internet, Company}
   alias Herenow.Clients.Storage.{Mutator}
 
   @expiration_time Application.get_env(
@@ -15,30 +14,6 @@ defmodule Herenow.Clients.ActivationTest do
     "captcha" => "valid",
     "token" => Token.generate(%{"client_id" => 1}, @secret, @expiration_time)
   }
-
-  def client_fixture() do
-    attrs = %{
-      "latitude" => Address.latitude(),
-      "longitude" => Address.longitude(),
-      "is_company" => true,
-      "name" => Name.name(),
-      "password" => "some password",
-      "legal_name" => Company.name(),
-      "segment" => Commerce.department(),
-      "state" => Address.state(),
-      "street_address" => Address.street_address(),
-      "captcha" => "valid",
-      "postal_code" => "12345678",
-      "city" => Address.city(),
-      "email" => Internet.email(),
-      "lat" => Address.latitude(),
-      "lon" => Address.longitude()
-    }
-
-    {:ok, client} = Mutator.create(attrs)
-
-    client
-  end
 
   describe "activate/1" do
     test "missing keys" do
@@ -171,7 +146,7 @@ defmodule Herenow.Clients.ActivationTest do
     end
 
     test "client cannot be activated twice" do
-      client = client_fixture()
+      client = Fixtures.fixture(:client, false)
 
       token = Token.generate(%{"client_id" => client.id}, @secret, @expiration_time)
 
@@ -198,7 +173,7 @@ defmodule Herenow.Clients.ActivationTest do
     end
 
     test "activation success" do
-      client = client_fixture()
+      client = Fixtures.fixture(:client, false)
 
       token = Token.generate(%{"client_id" => client.id}, @secret, @expiration_time)
 

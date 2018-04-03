@@ -1,63 +1,14 @@
 defmodule Herenow.Products.UpdateTest do
   use Herenow.DataCase, async: true
 
-  alias Herenow.Products
-  alias Faker.{Name, Address, Commerce, Internet, Company, Code}
-  alias Herenow.Clients.Storage.{Mutator}
+  alias Herenow.{Products, Fixtures}
 
-  @valid_attrs %{
-    "category" => Commerce.department(),
-    "code" => Code.iban(),
-    "description" => Commerce.product_name(),
-    "name" => Commerce.product_name_product(),
-    "price" => Commerce.price()
-  }
-
-  @update_attrs %{
-    "category" => Commerce.department(),
-    "code" => Code.iban(),
-    "description" => Commerce.product_name(),
-    "name" => Commerce.product_name_product(),
-    "price" => Commerce.price()
-  }
-
-  def fixture(:client) do
-    attrs = %{
-      "street_address" => Address.street_address(),
-      "latitude" => Address.latitude(),
-      "longitude" => Address.longitude(),
-      "is_company" => true,
-      "name" => Name.name(),
-      "password" => "some password",
-      "legal_name" => Company.name(),
-      "segment" => Commerce.department(),
-      "state" => Address.state(),
-      "street_name" => Address.street_name(),
-      "captcha" => "valid",
-      "postal_code" => "12345678",
-      "city" => Address.city(),
-      "email" => Internet.email()
-    }
-
-    {:ok, client} = Mutator.create(attrs)
-
-    client
-  end
-
-  def fixture(:product) do
-    client = fixture(:client)
-
-    {:ok, product} =
-      @valid_attrs
-      |> Map.put("client_id", client.id)
-      |> Products.create()
-
-    product
-  end
+  @valid_attrs Fixtures.product_attrs()
+  @update_attrs Fixtures.product_attrs()
 
   describe "update/1" do
     test "with valid data updates the product" do
-      product = fixture(:product)
+      product = Fixtures.fixture(:product, @valid_attrs)
 
       attrs =
         @update_attrs
@@ -77,8 +28,8 @@ defmodule Herenow.Products.UpdateTest do
     end
 
     test "not found when different clients tries to update" do
-      product = fixture(:product)
-      different_client = fixture(:client)
+      product = Fixtures.fixture(:product, @valid_attrs)
+      different_client = Fixtures.fixture(:client)
 
       attrs =
         @update_attrs
@@ -101,7 +52,7 @@ defmodule Herenow.Products.UpdateTest do
     end
 
     test "with invalid data returns error changeset" do
-      product = fixture(:product)
+      product = Fixtures.fixture(:product, @valid_attrs)
 
       attrs =
         @update_attrs

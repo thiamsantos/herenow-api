@@ -17,9 +17,7 @@ defmodule Herenow.Clients.WelcomeEmailTest do
     street_address: Address.street_address(),
     postal_code: "12345678",
     city: Address.city(),
-    email: Internet.email(),
-    lat: Address.latitude(),
-    lon: Address.longitude()
+    email: Internet.email()
   }
 
   describe "send/1" do

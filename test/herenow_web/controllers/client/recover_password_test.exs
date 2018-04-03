@@ -1,7 +1,7 @@
 defmodule HerenowWeb.Controllers.Client.RecoverPasswordTest do
   use HerenowWeb.ConnCase, async: true
 
-  alias Faker.{Name, Address, Commerce, Internet, Company}
+  alias Herenow.Fixtures
   alias Herenow.Clients.Storage.{Mutator, Loader}
   alias Herenow.Core.Token
   alias Herenow.Clients.PasswordHash
@@ -11,23 +11,7 @@ defmodule HerenowWeb.Controllers.Client.RecoverPasswordTest do
                      :password_recovery_expiration_time
                    )
   @secret Application.get_env(:herenow, :password_recovery_secret)
-  @client_attrs %{
-    "latitude" => Address.latitude(),
-    "longitude" => Address.longitude(),
-    "is_company" => true,
-    "name" => Name.name(),
-    "password" => "some password",
-    "legal_name" => Company.name(),
-    "segment" => Commerce.department(),
-    "state" => Address.state(),
-    "street_address" => Address.street_address(),
-    "captcha" => "valid",
-    "postal_code" => "12345678",
-    "city" => Address.city(),
-    "email" => Internet.email(),
-    "lat" => Address.latitude(),
-    "lon" => Address.longitude()
-  }
+  @client_attrs Fixtures.client_attrs()
 
   @valid_attrs %{
     "captcha" => "valid",

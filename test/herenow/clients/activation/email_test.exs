@@ -2,10 +2,8 @@ defmodule Herenow.Clients.Activation.EmailTest do
   use Herenow.DataCase
   use Bamboo.Test
 
-  alias Herenow.Clients
+  alias Herenow.{Fixtures, Clients}
   alias Herenow.Core.Token
-  alias Faker.{Name, Address, Commerce, Internet, Company}
-  alias Herenow.Clients.Storage.{Mutator}
   alias Herenow.Clients.Email.SuccessActivationEmail
 
   @expiration_time Application.get_env(
@@ -18,33 +16,9 @@ defmodule Herenow.Clients.Activation.EmailTest do
     "token" => Token.generate(%{"client_id" => 1}, @secret, @expiration_time)
   }
 
-  def client_fixture() do
-    attrs = %{
-      "latitude" => Address.latitude(),
-      "longitude" => Address.longitude(),
-      "is_company" => true,
-      "name" => Name.name(),
-      "password" => "some password",
-      "legal_name" => Company.name(),
-      "segment" => Commerce.department(),
-      "state" => Address.state(),
-      "street_address" => Address.street_address(),
-      "captcha" => "valid",
-      "postal_code" => "12345678",
-      "city" => Address.city(),
-      "email" => Internet.email(),
-      "lat" => Address.latitude(),
-      "lon" => Address.longitude()
-    }
-
-    {:ok, client} = Mutator.create(attrs)
-
-    client
-  end
-
   describe "activate/1" do
     test "after activation, the user gets an email" do
-      client = client_fixture()
+      client = Fixtures.fixture(:client, false)
 
       token = Token.generate(%{"client_id" => client.id}, @secret, @expiration_time)
 

@@ -2,10 +2,8 @@ defmodule Herenow.Clients.RecoverPassword.EmailTest do
   use Herenow.DataCase
   use Bamboo.Test
 
-  alias Herenow.Clients
+  alias Herenow.{Clients, Fixtures}
   alias Herenow.Core.Token
-  alias Faker.{Name, Address, Commerce, Internet, Company}
-  alias Herenow.Clients.Storage.{Mutator}
   alias Herenow.Clients.UpdatePassword.SuccessEmail
 
   @expiration_time Application.get_env(
@@ -13,39 +11,15 @@ defmodule Herenow.Clients.RecoverPassword.EmailTest do
                      :password_recovery_expiration_time
                    )
   @secret Application.get_env(:herenow, :password_recovery_secret)
-  @client_attrs %{
-    "latitude" => Address.latitude(),
-    "longitude" => Address.longitude(),
-    "is_company" => true,
-    "name" => Name.name(),
-    "password" => "old password",
-    "legal_name" => Company.name(),
-    "segment" => Commerce.department(),
-    "state" => Address.state(),
-    "street_address" => Address.street_address(),
-    "captcha" => "valid",
-    "postal_code" => "12345678",
-    "city" => Address.city(),
-    "email" => Internet.email(),
-    "lat" => Address.latitude(),
-    "lon" => Address.longitude()
-  }
-
   @valid_attrs %{
     "captcha" => "valid",
     "password" => "new password",
     "token" => Token.generate(%{"client_id" => 1}, @secret, @expiration_time)
   }
 
-  def client_fixture() do
-    {:ok, client} = Mutator.create(@client_attrs)
-
-    client
-  end
-
   describe "recover_password/1" do
     test "after password change, the user gets an email" do
-      client = client_fixture()
+      client = Fixtures.fixture(:client, false)
 
       token = Token.generate(%{"client_id" => client.id}, @secret, @expiration_time)
 

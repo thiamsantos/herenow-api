@@ -1,72 +1,11 @@
 defmodule HerenowWeb.ProductControllerTest do
   use HerenowWeb.ConnCase, async: true
 
-  alias Herenow.Products
-  alias Faker.{Name, Address, Commerce, Internet, Company, Code}
-  alias Herenow.Clients.Storage.Mutator
-  alias Herenow.Clients.Authenticate.Token
-  alias HerenowWeb.AuthPlug
+  alias Herenow.Fixtures
+  alias HerenowWeb.Helpers
 
-  @create_attrs %{
-    "category" => Commerce.department(),
-    "code" => Code.iban(),
-    "description" => Commerce.product_name(),
-    "name" => Commerce.product_name_product(),
-    "price" => Commerce.price()
-  }
-
-  @update_attrs %{
-    "category" => Commerce.department(),
-    "code" => Code.iban(),
-    "description" => Commerce.product_name(),
-    "name" => Commerce.product_name_product(),
-    "price" => Commerce.price()
-  }
-
-  defp fixture(:client) do
-    attrs = %{
-      "street_address" => Address.street_address(),
-      "latitude" => Address.latitude(),
-      "longitude" => Address.longitude(),
-      "is_company" => true,
-      "name" => Name.name(),
-      "password" => "old password",
-      "legal_name" => Company.name(),
-      "segment" => Commerce.department(),
-      "state" => Address.state(),
-      "street_name" => Address.street_name(),
-      "postal_code" => "12345678",
-      "city" => Address.city(),
-      "email" => Internet.email()
-    }
-
-    {:ok, client} = Mutator.create(attrs)
-    {:ok, _verified_client} = Mutator.verify(%{"client_id" => client.id})
-
-    client
-  end
-
-  defp fixture(:product) do
-    client = fixture(:client)
-
-    fixture(:product, client.id)
-  end
-
-  defp fixture(:product, client_id) do
-    attrs =
-      @create_attrs
-      |> Map.put("client_id", client_id)
-
-    {:ok, product} = Products.create(attrs)
-    product
-  end
-
-  defp get_client_id(conn) do
-    {:ok, token} = AuthPlug.get_token(conn)
-    {:ok, claims} = Token.verify(token)
-
-    claims["client_id"]
-  end
+  @create_attrs Fixtures.product_attrs()
+  @update_attrs Fixtures.product_attrs()
 
   setup %{conn: conn} do
     conn =
@@ -86,7 +25,7 @@ defmodule HerenowWeb.ProductControllerTest do
     end
 
     test "should return some products", %{conn: conn} do
-      fixture(:product, get_client_id(conn))
+      Fixtures.fixture(:product, @create_attrs, Helpers.get_client_id(conn))
       conn = get conn, product_path(conn, :index)
       actual = json_response(conn, 200)
 
@@ -94,7 +33,7 @@ defmodule HerenowWeb.ProductControllerTest do
     end
 
     test "should not return products from others clients", %{conn: conn} do
-      fixture(:product)
+      Fixtures.fixture(:product, @create_attrs)
       conn = get conn, product_path(conn, :index)
       actual = json_response(conn, 200)
 
@@ -104,7 +43,7 @@ defmodule HerenowWeb.ProductControllerTest do
 
   describe "show product" do
     test "renders product", %{conn: conn} do
-      product = fixture(:product, get_client_id(conn))
+      product = Fixtures.fixture(:product, @create_attrs, Helpers.get_client_id(conn))
       conn = get conn, product_path(conn, :show, product)
       product = json_response(conn, 200)
 
@@ -117,8 +56,8 @@ defmodule HerenowWeb.ProductControllerTest do
     end
 
     test "client cannot see products from other clients", %{conn: conn} do
-      different_client = fixture(:client)
-      product = fixture(:product, different_client.id)
+      different_client = Fixtures.fixture(:client)
+      product = Fixtures.fixture(:product, @create_attrs, different_client.id)
 
       conn = get conn, product_path(conn, :show, product)
       actual = json_response(conn, 404)
@@ -175,8 +114,8 @@ defmodule HerenowWeb.ProductControllerTest do
 
   describe "update product" do
     test "renders product when data is valid", %{conn: conn} do
-      client_id = get_client_id(conn)
-      product = fixture(:product, client_id)
+      client_id = Helpers.get_client_id(conn)
+      product = Fixtures.fixture(:product, @create_attrs, client_id)
 
       conn = put conn, product_path(conn, :update, product), @update_attrs
       actual = json_response(conn, 200)
@@ -194,7 +133,7 @@ defmodule HerenowWeb.ProductControllerTest do
     end
 
     test "not found when different clients tries to update", %{conn: conn} do
-      product = fixture(:product)
+      product = Fixtures.fixture(:product, @create_attrs)
 
       conn = put conn, product_path(conn, :update, product), @update_attrs
       actual = json_response(conn, 404)
@@ -209,9 +148,9 @@ defmodule HerenowWeb.ProductControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      client_id = get_client_id(conn)
+      client_id = Helpers.get_client_id(conn)
 
-      product = fixture(:product, client_id)
+      product = Fixtures.fixture(:product, @create_attrs, client_id)
 
       attrs =
         @create_attrs

@@ -1,27 +1,10 @@
 defmodule Herenow.Clients.RegistrationTest do
   use Herenow.DataCase, async: true
 
-  alias Faker.{Name, Address, Commerce, Internet, Company}
+  alias Herenow.{Clients, Fixtures}
   alias Herenow.Clients.Storage.{Mutator, Loader}
-  alias Herenow.Clients
 
-  @valid_attrs %{
-    "latitude" => Address.latitude(),
-    "longitude" => Address.longitude(),
-    "is_company" => true,
-    "name" => Name.name(),
-    "password" => "some password",
-    "legal_name" => Company.name(),
-    "segment" => Commerce.department(),
-    "state" => Address.state(),
-    "street_address" => Address.street_address(),
-    "captcha" => "valid",
-    "postal_code" => "12345678",
-    "city" => Address.city(),
-    "email" => Internet.email(),
-    "lat" => Address.latitude(),
-    "lon" => Address.longitude()
-  }
+  @valid_attrs Fixtures.client_attrs()
 
   def client_fixture(attrs \\ %{}) do
     {:ok, client} =

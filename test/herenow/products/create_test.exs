@@ -1,47 +1,16 @@
 defmodule Herenow.Products.CreateTest do
   use Herenow.DataCase
 
-  alias Herenow.{Products, Elasticsearch}
-  alias Faker.{Name, Address, Commerce, Internet, Company, Code}
-  alias Herenow.Clients.Storage.{Mutator, Loader}
+  alias Herenow.{Products, Elasticsearch, Fixtures}
+  alias Herenow.Clients.Storage.Loader
   alias Herenow.Products.Product
 
-  @valid_attrs %{
-    "category" => Commerce.department(),
-    "code" => Code.iban(),
-    "description" => Commerce.product_name(),
-    "name" => Commerce.product_name_product(),
-    "price" => Commerce.price()
-  }
-
+  @valid_attrs Fixtures.product_attrs()
   @index "products"
   @doc_type "product"
 
-  def fixture(:client) do
-    attrs = %{
-      "street_address" => Address.street_address(),
-      "latitude" => Address.latitude(),
-      "longitude" => Address.longitude(),
-      "is_company" => true,
-      "name" => Name.name(),
-      "password" => "some password",
-      "legal_name" => Company.name(),
-      "segment" => Commerce.department(),
-      "state" => Address.state(),
-      "street_name" => Address.street_name(),
-      "captcha" => "valid",
-      "postal_code" => "12345678",
-      "city" => Address.city(),
-      "email" => Internet.email()
-    }
-
-    {:ok, client} = Mutator.create(attrs)
-
-    client
-  end
-
   setup do
-    client = fixture(:client)
+    client = Fixtures.fixture(:client)
     {:ok, client: client}
   end
 
