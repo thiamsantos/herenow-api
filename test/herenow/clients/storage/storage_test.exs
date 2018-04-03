@@ -1,9 +1,11 @@
 defmodule Herenow.Clients.Storage.StorageTest do
   use Herenow.DataCase, async: true
   alias Herenow.Clients.Storage.{Client, Mutator, Loader}
+  alias Faker.Address
 
   @valid_attrs %{
-    street_number: "54",
+    latitude: Address.latitude(),
+    longitude: Address.longitude(),
     postal_code: "88133050",
     city: "palhoça",
     email: "someemail@example.com",
@@ -13,10 +15,11 @@ defmodule Herenow.Clients.Storage.StorageTest do
     password: "some password",
     segment: "some segment",
     state: "some state",
-    street_name: "some street_name"
+    street_address: "some street_address"
   }
   @update_attrs %{
-    street_number: "227",
+    latitude: Address.latitude(),
+    longitude: Address.longitude(),
     postal_code: "88135000",
     city: "florianópolis",
     email: "someupdatedemail@gmail.com",
@@ -27,10 +30,11 @@ defmodule Herenow.Clients.Storage.StorageTest do
     password: "some updated password",
     segment: "some updated segment",
     state: "some updated state",
-    street_name: "some updated street_name"
+    street_address: "some updated street_address"
   }
   @invalid_attrs %{
-    street_number: nil,
+    latitude: nil,
+    longitude: nil,
     postal_code: nil,
     city: nil,
     email: nil,
@@ -41,7 +45,7 @@ defmodule Herenow.Clients.Storage.StorageTest do
     password: nil,
     segment: nil,
     state: nil,
-    street_name: nil
+    street_address: nil
   }
 
   def client_fixture(attrs \\ %{}) do
@@ -70,7 +74,8 @@ defmodule Herenow.Clients.Storage.StorageTest do
   describe "create_client/1" do
     test "with valid data creates a client" do
       assert {:ok, %Client{} = client} = Mutator.create(@valid_attrs)
-      assert client.street_number == "54"
+      assert client.latitude == @valid_attrs[:latitude]
+      assert client.longitude == @valid_attrs[:longitude]
       assert client.postal_code == "88133050"
       assert client.city == "palhoça"
       assert client.email == "someemail@example.com"
@@ -79,7 +84,7 @@ defmodule Herenow.Clients.Storage.StorageTest do
       assert client.name == "some name"
       assert client.segment == "some segment"
       assert client.state == "some state"
-      assert client.street_name == "some street_name"
+      assert client.street_address == "some street_address"
     end
 
     test "with invalid data returns error changeset" do
@@ -92,7 +97,8 @@ defmodule Herenow.Clients.Storage.StorageTest do
       client = client_fixture()
       assert {:ok, client} = Mutator.update(client, @update_attrs)
       assert %Client{} = client
-      assert client.street_number == "227"
+      assert client.latitude == @update_attrs[:latitude]
+      assert client.longitude == @update_attrs[:longitude]
       assert client.postal_code == "88135000"
       assert client.city == "florianópolis"
       assert client.email == "someupdatedemail@gmail.com"
@@ -101,7 +107,7 @@ defmodule Herenow.Clients.Storage.StorageTest do
       assert client.name == "some updated name"
       assert client.segment == "some updated segment"
       assert client.state == "some updated state"
-      assert client.street_name == "some updated street_name"
+      assert client.street_address == "some updated street_address"
     end
 
     test "with invalid data returns error changeset" do

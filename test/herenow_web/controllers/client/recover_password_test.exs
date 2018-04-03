@@ -12,14 +12,15 @@ defmodule HerenowWeb.Controllers.Client.RecoverPasswordTest do
                    )
   @secret Application.get_env(:herenow, :password_recovery_secret)
   @client_attrs %{
-    "street_number" => Address.building_number(),
+    "latitude" => Address.latitude(),
+    "longitude" => Address.longitude(),
     "is_company" => true,
     "name" => Name.name(),
     "password" => "some password",
     "legal_name" => Company.name(),
     "segment" => Commerce.department(),
     "state" => Address.state(),
-    "street_name" => Address.street_name(),
+    "street_address" => Address.street_address(),
     "captcha" => "valid",
     "postal_code" => "12345678",
     "city" => Address.city(),
@@ -58,13 +59,14 @@ defmodule HerenowWeb.Controllers.Client.RecoverPasswordTest do
       response = json_response(conn, 200)
 
       assert is_integer(response["id"])
-      assert response["street_number"] == client.street_number
+      assert response["latitude"] == client.latitude
+      assert response["longitude"] == client.longitude
       assert response["is_company"] == client.is_company
       assert response["name"] == client.name
       assert response["legal_name"] == client.legal_name
       assert response["segment"] == client.segment
       assert response["state"] == client.state
-      assert response["street_name"] == client.street_name
+      assert response["street_address"] == client.street_address
       assert response["postal_code"] == client.postal_code
       assert response["city"] == client.city
       assert response["email"] == client.email

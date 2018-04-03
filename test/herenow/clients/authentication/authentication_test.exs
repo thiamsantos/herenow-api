@@ -6,14 +6,15 @@ defmodule Herenow.Clients.AuthenticationTest do
   alias Herenow.Clients.Storage.Mutator
 
   @client_attrs %{
-    "street_number" => Address.building_number(),
+    "latitude" => Address.latitude(),
+    "longitude" => Address.longitude(),
     "is_company" => true,
     "name" => Name.name(),
     "password" => "some password",
     "legal_name" => Company.name(),
     "segment" => Commerce.department(),
     "state" => Address.state(),
-    "street_name" => Address.street_name(),
+    "street_address" => Address.street_address(),
     "captcha" => "valid",
     "postal_code" => "12345678",
     "city" => Address.city(),

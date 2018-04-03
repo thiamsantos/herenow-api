@@ -7,13 +7,14 @@ defmodule Herenow.Clients.WelcomeEmailTest do
 
   @client %{
     id: 1,
-    street_number: Address.building_number(),
+    latitude: Address.latitude(),
+    longitude: Address.longitude(),
     is_company: true,
     name: Name.name(),
     legal_name: Company.name(),
     segment: Commerce.department(),
     state: Address.state(),
-    street_name: Address.street_name(),
+    street_address: Address.street_address(),
     postal_code: "12345678",
     city: Address.city(),
     email: Internet.email()

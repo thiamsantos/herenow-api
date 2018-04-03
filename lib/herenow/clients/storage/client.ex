@@ -7,7 +7,6 @@ defmodule Herenow.Clients.Storage.Client do
   alias Herenow.Clients.Storage.{EctoHashedPassword, Fields}
 
   schema "clients" do
-    field :street_number, :string
     field :postal_code, :string
     field :city, :string
     field :email, :string
@@ -17,7 +16,9 @@ defmodule Herenow.Clients.Storage.Client do
     field :password, EctoHashedPassword
     field :segment, :string
     field :state, :string
-    field :street_name, :string
+    field :street_address, :string
+    field :latitude, :float
+    field :longitude, :float
 
     timestamps()
   end
