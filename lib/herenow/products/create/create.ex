@@ -42,7 +42,7 @@ defmodule Herenow.Products.Create do
       name: product.name,
       price: product.price,
       client_id: product.client_id,
-      location: %{lat: location.lat, lon: location.lon},
+      location: %{lat: location.latitude, lon: location.longitude},
       inserted_at: product.inserted_at,
       updated_at: product.updated_at
     })

@@ -30,6 +30,6 @@ defmodule Herenow.Clients.Storage.Queries do
   def location_by_id(id) do
     from c in Client,
       where: c.id == ^id,
-      select: struct(c, [:id, :lat, :lon])
+      select: struct(c, [:id, :latitude, :longitude])
   end
 end

@@ -1,47 +1,16 @@
 defmodule Herenow.Products.CreateTest do
   use Herenow.DataCase
 
-  alias Herenow.{Products, Elasticsearch}
-  alias Faker.{Name, Address, Commerce, Internet, Company, Code}
-  alias Herenow.Clients.Storage.{Mutator, Loader}
+  alias Herenow.{Products, Elasticsearch, Fixtures}
+  alias Herenow.Clients.Storage.Loader
   alias Herenow.Products.Product
 
-  @valid_attrs %{
-    "category" => Commerce.department(),
-    "code" => Code.iban(),
-    "description" => Commerce.product_name(),
-    "name" => Commerce.product_name_product(),
-    "price" => Commerce.price()
-  }
-
+  @valid_attrs Fixtures.product_attrs()
   @index "products"
   @doc_type "product"
 
-  def fixture(:client) do
-    attrs = %{
-      "street_number" => Address.building_number(),
-      "is_company" => true,
-      "name" => Name.name(),
-      "password" => "some password",
-      "legal_name" => Company.name(),
-      "segment" => Commerce.department(),
-      "state" => Address.state(),
-      "street_name" => Address.street_name(),
-      "captcha" => "valid",
-      "postal_code" => "12345678",
-      "city" => Address.city(),
-      "email" => Internet.email(),
-      "lat" => Address.latitude(),
-      "lon" => Address.longitude()
-    }
-
-    {:ok, client} = Mutator.create(attrs)
-
-    client
-  end
-
   setup do
-    client = fixture(:client)
+    client = Fixtures.fixture(:client)
     {:ok, client: client}
   end
 
@@ -126,7 +95,12 @@ defmodule Herenow.Products.CreateTest do
       assert body["_source"]["description"] == product.description
       assert body["_source"]["name"] == product.name
       assert body["_source"]["price"] == product.price
-      assert body["_source"]["location"] == %{"lat" => location.lat, "lon" => location.lon}
+
+      assert body["_source"]["location"] == %{
+               "lat" => location.latitude,
+               "lon" => location.longitude
+             }
+
       assert body["_source"]["updated_at"] == NaiveDateTime.to_iso8601(product.updated_at)
       assert body["_source"]["inserted_at"] == NaiveDateTime.to_iso8601(product.inserted_at)
     end

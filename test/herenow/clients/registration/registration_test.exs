@@ -1,26 +1,10 @@
 defmodule Herenow.Clients.RegistrationTest do
   use Herenow.DataCase, async: true
 
-  alias Faker.{Name, Address, Commerce, Internet, Company}
+  alias Herenow.{Clients, Fixtures}
   alias Herenow.Clients.Storage.{Mutator, Loader}
-  alias Herenow.Clients
 
-  @valid_attrs %{
-    "street_number" => Address.building_number(),
-    "is_company" => true,
-    "name" => Name.name(),
-    "password" => "some password",
-    "legal_name" => Company.name(),
-    "segment" => Commerce.department(),
-    "state" => Address.state(),
-    "street_name" => Address.street_name(),
-    "captcha" => "valid",
-    "postal_code" => "12345678",
-    "city" => Address.city(),
-    "email" => Internet.email(),
-    "lat" => Address.latitude(),
-    "lon" => Address.longitude()
-  }
+  @valid_attrs Fixtures.client_attrs()
 
   def client_fixture(attrs \\ %{}) do
     {:ok, client} =
@@ -240,7 +224,8 @@ defmodule Herenow.Clients.RegistrationTest do
     test "should return the client's information" do
       {:ok, client} = Clients.register(@valid_attrs)
 
-      assert client.street_number == @valid_attrs["street_number"]
+      assert client.latitude == @valid_attrs["latitude"]
+      assert client.longitude == @valid_attrs["longitude"]
       assert client.postal_code == @valid_attrs["postal_code"]
       assert client.city == @valid_attrs["city"]
       assert client.email == @valid_attrs["email"]
@@ -249,7 +234,7 @@ defmodule Herenow.Clients.RegistrationTest do
       assert client.name == @valid_attrs["name"]
       assert client.segment == @valid_attrs["segment"]
       assert client.state == @valid_attrs["state"]
-      assert client.street_name == @valid_attrs["street_name"]
+      assert client.street_address == @valid_attrs["street_address"]
     end
 
     test "should persist the client" do
@@ -257,7 +242,8 @@ defmodule Herenow.Clients.RegistrationTest do
       persisted_client = Loader.get!(client.id)
 
       assert client.id == persisted_client.id
-      assert client.street_number == persisted_client.street_number
+      assert client.latitude == persisted_client.latitude
+      assert client.longitude == persisted_client.longitude
       assert client.postal_code == persisted_client.postal_code
       assert client.city == persisted_client.city
       assert client.email == persisted_client.email
@@ -266,7 +252,7 @@ defmodule Herenow.Clients.RegistrationTest do
       assert client.name == persisted_client.name
       assert client.segment == persisted_client.segment
       assert client.state == persisted_client.state
-      assert client.street_name == persisted_client.street_name
+      assert client.street_address == persisted_client.street_address
       assert client.inserted_at == persisted_client.inserted_at
       assert client.updated_at == persisted_client.updated_at
     end

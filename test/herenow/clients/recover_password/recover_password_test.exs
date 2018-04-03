@@ -1,10 +1,9 @@
 defmodule Herenow.Clients.RecoverPasswordTest do
   use Herenow.DataCase, async: true
 
-  alias Herenow.Clients
+  alias Herenow.{Clients, Fixtures}
   alias Herenow.Core.Token
-  alias Faker.{Name, Address, Commerce, Internet, Company}
-  alias Herenow.Clients.Storage.{Mutator, Loader}
+  alias Herenow.Clients.Storage.Loader
   alias Herenow.Clients.PasswordHash
 
   @expiration_time Application.get_env(
@@ -12,34 +11,12 @@ defmodule Herenow.Clients.RecoverPasswordTest do
                      :password_recovery_expiration_time
                    )
   @secret Application.get_env(:herenow, :password_recovery_secret)
-  @client_attrs %{
-    "street_number" => Address.building_number(),
-    "is_company" => true,
-    "name" => Name.name(),
-    "password" => "old password",
-    "legal_name" => Company.name(),
-    "segment" => Commerce.department(),
-    "state" => Address.state(),
-    "street_name" => Address.street_name(),
-    "captcha" => "valid",
-    "postal_code" => "12345678",
-    "city" => Address.city(),
-    "email" => Internet.email(),
-    "lat" => Address.latitude(),
-    "lon" => Address.longitude()
-  }
 
   @valid_attrs %{
     "captcha" => "valid",
     "password" => "new password",
     "token" => Token.generate(%{"client_id" => 1}, @secret, @expiration_time)
   }
-
-  def client_fixture() do
-    {:ok, client} = Mutator.create(@client_attrs)
-
-    client
-  end
 
   describe "recover_password/1" do
     test "missing keys" do
@@ -155,7 +132,7 @@ defmodule Herenow.Clients.RecoverPasswordTest do
     end
 
     test "used token" do
-      client = client_fixture()
+      client = Fixtures.fixture(:client, false)
 
       token = Token.generate(%{"client_id" => client.id}, @secret, @expiration_time)
 
@@ -202,7 +179,7 @@ defmodule Herenow.Clients.RecoverPasswordTest do
     end
 
     test "change the password" do
-      client = client_fixture()
+      client = Fixtures.fixture(:client, false)
 
       token = Token.generate(%{"client_id" => client.id}, @secret, @expiration_time)
 
@@ -215,11 +192,11 @@ defmodule Herenow.Clients.RecoverPasswordTest do
       assert {:ok} == PasswordHash.valid?(@valid_attrs["password"], response.password)
 
       assert {:error, :invalid_password} ==
-               PasswordHash.valid?(@client_attrs["password"], response.password)
+               PasswordHash.valid?(client.password, response.password)
     end
 
     test "should verify unverified accounts" do
-      client = client_fixture()
+      client = Fixtures.fixture(:client, false)
 
       token = Token.generate(%{"client_id" => client.id}, @secret, @expiration_time)
 

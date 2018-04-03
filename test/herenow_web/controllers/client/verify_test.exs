@@ -1,7 +1,7 @@
 defmodule HerenowWeb.Controllers.Client.VerifyTest do
   use HerenowWeb.ConnCase, async: true
 
-  alias Faker.{Name, Address, Commerce, Internet, Company}
+  alias Herenow.Fixtures
   alias Herenow.Clients.Storage.Mutator
   alias Herenow.Core.Token
 
@@ -20,22 +20,7 @@ defmodule HerenowWeb.Controllers.Client.VerifyTest do
   end
 
   def client_fixture do
-    attrs = %{
-      "street_number" => Address.building_number(),
-      "is_company" => true,
-      "name" => Name.name(),
-      "password" => "some password",
-      "legal_name" => Company.name(),
-      "segment" => Commerce.department(),
-      "state" => Address.state(),
-      "street_name" => Address.street_name(),
-      "captcha" => "valid",
-      "postal_code" => "12345678",
-      "city" => Address.city(),
-      "email" => Internet.email(),
-      "lat" => Address.latitude(),
-      "lon" => Address.longitude()
-    }
+    attrs = Fixtures.client_attrs()
 
     {:ok, client} =
       attrs
@@ -61,13 +46,14 @@ defmodule HerenowWeb.Controllers.Client.VerifyTest do
       response = json_response(conn, 200)
 
       assert is_integer(response["id"])
-      assert response["street_number"] == client.street_number
+      assert response["latitude"] == client.latitude
+      assert response["longitude"] == client.longitude
       assert response["is_company"] == client.is_company
       assert response["name"] == client.name
       assert response["legal_name"] == client.legal_name
       assert response["segment"] == client.segment
       assert response["state"] == client.state
-      assert response["street_name"] == client.street_name
+      assert response["street_address"] == client.street_address
       assert response["postal_code"] == client.postal_code
       assert response["city"] == client.city
       assert response["email"] == client.email

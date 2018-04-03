@@ -278,8 +278,9 @@ defmodule HerenowWeb.ClientController do
   # @apiParam {Boolean} is_company Client is a company?
   # @apiParam {String} segment Client's market segment.
   # @apiParam {String} postal_code Client's postal code.
-  # @apiParam {String} street_name Client's street name.
-  # @apiParam {String} street_number Client's street number.
+  # @apiParam {String} latitude Client's latitude.
+  # @apiParam {String} longitude Client's longitude.
+  # @apiParam {String} street_address Client's street address.
   # @apiParam {String} city Client's city.
   # @apiParam {String} state Client's state.
   # @apiParam {String} captcha Recaptcha code.
@@ -291,8 +292,9 @@ defmodule HerenowWeb.ClientController do
   # @apiSuccess {Boolean} is_company Client is a company?
   # @apiSuccess {String} segment Client's market segment.
   # @apiSuccess {String} postal_code Client's postal code.
-  # @apiSuccess {String} street_name Client's street name.
-  # @apiSuccess {String} street_number Client's street number.
+  # @apiSuccess {String} latitude Client's latitude.
+  # @apiSuccess {String} longitude Client's longitude.
+  # @apiSuccess {String} street_address Client's street address.
   # @apiSuccess {String} city Client's city.
   # @apiSuccess {String} state Client's state.
   # @apiSuccessExample Success-Response:
@@ -305,8 +307,9 @@ defmodule HerenowWeb.ClientController do
   #       "is_company": true,
   #       "segment": "john@gmail.com",
   #       "postal_code": "88813000",
-  #       "street_number": "221 B",
-  #       "street_name": "Baker Street",
+  #       "latitude": 27.5,
+  #       "latitude": 9.3,
+  #       "street_address": "Baker Street 221 B",
   #       "city": "São Paulo",
   #       "state": "London"
   #     }
@@ -345,8 +348,9 @@ defmodule HerenowWeb.ClientController do
   # @apiSuccess {Boolean} is_company Client is a company?
   # @apiSuccess {String} segment Client's market segment.
   # @apiSuccess {String} postal_code Client's postal code.
-  # @apiSuccess {String} street_name Client's street name.
-  # @apiSuccess {String} street_number Client's street number.
+  # @apiSuccess {String} latitude Client's latitude.
+  # @apiSuccess {String} longitude Client's longitude.
+  # @apiSuccess {String} street_address Client's street address.
   # @apiSuccess {String} city Client's city.
   # @apiSuccess {String} state Client's state.
   # @apiSuccessExample Success-Response:
@@ -359,8 +363,9 @@ defmodule HerenowWeb.ClientController do
   #       "is_company": true,
   #       "segment": "john@gmail.com",
   #       "postal_code": "88813000",
-  #       "street_number": "221 B",
-  #       "street_name": "Baker Street",
+  #       "latitude": 27.5,
+  #       "latitude": 9.3,
+  #       "street_address": "Baker Street 221 B",
   #       "city": "São Paulo",
   #       "state": "London"
   #     }
@@ -428,8 +433,9 @@ defmodule HerenowWeb.ClientController do
   # @apiSuccess {Boolean} is_company Client is a company?
   # @apiSuccess {String} segment Client's market segment.
   # @apiSuccess {String} postal_code Client's postal code.
-  # @apiSuccess {String} street_name Client's street name.
-  # @apiSuccess {String} street_number Client's street number.
+  # @apiSuccess {String} latitude Client's latitude.
+  # @apiSuccess {String} longitude Client's longitude.
+  # @apiSuccess {String} street_address Client's street address.
   # @apiSuccess {String} city Client's city.
   # @apiSuccess {String} state Client's state.
   # @apiSuccessExample Success-Response:
@@ -442,8 +448,9 @@ defmodule HerenowWeb.ClientController do
   #       "is_company": true,
   #       "segment": "john@gmail.com",
   #       "postal_code": "88813000",
-  #       "street_number": "221 B",
-  #       "street_name": "Baker Street",
+  #       "latitude": 27.5,
+  #       "latitude": 9.3,
+  #       "street_address": "Baker Street 221 B",
   #       "city": "São Paulo",
   #       "state": "London"
   #     }
@@ -517,8 +524,9 @@ defmodule HerenowWeb.ClientController do
   # @apiSuccess {Boolean} is_company Client is a company?
   # @apiSuccess {String} segment Client's market segment.
   # @apiSuccess {String} postal_code Client's postal code.
-  # @apiSuccess {String} street_name Client's street name.
-  # @apiSuccess {String} street_number Client's street number.
+  # @apiSuccess {String} latitude Client's latitude.
+  # @apiSuccess {String} longitude Client's longitude.
+  # @apiSuccess {String} street_address Client's street address.
   # @apiSuccess {String} city Client's city.
   # @apiSuccess {String} state Client's state.
   # @apiSuccessExample Success-Response:
@@ -531,8 +539,9 @@ defmodule HerenowWeb.ClientController do
   #       "is_company": true,
   #       "segment": "john@gmail.com",
   #       "postal_code": "88813000",
-  #       "street_number": "221 B",
-  #       "street_name": "Baker Street",
+  #       "latitude": 27.5,
+  #       "latitude": 9.3,
+  #       "street_address": "Baker Street 221 B",
   #       "city": "São Paulo",
   #       "state": "London"
   #     }

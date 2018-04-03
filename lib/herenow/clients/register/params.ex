@@ -18,13 +18,12 @@ defmodule Herenow.Clients.Register.Params do
     field :is_company, :boolean
     field :segment, :string
     field :postal_code, :string
-    field :street_name, :string
-    field :street_number, :string
+    field :street_address, :string
     field :city, :string
     field :state, :string
     field :captcha, :string
-    field :lat, :float
-    field :lon, :float
+    field :latitude, :float
+    field :longitude, :float
   end
 
   @doc false

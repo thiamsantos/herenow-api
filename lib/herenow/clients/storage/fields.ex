@@ -10,12 +10,11 @@ defmodule Herenow.Clients.Storage.Fields do
     :is_company,
     :segment,
     :postal_code,
-    :street_name,
-    :street_number,
+    :street_address,
     :city,
     :state,
-    :lat,
-    :lon
+    :latitude,
+    :longitude
   ]
 
   def required_fields, do: @required_fields
