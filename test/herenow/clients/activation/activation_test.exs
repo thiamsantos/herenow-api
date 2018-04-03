@@ -30,7 +30,9 @@ defmodule Herenow.Clients.ActivationTest do
       "captcha" => "valid",
       "postal_code" => "12345678",
       "city" => Address.city(),
-      "email" => Internet.email()
+      "email" => Internet.email(),
+      "lat" => Address.latitude(),
+      "lon" => Address.longitude()
     }
 
     {:ok, client} = Mutator.create(attrs)

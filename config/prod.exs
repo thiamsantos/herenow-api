@@ -19,7 +19,8 @@ config :herenow, Herenow.Repo,
 config :herenow,
   login_secret: System.get_env("LOGIN_SECRET"),
   account_activation_secret: System.get_env("ACCOUNT_ACTIVATION_SECRET"),
-  captcha: Herenow.Captcha.HTTPAdapter
+  captcha: Herenow.Captcha.HTTPAdapter,
+  elastic_url: System.get_env("ELASTIC_URL")
 
 config :recaptcha,
   public_key: System.get_env("RECAPTCHA_PUBLIC_KEY"),

@@ -17,7 +17,9 @@ defmodule HerenowWeb.Controllers.Client.UpdatePasswordTest do
     "street_address" => Address.street_address(),
     "postal_code" => "12345678",
     "city" => Address.city(),
-    "email" => Internet.email()
+    "email" => Internet.email(),
+    "lat" => Address.latitude(),
+    "lon" => Address.longitude()
   }
 
   @valid_attrs %{
@@ -26,10 +28,13 @@ defmodule HerenowWeb.Controllers.Client.UpdatePasswordTest do
   }
 
   setup %{conn: conn} do
+    {:ok, client} = Mutator.create(@client_attrs)
+    {:ok, _verified_client} = Mutator.verify(%{"client_id" => client.id})
+
     conn =
       conn
       |> put_req_header("accept", "application/json")
-      |> authenticate_conn(@client_attrs)
+      |> authenticate_conn(%{email: @client_attrs["email"], password: @client_attrs["password"]})
 
     {:ok, conn: conn}
   end

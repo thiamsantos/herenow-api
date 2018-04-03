@@ -26,4 +26,10 @@ defmodule Herenow.Clients.Storage.Queries do
   def one_verified_client(id) do
     from c in VerifiedClient, where: c.client_id == ^id
   end
+
+  def location_by_id(id) do
+    from c in Client,
+      where: c.id == ^id,
+      select: struct(c, [:id, :latitude, :longitude])
+  end
 end

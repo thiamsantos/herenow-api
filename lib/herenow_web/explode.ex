@@ -57,6 +57,11 @@ defmodule HerenowWeb.Explode do
     |> Enum.map(&build_authorization_error/1)
   end
 
+  defp build_errors(errors, :not_found) do
+    errors
+    |> Enum.map(&build_not_found_error/1)
+  end
+
   defp build_validation_error(error) do
     %{
       "message" => error["message"],
@@ -72,8 +77,16 @@ defmodule HerenowWeb.Explode do
     }
   end
 
+  defp build_not_found_error(error) do
+    %{
+      "message" => error["message"],
+      "code" => get_error_code(error["type"])
+    }
+  end
+
   defp get_message(:validation), do: "Validation failed!"
   defp get_message(:unauthorized), do: "Authorization failed!"
+  defp get_message(:not_found), do: "Not found!"
 
   defp get_status_code(:validation), do: 422
   defp get_status_code(:not_found), do: 404
@@ -93,6 +106,7 @@ defmodule HerenowWeb.Explode do
   defp get_error_code(:used_token), do: 111
 
   defp get_error_code(:not_found), do: 200
+  defp get_error_code(:product_not_found), do: 201
 
   defp get_error_code(:unauthorized), do: 300
   defp get_error_code(:invalid_credentials), do: 301

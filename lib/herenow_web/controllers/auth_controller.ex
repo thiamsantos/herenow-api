@@ -52,7 +52,7 @@ defmodule HerenowWeb.AuthController do
   # @apiSuccessExample Success-Response:
   #     HTTP/1.1 201 CREATED
   #     {
-  #       "token": "eyJzdWIiOiIxMjM0NTY3ODkw.XbPfbIHMI6arZ3Y922BhjWo"
+  #       "token": "eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZ.XbPfbIHMI6arZ2o"
   #     }
   #
   # @apiUse DefaultHeader

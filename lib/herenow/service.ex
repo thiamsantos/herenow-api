@@ -4,7 +4,10 @@ defmodule Herenow.Service do
   """
 
   alias Herenow.Core.ErrorMessage
-  @callback run(map) :: {:ok, struct | map | String.t()} | ErrorMessage.t()
+
+  @callback run(map) ::
+              {:ok, struct | map | String.t() | list}
+              | ErrorMessage.t()
 
   defmacro __using__(_) do
     quote do
